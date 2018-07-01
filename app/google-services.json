@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "368476316959",
+    "firebase_url": "https://precious-plastic.firebaseio.com",
+    "project_id": "precious-plastic",
+    "storage_bucket": "precious-plastic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368476316959:android:5080c02eed3b2f0a",
+        "android_client_info": {
+          "package_name": "com.example.android.preciousplastic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368476316959-s9o8bmicjufa7iqvb88q5a33aahqm09q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.preciousplastic",
+            "certificate_hash": "588fa6483db0b97be9f808f5fb211690ef4d41f3"
+          }
+        },
+        {
+          "client_id": "368476316959-lhm19hb0ja3240h5of8le0e2vgcnrml8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1nXi-E-p20f83aleeC2tgtMa1R_BcwFQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368476316959-lhm19hb0ja3240h5of8le0e2vgcnrml8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
