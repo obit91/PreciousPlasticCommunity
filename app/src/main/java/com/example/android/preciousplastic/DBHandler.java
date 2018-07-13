@@ -20,26 +20,18 @@ public class DBHandler {
     private final String USERS_COLLECTION = "users";
 
     // constants for tasks performed with firebase
-    public final static String AUTHENTICATION = "User Authentication";
+    final static String AUTHENTICATION = "User Authentication";
 
     private Context context;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
 
-    public DbResponse dbResponseDelegate;
+    public MainActivity serverResponseDelegate;
 
-    /**
-     * onDbResponse method will be called when response from db is received,
-     * and then other activities can be notified.
-     * It solves the problem of asynchronous db calls.
-     */
-    public interface DbResponse{
-        void onDbResponse(String taskType, boolean response);
-    }
 
-    public DBHandler(Context context, DbResponse delegate){
+    public DBHandler(Context context, MainActivity delegate){
         this.context = context;
-        this.dbResponseDelegate = delegate;
+        this.serverResponseDelegate = delegate;
         database = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = database.getReference(DATABASE);
         usersRef = dbRef.child(USERS_COLLECTION);
@@ -101,7 +93,7 @@ public class DBHandler {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             boolean authenticated = (snapshot.getValue(String.class).equals(password));
-                            dbResponseDelegate.onDbResponse(AUTHENTICATION, authenticated);
+                            serverResponseDelegate.onServerResponse(AUTHENTICATION, String.valueOf(authenticated));
                             updateLastLogin(nickName);
                         }
                         @Override
@@ -111,7 +103,7 @@ public class DBHandler {
                     });
                 } else{
                     // notify on failed authentication
-                    dbResponseDelegate.onDbResponse(AUTHENTICATION, false);
+                    serverResponseDelegate.onServerResponse(AUTHENTICATION, String.valueOf(false));
                 }
             }
             @Override
