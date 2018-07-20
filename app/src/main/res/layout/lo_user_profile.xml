@@ -1,6 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-</LinearLayout>
+
+
+    <!--Page container-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_blue_light"
+
+        android:orientation="vertical">
+        <!--Profile image-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <Space
+                android:id="@+id/spacer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+
+                android:id="@+id/iv_profile_pic_in_profile_lo"
+                android:layout_width="@dimen/profile_page_profile_size"
+                android:layout_height="@dimen/profile_page_profile_size"
+                android:layout_marginTop="25dp"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/cardview_light_background"
+                android:src="@drawable/keren_profile" />
+
+            <Space
+                android:id="@+id/spacer2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!--Points container-->
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="25dp"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/points_text_height"
+                android:layout_margin="4dp">
+
+                <ImageView
+                    android:layout_width="@dimen/bin_type_size"
+                    android:layout_height="@dimen/bin_type_size"
+                    android:src="@drawable/pete_1" />
+
+
+                <TextView
+                    android:id="@+id/tv_points_pete1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="cursive"
+                    android:layout_marginTop="15dp"
+                    android:text="123456789"
+                    android:textSize="@dimen/txt_points_size_in_profile_page" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/points_text_height"
+                android:layout_margin="4dp">
+
+                <ImageView
+                    android:layout_width="@dimen/bin_type_size"
+                    android:layout_height="@dimen/bin_type_size"
+                    android:src="@drawable/hdpe_2" />
+
+                <TextView
+                    android:id="@+id/tv_points_hdpe2"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="casual"
+                    android:text="123456789"
+                    android:textSize="@dimen/txt_points_size_in_profile_page" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/points_text_height"
+                android:layout_margin="4dp">
+
+                <ImageView
+                    android:layout_width="@dimen/bin_type_size"
+
+                    android:layout_height="@dimen/bin_type_size"
+                    android:src="@drawable/pvc_3" />
+
+                <TextView
+                    android:id="@+id/tv_points_pvc3"
+                    android:layout_width="wrap_content"
+                    android:fontFamily="monospace"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="123456789"
+                    android:textSize="@dimen/txt_points_size_in_profile_page" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/points_text_height"
+                android:layout_margin="4dp">
+
+                <ImageView
+                    android:layout_width="@dimen/bin_type_size"
+
+                    android:layout_height="@dimen/bin_type_size"
+                    android:src="@drawable/ldpe_4" />
+
+                <TextView
+                    android:id="@+id/tv_points_ldpe4"
+                    android:layout_width="wrap_content"
+                    android:fontFamily="sans-serif-smallcaps"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="123456789"
+                    android:textSize="@dimen/txt_points_size_in_profile_page" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/points_text_height"
+                android:layout_margin="4dp">
+
+                <ImageView
+                    android:layout_width="@dimen/bin_type_size"
+
+                    android:layout_height="@dimen/bin_type_size"
+                    android:src="@drawable/pp_5" />
+
+                <TextView
+                    android:id="@+id/tv_points_pp5"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="123456789"
+                    android:textSize="@dimen/txt_points_size_in_profile_page" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/points_text_height"
+                android:layout_margin="4dp">
+
+                <ImageView
+                    android:layout_width="@dimen/bin_type_size"
+
+                    android:layout_height="@dimen/bin_type_size"
+                    android:src="@drawable/ps_6" />
+
+                <TextView
+                    android:id="@+id/tv_points_ps6"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="123456789"
+                    android:textSize="@dimen/txt_points_size_in_profile_page" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/points_text_height"
+                android:layout_margin="4dp">
+
+                <ImageView
+                    android:layout_width="@dimen/bin_type_size"
+
+                    android:layout_height="@dimen/bin_type_size"
+                    android:src="@drawable/other_7" />
+
+                <TextView
+                    android:id="@+id/tv_points_other7"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="123456789"
+                    android:textSize="@dimen/txt_points_size_in_profile_page" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</>

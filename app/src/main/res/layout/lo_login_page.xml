@@ -5,7 +5,7 @@
     android:background="@android:color/holo_purple"
     android:backgroundTintMode="multiply"
     android:orientation="vertical">
-
+    <!--Icon container-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,6 +42,7 @@
             android:id="@+id/tv_community_t"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="75dp"
             android:layout_marginRight="75dp"
             android:layout_weight="1"
@@ -52,7 +53,7 @@
             android:text="Community"
             android:textSize="35sp" />
     </LinearLayout>
-
+    <!--Username and password-->
     <EditText
         android:id="@+id/editText2"
         android:layout_width="match_parent"
@@ -67,17 +68,18 @@
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
-
+    <!--Buttons container-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingBottom="10dp"
         android:weightSum="10">
 
         <ImageButton
@@ -91,7 +93,20 @@
             android:id="@+id/spacer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="6" />
+            android:layout_weight="2" />
+
+        <ImageButton
+            android:id="@+id/btn_google_sign_in"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <Space
+            android:id="@+id/spacer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" />
 
         <ImageButton
             android:id="@+id/btn_log_in"

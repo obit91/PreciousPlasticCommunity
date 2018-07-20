@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.example.android.preciousplastic"
         minSdkVersion 15
@@ -20,13 +20,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.google.firebase:firebase-database:9.8.0'
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
     // Retrofit Library
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -35,6 +35,11 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:25.3.1'
     implementation 'com.google.code.gson:gson:2.8.1'
     implementation 'com.android.volley:volley:1.0.0'
+
+
+    //Circular frames
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 
 }
 
