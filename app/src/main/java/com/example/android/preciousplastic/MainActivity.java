@@ -3,25 +3,35 @@ package com.example.android.preciousplastic;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
+import org.osmdroid.views.MapView;
 
 public class MainActivity extends AppCompatActivity{
 
-    DBHandler dbHandler;
-    InternetHandler internetHandler;
+    DBHandler dbHandler;        // In charge of calls to app's DB
+    MapActivity mapActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // example usage of DB
-//        dbHandler = new DBHandler(this, this);
-//        DbUsageExample();
+        // start-up tools
+        mapActivity = new MapActivity(this, this);
+        dbHandler = new DBHandler(this, this);
 
-        // example usage of web access
-        internetHandler = new InternetHandler(this, this);
-        internetHandler.getMapPins();
+        //DbUsageExample();  // example usage of DB
+
+    }
+
+    public void onOpenMapClick(View view){
+        if (mapActivity != null){
+            setContentView(R.layout.activity_map);
+            MapView mapView = (MapView) findViewById(R.id.activity_map);
+            mapActivity.buildMap(mapView);
+        }
     }
 
     private void DbUsageExample(){
@@ -43,9 +53,6 @@ public class MainActivity extends AppCompatActivity{
             case DBHandler.AUTHENTICATION:
                 Toast.makeText(this, "Authenticated: " + response, Toast.LENGTH_SHORT).show();
                 Log.d("authentication", response);
-                break;
-            case InternetHandler.GET_MAP_PINS:
-                Log.d("get map pins", String.valueOf(response));
                 break;
             default:
                 break;
