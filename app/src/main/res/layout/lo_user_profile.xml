@@ -35,7 +35,7 @@
                 android:layout_marginTop="25dp"
                 app:civ_border_width="1dp"
                 app:civ_border_color="@color/cardview_light_background"
-                android:src="@drawable/keren_profile" />
+                 />
 
             <Space
                 android:id="@+id/spacer2"
@@ -214,4 +214,4 @@
 
     </LinearLayout>
 
-</>
+</LinearLayout>
