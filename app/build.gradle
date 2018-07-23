@@ -42,7 +42,7 @@ dependencies {
 
 
     // osmdroid: map view
-    compile 'org.osmdroid:osmdroid-android:6.0.2'
+    implementation 'org.osmdroid:osmdroid-android:6.0.2'
 
 }
 
