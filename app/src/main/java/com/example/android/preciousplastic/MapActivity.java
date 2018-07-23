@@ -1,9 +1,12 @@
 package com.example.android.preciousplastic;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,13 +17,22 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
+import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
+import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
+import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class MapActivity extends AppCompatActivity {
 
@@ -64,9 +76,12 @@ class MapActivity extends AppCompatActivity {
      * @param mapView
      */
     public void buildMap(MapView mapView){
+        this.mapView = mapView;
+
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
+        mapView.setHorizontalMapRepetitionEnabled(false);
 
         // set the map to a default starting point
         IMapController mapController = mapView.getController();
@@ -105,10 +120,7 @@ class MapActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 try{
                     ArrayList arrayList = gson.fromJson(response, ArrayList.class);
-                    for (Object entry: arrayList){
-                        LinkedTreeMap<String, String> linkedTreeMap = (LinkedTreeMap<String, String>) entry;
-                        handlePinKey(linkedTreeMap);
-                    }
+                    handlePinKeys(arrayList);
                 } catch (Exception e){
                     Log.e("exception", e.toString());
                 }
@@ -124,13 +136,53 @@ class MapActivity extends AppCompatActivity {
     }
 
     /**
-     * Place new Map Pin Key on the Map View.
-     * @param linkedTreeMap keys are from MapPinKeys consts class
+     * Place new Map Pin Keys on the Map View.
+     * @param arrayList holds linkedTreeMaps, each representing a pin key for map
      */
-    private void handlePinKey(LinkedTreeMap<String, String> linkedTreeMap){
-        // example usage
-        String name = linkedTreeMap.get(MapPinKeys.NAME);
-        // place pin on mapView
+    private void handlePinKeys(ArrayList arrayList) {
+
+        // create OverlayItem per each Pin Key
+        List<IGeoPoint> points = new ArrayList<>();
+        for (Object entry : arrayList) {
+            LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
+            String name = (String) linkedTreeMap.get(MapPinKeys.NAME);
+            double lat = (double) linkedTreeMap.get(MapPinKeys.LAT);
+            double lng = (double) linkedTreeMap.get(MapPinKeys.LNG);
+            points.add(new LabelledGeoPoint(lat, lng, name));
+        }
+        // wrap points in a theme
+        SimplePointTheme pointThm = new SimplePointTheme(points, true);
+
+        // create label style
+        // TODO replace this dummy style with pin images from 'res'
+        Paint textStyle = new Paint();
+        textStyle.setStyle(Paint.Style.FILL);
+        textStyle.setColor(Color.parseColor("#0000ff"));
+        textStyle.setTextAlign(Paint.Align.CENTER);
+        textStyle.setTextSize(24);
+
+        // set some visual options for the overlay
+        // MEDIUM_OPTIMIZATION: do not use when > 10,000k points
+        // 23/07/18 ~8,000k points
+        SimpleFastPointOverlayOptions opts = SimpleFastPointOverlayOptions.getDefaultStyle()
+                .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MEDIUM_OPTIMIZATION)
+                .setRadius(7).setIsClickable(true).setCellSize(15).setTextStyle(textStyle);
+
+        // create the overlay with the theme
+        final SimpleFastPointOverlay fastOverlay = new SimpleFastPointOverlay(pointThm, opts);
+
+        // onClick callback
+        fastOverlay.setOnClickListener(new SimpleFastPointOverlay.OnClickListener() {
+            @Override
+            public void onClick(SimpleFastPointOverlay.PointAdapter points, Integer point) {
+                // TODO pop up small window (create in separate layout)
+                Toast.makeText(mapView.getContext()
+                        , "You clicked " + ((LabelledGeoPoint) points.get(point)).getLabel()
+                        , Toast.LENGTH_SHORT).show();
+            }
+        });
+        mapView.getOverlays().add(fastOverlay);
     }
 
 }
+
