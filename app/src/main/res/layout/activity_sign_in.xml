@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/holo_purple"
     android:backgroundTintMode="multiply"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.android.preciousplastic.SignInActivity">>
     <!--Icon container-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,17 +57,17 @@
     </LinearLayout>
     <!--Username and password-->
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/text_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:ems="10"
         android:hint="Username"
-        android:inputType="textPersonName" />
+        android:inputType="textEmailAddress"/>
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/text_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
@@ -113,6 +115,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:onClick="onSignInClick"
             android:src="@android:drawable/ic_media_next" />
     </LinearLayout>
 

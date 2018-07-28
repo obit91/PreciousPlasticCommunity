@@ -23,9 +23,6 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
 import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
 import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
@@ -59,7 +56,7 @@ class MapActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private MapView mapView;
 
-    MapActivity(Context context, MainActivity delegate){
+    MapActivity(Context context, HomeActivity delegate){
 
         // TODO: handle OSMDROID dangerous permissions
 

@@ -1,37 +1,32 @@
 package com.example.android.preciousplastic;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import org.osmdroid.views.MapView;
+import com.google.firebase.FirebaseApp;
+
 
 public class MainActivity extends AppCompatActivity{
 
-    DBHandler dbHandler;        // In charge of calls to app's DB
-    MapActivity mapActivity;
+    private DBHandler dbHandler; // In charge of calls to app's DB
+
+    private final String TAG = "MAIN_ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
-
-        // start-up tools
-        mapActivity = new MapActivity(this, this);
         dbHandler = new DBHandler(this, this);
-
-        //DbUsageExample();  // example usage of DB
-
     }
 
-    public void onOpenMapClick(View view){
-        if (mapActivity != null){
-            setContentView(R.layout.activity_map);
-            MapView mapView = (MapView) findViewById(R.id.activity_map);
-            mapActivity.buildMap(mapView);
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     private void DbUsageExample(){
@@ -57,5 +52,10 @@ public class MainActivity extends AppCompatActivity{
             default:
                 break;
         }
+    }
+
+    public void onStartClick(View view){
+        Intent signInIntent = new Intent(this, SignInActivity.class);
+        startActivity(signInIntent);
     }
 }

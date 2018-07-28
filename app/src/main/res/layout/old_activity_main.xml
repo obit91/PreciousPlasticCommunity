@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.preciousplastic.MainActivity">
+    tools:context="com.example.android.preciousplastic.OldMainActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,16 +16,16 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82dp"
-        android:text="main screen sortof" />
+        android:text="Hello World!" />
 
     <Button
-        android:id="@+id/sign_in_screen"
+        android:id="@+id/open_map_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="241dp"
-        android:onClick="onStartClick"
-        android:text="Sign In" />
-
+        android:layout_marginStart="102dp"
+        android:layout_marginTop="167dp"
+        android:onClick="onOpenMapClick"
+        android:text="Open Demo Map" />
 </RelativeLayout>
