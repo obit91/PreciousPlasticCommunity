@@ -45,11 +45,18 @@ public class HomeActivity extends AppCompatActivity {
         userTextView.setText(mail);
     }
 
+    /**
+     * Logs out the current user.
+     * @param view
+     */
     public void onSignOutClick(View view){
         Toast.makeText(this, "sign out", Toast.LENGTH_SHORT).show();
         signOut();
     }
 
+    /**
+     * Signs out the current Firebase user.
+     */
     private void signOut() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -60,11 +67,18 @@ public class HomeActivity extends AppCompatActivity {
         returnToSignIn();
     }
 
+    /**
+     * Switches activity to the sign-in intent (usually after sign out).
+     */
     private void returnToSignIn() {
         Intent signInIntent = new Intent(this, SignInActivity.class);
         startActivity(signInIntent);
     }
 
+    /**
+     * Opens the map.
+     * @param view
+     */
     public void onOpenMapClick(View view){
         if (mapActivity != null){
             setContentView(R.layout.activity_map);

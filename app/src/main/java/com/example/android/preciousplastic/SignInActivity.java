@@ -28,10 +28,10 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        userTextView = (TextView) findViewById(R.id.text_username);
+        userTextView = (TextView) findViewById(R.id.text_email);
         passwordTextView = (TextView) findViewById(R.id.text_password);
 
-        // sign-in procedure
+        // sign-in credentials.
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -52,9 +52,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void onRegisterClick(View view){
         Toast.makeText(this, "register", Toast.LENGTH_SHORT).show();
-        String user = "ohabel@gmail.com";
-        String password = "pass123";
-        createUser(user, password);
+        createUser(userTextView.getText().toString(), passwordTextView.getText().toString());
     }
 
     public void onSignOutClick(View view){
@@ -62,6 +60,11 @@ public class SignInActivity extends AppCompatActivity {
         signOut();
     }
 
+    /**
+     * Creates a new user for authentication purposes & updates the users table in the db.
+     * @param email desired user email.
+     * @param password desired user password.
+     */
     void createUser(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -71,6 +74,7 @@ public class SignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            MainActivity.dbHandler.insertUser(user);
                             loggedIn();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -83,6 +87,11 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Logs an existing user to his account.
+     * @param email user email.
+     * @param password user password.
+     */
     void loginUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -103,15 +112,26 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Logs out the currently connected user.
+     */
     private void signOut() {
         String mail = mAuth.getCurrentUser().getEmail();
         mAuth.signOut();
         Log.d(TAG, mail + " Signed out.");
     }
 
+    /**
+     * Switches activity to the home intent (upon login).
+     */
     void loggedIn() {
         Intent homeIntent = new Intent(this, HomeActivity.class);
         startActivity(homeIntent);
+    }
+
+    private void DbUsageExample(){
+        // example of inserting and authenticating a user!
+        MainActivity.dbHandler.authenticate("KerenMeron2", "myEasyPassword");
     }
 }
 

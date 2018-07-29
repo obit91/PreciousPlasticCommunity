@@ -12,9 +12,9 @@ import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity{
 
-    private DBHandler dbHandler; // In charge of calls to app's DB
-
     private final String TAG = "MAIN_ACTIVITY";
+
+    public static DBHandler dbHandler; // In charge of calls to app's DB
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,9 @@ public class MainActivity extends AppCompatActivity{
         super.onStart();
     }
 
-    private void DbUsageExample(){
-        // example of inserting and authenticating a user!
-        dbHandler.insertUser("Keren", "M", "KerenMeron2", "myEasyPassword",
-                "keren.meron@mail.huji.ac.il", "Jerusalem", "Israel", "Israel");
-        dbHandler.authenticate("KerenMeron2", "myEasyPassword");
+    public void onStartClick(View view){
+        Intent signInIntent = new Intent(this, SignInActivity.class);
+        startActivity(signInIntent);
     }
 
     /**
@@ -52,10 +50,5 @@ public class MainActivity extends AppCompatActivity{
             default:
                 break;
         }
-    }
-
-    public void onStartClick(View view){
-        Intent signInIntent = new Intent(this, SignInActivity.class);
-        startActivity(signInIntent);
     }
 }

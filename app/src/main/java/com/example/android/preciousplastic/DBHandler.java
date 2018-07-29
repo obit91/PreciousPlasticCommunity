@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +28,6 @@ public class DBHandler {
     private DatabaseReference usersRef;
 
     public MainActivity serverResponseDelegate;
-
 
     public DBHandler(Context context, MainActivity delegate){
         this.context = context;
@@ -53,14 +53,37 @@ public class DBHandler {
 
     }
 
-    /**
+/*
+    */
+/**
      * Create new document in 'users' collection in database.
      * Document will have unique identifier of param nickName.
-     */
+     *//*
+
     public void insertUser(String firstName, String lastName, String nickName, String password,
                            String email, String city, String state, String country){
         DBUser dbUser = new DBUser(firstName, lastName, nickName, password, email, city, state, country);
         usersRef.child(dbUser.nickName).setValue(dbUser, new DatabaseReference.CompletionListener(){
+            public void onComplete (DatabaseError error, DatabaseReference ref){
+                String msg;
+                if (error == null){
+                    msg = "User inserted!";
+                } else{
+                    msg = "Error: " + error;
+                }
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                Log.d("Insert User", msg);
+            }
+        });
+    }
+*/
+    /**
+     * Create new document in 'users' collection in database.
+     * Document will have unique identifier of param nickName.
+     */
+    public void insertUser(FirebaseUser user) {
+        DBUser dbUser = new DBUser(user);
+        usersRef.child(dbUser.uid).setValue(dbUser, new DatabaseReference.CompletionListener(){
             public void onComplete (DatabaseError error, DatabaseReference ref){
                 String msg;
                 if (error == null){
@@ -130,6 +153,7 @@ public class DBHandler {
     }
 
     private static class DBUser {
+        String uid = "";
         String firstName = "";
         String lastName = "";
         String nickName = "";  // nickName is unique identifier of user
@@ -153,6 +177,14 @@ public class DBHandler {
             this.city = city;
             this.state = state;
             this.country = country;
+            this.timeCreated = new Timestamp(System.currentTimeMillis());
+            this.lastLogin = new Timestamp(System.currentTimeMillis());
+        }
+
+
+        DBUser(FirebaseUser user) {
+            this.uid = user.getUid();
+            this.email = user.getEmail();
             this.timeCreated = new Timestamp(System.currentTimeMillis());
             this.lastLogin = new Timestamp(System.currentTimeMillis());
         }
