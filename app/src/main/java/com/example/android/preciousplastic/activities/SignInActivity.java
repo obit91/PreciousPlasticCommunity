@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.example.android.preciousplastic.session.Session;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = Session.getFirebaseAuth();
 
     private final String TAG = "SIGN_IN_ACTIVITY";
 
@@ -40,9 +41,6 @@ public class SignInActivity extends AppCompatActivity {
         // gui access
         userTextView = (TextView) findViewById(R.id.text_email);
         passwordTextView = (TextView) findViewById(R.id.text_password);
-
-        // sign-in credentials.
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -60,7 +58,7 @@ public class SignInActivity extends AppCompatActivity {
         loginUser(userTextView.getText().toString(), passwordTextView.getText().toString());
     }
 
-    public void onRegisterClick(View view){
+    public void onRegisterClick(View view) {
         Toast.makeText(this, "register", Toast.LENGTH_SHORT).show();
         System.out.println(userTextView.getText().toString());
         System.out.println(passwordTextView.getText().toString());

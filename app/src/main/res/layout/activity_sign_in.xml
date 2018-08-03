@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/holo_purple"
     android:backgroundTintMode="multiply"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.android.preciousplastic.activities.SignInActivity">
     <!--Icon container-->
     <LinearLayout
         android:layout_width="match_parent"

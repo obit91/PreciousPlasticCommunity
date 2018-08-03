@@ -12,6 +12,7 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.PointTypes;
 import com.example.android.preciousplastic.db.UserPoints;
 import com.example.android.preciousplastic.db.entities.User;
+import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.session.Session;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,7 +23,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private final String TAG = "HOME_ACTIVITY";
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = Session.getFirebaseAuth();
+    private UserRepository mUserRepository;
 
     private TextView userTextView = null;
     private MapActivity mapActivity = null;
@@ -32,9 +34,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         userTextView = (TextView) findViewById(R.id.home_text_mail);
-        Session.setFirebaseAuth(FirebaseAuth.getInstance());
-        mAuth = Session.getFirebaseAuth();
         mapActivity = new MapActivity(this, this);
+        mUserRepository = new UserRepository(this);
     }
 
     @Override
@@ -91,6 +92,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onUpdateScore2(View view) {
         User user = Session.currentUser();
         user.addPoints(PointTypes.TYPE_1, 1);
+        mUserRepository.updateUser(user);
     }
 }
 

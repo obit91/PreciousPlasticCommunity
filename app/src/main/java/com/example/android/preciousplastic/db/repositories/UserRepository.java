@@ -15,9 +15,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +53,7 @@ public class UserRepository {
     /**
      * Listens for changes in the current user.
      */
-    private void currentUserListener() {
+    private void currentUserListener(String uid) {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -68,7 +68,7 @@ public class UserRepository {
                 Log.w(TAG, "userListener:onCancelled", databaseError.toException());
             }
         };
-        mUsersTable.child(Session.getUid()).addValueEventListener(userListener);
+        mUsersTable.child(uid).addValueEventListener(userListener);
     }
 
     /**
@@ -92,8 +92,7 @@ public class UserRepository {
     }
 
     public void updateLastLogin(String uid) {
-        Timestamp loginTime = new Timestamp(System.currentTimeMillis());
-        mUsersTable.child(uid).child("lastLogin").setValue(loginTime, new DatabaseReference.CompletionListener() {
+        mUsersTable.child(uid).child("lastLogin").setValue(System.nanoTime(), new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 String msg;
                 if (error == null) {
@@ -105,7 +104,7 @@ public class UserRepository {
                 Log.d("update login time", msg);
             }
         });
-        currentUserListener();
+        currentUserListener(uid);
     }
 
     /**

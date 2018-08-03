@@ -5,8 +5,6 @@ import com.example.android.preciousplastic.db.UserPoints;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,8 +14,8 @@ public class User {
     private String uid;
     private String email;
     private String nickname;
-    private Timestamp timeCreated;
-    private Timestamp lastLogin;
+    long timeCreated;
+    long lastLogin;
     private UserPoints points;
 
     /**
@@ -35,8 +33,8 @@ public class User {
     public User(FirebaseUser user, String nickname) {
         this.uid = user.getUid();
         this.email = user.getEmail();
-        this.timeCreated = new Timestamp(System.currentTimeMillis());
-        this.lastLogin = new Timestamp(System.currentTimeMillis());
+        this.timeCreated = System.nanoTime();
+        this.lastLogin = System.nanoTime();
         this.nickname = nickname;
         this.points = new UserPoints();
     }
@@ -101,19 +99,19 @@ public class User {
         this.nickname = nickname;
     }
 
-    public Timestamp getTimeCreated() {
+    public long getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(Timestamp timeCreated) {
+    public void setTimeCreated(long timeCreated) {
         this.timeCreated = timeCreated;
     }
 
-    public Timestamp getLastLogin() {
+    public long getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(Timestamp lastLogin) {
+    public void setLastLogin(long lastLogin) {
         this.lastLogin = lastLogin;
     }
 
