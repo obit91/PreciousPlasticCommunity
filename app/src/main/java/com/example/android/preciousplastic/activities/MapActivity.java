@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic;
+package com.example.android.preciousplastic.activities;
 
 import android.content.Context;
 import android.graphics.Color;

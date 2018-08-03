@@ -1,5 +1,7 @@
 package com.example.android.preciousplastic.db.entities;
 
+import com.example.android.preciousplastic.db.PointTypes;
+import com.example.android.preciousplastic.db.UserPoints;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -16,6 +18,7 @@ public class User {
     private String nickname;
     private Timestamp timeCreated;
     private Timestamp lastLogin;
+    private UserPoints points;
 
     /**
      * Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -35,8 +38,12 @@ public class User {
         this.timeCreated = new Timestamp(System.currentTimeMillis());
         this.lastLogin = new Timestamp(System.currentTimeMillis());
         this.nickname = nickname;
+        this.points = new UserPoints();
     }
 
+    /**
+     * Generates a string of the user.
+     */
     @Exclude
     public String toString(){
         return String.format("Nickname: %s\nEmail: %s\nLast Login: %s",
@@ -45,16 +52,29 @@ public class User {
                 String.valueOf(lastLogin));
     }
 
+    /**
+     * Creates a user map for db updates.
+     * @return a map containing the user values.
+     */
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("uid", uid);
         result.put("email", email);
         result.put("nickname", nickname);
         result.put("timeCreated", timeCreated);
         result.put("lastLogin", lastLogin);
+        result.put("points", points);
 
         return result;
+    }
+
+    /**
+     * Adds points of a certain type.
+     * @param type type to update.
+     * @param value number of points to add.
+     */
+    public void addPoints(PointTypes type, int value) {
+        points.addType(type, value);
     }
 
     public String getUid() {
@@ -95,5 +115,13 @@ public class User {
 
     public void setLastLogin(Timestamp lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public UserPoints getPoints() {
+        return points;
+    }
+
+    public void setPoints(UserPoints points) {
+        this.points = points;
     }
 }

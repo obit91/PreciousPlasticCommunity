@@ -1,17 +1,17 @@
-package com.example.android.preciousplastic;
+package com.example.android.preciousplastic.legacy;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 
+//import com.example.android.preciousplastic.MapActivity;
+import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.legacy.DBHandler;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.osmdroid.views.MapView;
 
 public class OldMainActivity extends AppCompatActivity{
 
     private DBHandler dbHandler; // In charge of calls to app's DB
-    private MapActivity mapActivity;
+//    private MapActivity mapActivity;
     private FirebaseAuth mAuth;
 
     private final String TAG = "main screen";

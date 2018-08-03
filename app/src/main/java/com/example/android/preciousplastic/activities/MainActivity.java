@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic;
+package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.DBConstants;
-import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.example.android.preciousplastic.db.entities.User;
 import com.google.firebase.FirebaseApp;
 
 

@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic;
+package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,6 +62,8 @@ public class SignInActivity extends AppCompatActivity {
 
     public void onRegisterClick(View view){
         Toast.makeText(this, "register", Toast.LENGTH_SHORT).show();
+        System.out.println(userTextView.getText().toString());
+        System.out.println(passwordTextView.getText().toString());
         createUser(userTextView.getText().toString(), passwordTextView.getText().toString(), "derp");
     }
 
