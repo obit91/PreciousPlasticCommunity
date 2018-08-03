@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.osmdroid.views.MapView;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = "HOME_ACTIVITY";
 
@@ -38,6 +40,16 @@ public class HomeActivity extends AppCompatActivity {
         userTextView = (TextView) findViewById(R.id.home_text_mail);
         mapActivity = new MapActivity(this, this);
         mUserRepository = new UserRepository(this);
+
+        // setting listeners
+        Button signOutButton = (Button)findViewById(R.id.button_sign_out);
+        Button mapButton = (Button)findViewById(R.id.button_map);
+        Button incrementButton = (Button)findViewById(R.id.button_increment);
+        Button decrementButton = (Button)findViewById(R.id.button_decrement);
+        signOutButton.setOnClickListener(this);
+        mapButton.setOnClickListener(this);
+        incrementButton.setOnClickListener(this);
+        decrementButton.setOnClickListener(this);
 
         // points values
         pointsTextView = (TextView) findViewById(R.id.text_points_value);
@@ -112,10 +124,23 @@ public class HomeActivity extends AppCompatActivity {
         mUserRepository.updateUser(user);
     }
 
-//    public void onUpdateScore2(View view) {
-//        User user = Session.currentUser();
-//        user.addPoints(PointsType.TYPE_1, 1);
-//        mUserRepository.updateUser(user);
-//    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case (R.id.button_sign_out):
+                onSignOutClick(view);
+                break;
+            case (R.id.button_map):
+                onOpenMapClick(view);
+                break;
+            case (R.id.button_increment):
+                onIncrementClick(view);
+                break;
+            case (R.id.button_decrement):
+                onDecrementClick(view);
+                break;
+        }
+    }
+
 }
 

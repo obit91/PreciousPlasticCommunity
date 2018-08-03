@@ -6,6 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth = Session.getFirebaseAuth();
 
@@ -28,12 +31,18 @@ public class SignInActivity extends AppCompatActivity {
 
     private TextView userTextView = null;
     private TextView passwordTextView = null;
-    private TextView userNickname = null;
+    private CheckBox ownerCheckBox = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        // setting listeners
+        Button registerButton = (Button)findViewById(R.id.button_register);
+        ImageButton signInButton = (ImageButton)findViewById(R.id.btn_log_in);
+        registerButton.setOnClickListener(this);
+        signInButton.setOnClickListener(this);
 
         // db access
         userRepo = new UserRepository(this);
@@ -41,6 +50,7 @@ public class SignInActivity extends AppCompatActivity {
         // gui access
         userTextView = (TextView) findViewById(R.id.text_email);
         passwordTextView = (TextView) findViewById(R.id.text_password);
+        ownerCheckBox = (CheckBox)findViewById(R.id.checkbox_owner);
     }
 
     @Override
@@ -53,7 +63,7 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    public void onSignInClick(View view){
+    public void onSignInClick(View view) {
         Toast.makeText(this, "sign in", Toast.LENGTH_SHORT).show();
         loginUser(userTextView.getText().toString(), passwordTextView.getText().toString());
     }
@@ -65,14 +75,15 @@ public class SignInActivity extends AppCompatActivity {
         createUser(userTextView.getText().toString(), passwordTextView.getText().toString(), "derp");
     }
 
-    public void onSignOutClick(View view){
+    public void onSignOutClick(View view) {
         Toast.makeText(this, "sign out", Toast.LENGTH_SHORT).show();
         signOut();
     }
 
     /**
      * Creates a new user for authentication purposes & updates the users table in the db.
-     * @param email desired user email.
+     *
+     * @param email    desired user email.
      * @param password desired user password.
      */
     void createUser(String email, String password, final String nickname) {
@@ -84,7 +95,7 @@ public class SignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            userRepo.insertUser(user, nickname);
+                            userRepo.insertUser(user, nickname, ownerCheckBox.isActivated());
                             loggedIn();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -99,7 +110,8 @@ public class SignInActivity extends AppCompatActivity {
 
     /**
      * Logs an existing user to his account.
-     * @param email user email.
+     *
+     * @param email    user email.
      * @param password user password.
      */
     void loginUser(String email, String password) {
@@ -140,9 +152,16 @@ public class SignInActivity extends AppCompatActivity {
         startActivity(homeIntent);
     }
 
-//    private void DbUsageExample(){
-//        // example of inserting and authenticating a user!
-//        MainActivity.dbHandler.authenticate("KerenMeron2", "myEasyPassword");
-//    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case (R.id.button_register):
+                onRegisterClick(view);
+                break;
+            case (R.id.btn_log_in):
+                onSignInClick(view);
+                break;
+        }
+    }
 }
 

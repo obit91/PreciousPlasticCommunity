@@ -75,8 +75,8 @@ public class UserRepository {
      * Create new document in 'users' collection in database.
      * Document will have unique identifier of param nickName.
      */
-    public void insertUser(FirebaseUser firebaseUser, String nickname) {
-        User user = new User(firebaseUser, nickname);
+    public void insertUser(FirebaseUser firebaseUser, String nickname, boolean owner) {
+        User user = new User(firebaseUser, nickname, owner);
         mUsersTable.child(user.getUid()).setValue(user, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 String msg;

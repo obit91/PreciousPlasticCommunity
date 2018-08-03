@@ -2,6 +2,7 @@ package com.example.android.preciousplastic.db.entities;
 
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
+import com.example.android.preciousplastic.db.Workshop;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -14,9 +15,11 @@ public class User {
     private String uid;
     private String email;
     private String nickname;
-    long timeCreated;
-    long lastLogin;
+    private long timeCreated;
+    private long lastLogin;
     private UserPoints points;
+    private boolean owner;
+    private Workshop workshop;
 
     /**
      * Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -30,13 +33,15 @@ public class User {
      * @param user firebase user.
      * @param nickname desired nickname.
      */
-    public User(FirebaseUser user, String nickname) {
+    public User (FirebaseUser user, String nickname, boolean owner) {
         this.uid = user.getUid();
         this.email = user.getEmail();
         this.timeCreated = System.nanoTime();
         this.lastLogin = System.nanoTime();
         this.nickname = nickname;
         this.points = new UserPoints();
+        this.owner = owner;
+        this.workshop = new Workshop();
     }
 
     /**
@@ -63,6 +68,8 @@ public class User {
         result.put("timeCreated", timeCreated);
         result.put("lastLogin", lastLogin);
         result.put("points", points);
+        result.put("owner", owner);
+        result.put("workshop", workshop);
 
         return result;
     }
@@ -131,5 +138,21 @@ public class User {
 
     public void setPoints(UserPoints points) {
         this.points = points;
+    }
+
+    public boolean isOwner() {
+        return owner;
+    }
+
+    public void setOwner(boolean owner) {
+        this.owner = owner;
+    }
+
+    public Workshop getWorkshop() {
+        return workshop;
+    }
+
+    public void setWorkshop(Workshop workshop) {
+        this.workshop = workshop;
     }
 }

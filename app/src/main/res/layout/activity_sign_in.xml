@@ -23,7 +23,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="onRegisterClick"
                 android:text="Register" />
 
             <ImageView
@@ -33,6 +32,13 @@
                 android:layout_marginTop="30dp"
                 android:layout_weight="1"
                 android:src="@drawable/world" />
+
+            <CheckBox
+                android:id="@+id/checkbox_owner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="OWNER" />
         </LinearLayout>
         <!--Precious plastic Text-->
         <TextView
@@ -123,7 +129,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:onClick="onSignInClick"
             android:src="@android:drawable/ic_media_next" />
     </LinearLayout>
 
