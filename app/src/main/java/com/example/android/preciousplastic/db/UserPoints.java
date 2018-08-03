@@ -79,7 +79,36 @@ public class UserPoints {
         this.type8 = type8;
     }
 
-    public void addType(PointTypes type, int value) {
+    /**
+     * Increments user points by value.
+     * @param type point type to update.
+     * @param value value to add.
+     */
+    public void incrementType(PointsType type, int value) {
+        updateType(type, value, false);
+    }
+
+    /**
+     * Decrements user points by value.
+     * @param type point type to update.
+     * @param value value to add.
+     */
+    public void decrementType(PointsType type, int value) {
+        updateType(type, value, true);
+    }
+
+    /**
+     * Updates user points by value.
+     * @param type point type to update.
+     * @param value value to add.
+     * @param subtraction true for subtractions, false for addition.
+     */
+    private void updateType(PointsType type, int value, boolean subtraction) {
+
+        if (subtraction) {
+            value *= -1;
+        }
+
         switch (type) {
             case TYPE_1:
                 type1 += value;

@@ -1,6 +1,6 @@
 package com.example.android.preciousplastic.db.entities;
 
-import com.example.android.preciousplastic.db.PointTypes;
+import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
@@ -57,6 +57,7 @@ public class User {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("uid", uid);
         result.put("email", email);
         result.put("nickname", nickname);
         result.put("timeCreated", timeCreated);
@@ -71,8 +72,17 @@ public class User {
      * @param type type to update.
      * @param value number of points to add.
      */
-    public void addPoints(PointTypes type, int value) {
-        points.addType(type, value);
+    public void addPoints(PointsType type, int value) {
+        points.incrementType(type, value);
+    }
+
+    /**
+     * Adds points of a certain type.
+     * @param type type to update.
+     * @param value number of points to remove.
+     */
+    public void removePoints(PointsType type, int value) {
+        points.decrementType(type, value);
     }
 
     public String getUid() {

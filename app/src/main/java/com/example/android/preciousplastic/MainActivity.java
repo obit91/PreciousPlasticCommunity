@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic.activities;
+package com.example.android.preciousplastic;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.activities.SignInActivity;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.session.Session;

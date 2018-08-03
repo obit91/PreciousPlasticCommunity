@@ -9,8 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.db.PointTypes;
-import com.example.android.preciousplastic.db.UserPoints;
+import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.session.Session;
@@ -29,6 +28,9 @@ public class HomeActivity extends AppCompatActivity {
     private TextView userTextView = null;
     private MapActivity mapActivity = null;
 
+    private TextView pointsTextView = null;
+    private TextView pointsTypeTextView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,10 @@ public class HomeActivity extends AppCompatActivity {
         userTextView = (TextView) findViewById(R.id.home_text_mail);
         mapActivity = new MapActivity(this, this);
         mUserRepository = new UserRepository(this);
+
+        // points values
+        pointsTextView = (TextView) findViewById(R.id.text_points_value);
+        pointsTypeTextView = (TextView) findViewById(R.id.text_points_type);
     }
 
     @Override
@@ -89,10 +95,27 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void onUpdateScore2(View view) {
+    public void onIncrementClick(View view) {
         User user = Session.currentUser();
-        user.addPoints(PointTypes.TYPE_1, 1);
+        int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
+        int pointsValueInt = Integer.parseInt(pointsTextView.getText().toString());
+        PointsType type = PointsType.getType(pointTypeInt);
+        user.addPoints(type, pointsValueInt);
         mUserRepository.updateUser(user);
     }
+
+    public void onDecrementClick(View view) {
+        User user = Session.currentUser();
+        int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
+        int pointsValueInt = Integer.parseInt(pointsTextView.getText().toString());
+        user.removePoints(PointsType.getType(pointTypeInt), pointsValueInt);
+        mUserRepository.updateUser(user);
+    }
+
+//    public void onUpdateScore2(View view) {
+//        User user = Session.currentUser();
+//        user.addPoints(PointsType.TYPE_1, 1);
+//        mUserRepository.updateUser(user);
+//    }
 }
 

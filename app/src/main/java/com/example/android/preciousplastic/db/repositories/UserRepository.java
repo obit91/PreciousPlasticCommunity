@@ -59,7 +59,7 @@ public class UserRepository {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get User object.
                 Session.setUser(dataSnapshot.getValue(User.class));
-                Log.d(TAG, "ouserListener: id - " + Session.getUid());
+                Log.d(TAG, "userListener: id - " + Session.getUid());
             }
 
             @Override
@@ -92,6 +92,7 @@ public class UserRepository {
     }
 
     public void updateLastLogin(String uid) {
+        currentUserListener(uid);
         mUsersTable.child(uid).child("lastLogin").setValue(System.nanoTime(), new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 String msg;
@@ -104,7 +105,6 @@ public class UserRepository {
                 Log.d("update login time", msg);
             }
         });
-        currentUserListener(uid);
     }
 
     /**
@@ -114,7 +114,7 @@ public class UserRepository {
      */
     public void updateUser(User user) {
         Map<String, Object> tablesToUpdate = new HashMap<>();
-        tablesToUpdate.put(generateUidPath(user), user.toMap());
+        tablesToUpdate.put(user.getUid(), user.toMap());
         mUsersTable.updateChildren(tablesToUpdate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -130,17 +130,5 @@ public class UserRepository {
                         Log.d("update user info", "failed to update user");
                     }
                 });
-    }
-
-    /**
-     * Generates a path to the uid of the user in the users table.
-     *
-     * @param user user to update.
-     * @return path to use for updates.
-     */
-    private String generateUidPath(User user) {
-        return String.format("/%s/ + %s",
-                DBConstants.USERS_COLLECTION,
-                user.getUid());
     }
 }
