@@ -1,10 +1,11 @@
-package com.example.android.preciousplastic;
+package com.example.android.preciousplastic.legacy;
 
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.MainActivity;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

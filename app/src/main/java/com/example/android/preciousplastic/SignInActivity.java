@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,13 +22,21 @@ public class SignInActivity extends AppCompatActivity {
 
     private final String TAG = "SIGN_IN_ACTIVITY";
 
+    private UserRepository userRepo;
+
     private TextView userTextView = null;
     private TextView passwordTextView = null;
+    private TextView userNickname = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        // db access
+        userRepo = new UserRepository(this);
+
+        // gui access
         userTextView = (TextView) findViewById(R.id.text_email);
         passwordTextView = (TextView) findViewById(R.id.text_password);
 
@@ -52,7 +61,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void onRegisterClick(View view){
         Toast.makeText(this, "register", Toast.LENGTH_SHORT).show();
-        createUser(userTextView.getText().toString(), passwordTextView.getText().toString());
+        createUser(userTextView.getText().toString(), passwordTextView.getText().toString(), "derp");
     }
 
     public void onSignOutClick(View view){
@@ -65,7 +74,7 @@ public class SignInActivity extends AppCompatActivity {
      * @param email desired user email.
      * @param password desired user password.
      */
-    void createUser(String email, String password) {
+    void createUser(String email, String password, final String nickname) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -74,7 +83,7 @@ public class SignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            MainActivity.dbHandler.insertUser(user);
+                            userRepo.insertUser(user, nickname);
                             loggedIn();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -125,13 +134,15 @@ public class SignInActivity extends AppCompatActivity {
      * Switches activity to the home intent (upon login).
      */
     void loggedIn() {
+        String uid = mAuth.getCurrentUser().getUid();
+        userRepo.updateLastLogin(uid);
         Intent homeIntent = new Intent(this, HomeActivity.class);
         startActivity(homeIntent);
     }
 
-    private void DbUsageExample(){
-        // example of inserting and authenticating a user!
-        MainActivity.dbHandler.authenticate("KerenMeron2", "myEasyPassword");
-    }
+//    private void DbUsageExample(){
+//        // example of inserting and authenticating a user!
+//        MainActivity.dbHandler.authenticate("KerenMeron2", "myEasyPassword");
+//    }
 }
 

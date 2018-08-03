@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.db.DBConstants;
+import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.google.firebase.FirebaseApp;
 
 
@@ -14,14 +16,11 @@ public class MainActivity extends AppCompatActivity{
 
     private final String TAG = "MAIN_ACTIVITY";
 
-    public static DBHandler dbHandler; // In charge of calls to app's DB
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
-        dbHandler = new DBHandler(this, this);
     }
 
     @Override
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void onServerResponse(String taskType, String response) {
         switch (taskType){
-            case DBHandler.AUTHENTICATION:
+            case DBConstants.AUTHENTICATION:
                 Toast.makeText(this, "Authenticated: " + response, Toast.LENGTH_SHORT).show();
                 Log.d("authentication", response);
                 break;
