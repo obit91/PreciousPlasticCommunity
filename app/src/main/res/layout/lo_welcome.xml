@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="@android:color/holo_purple"
     android:backgroundTintMode="multiply"
-    tools:context="com.example.android.preciousplastic.activities.SignInActivity"
+    tools:context="com.example.android.preciousplastic.activities.WelcomeActivity"
     tools:layout_editor_absoluteY="25dp">
     <!--Icon container-->
 
     <Button
-        android:id="@+id/button_register"
+        android:id="@+id/welcome_btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -21,8 +21,26 @@
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/welcome_btn_sign_in"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_password" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_password"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/welcome_btn_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="62dp"
+        android:text="SIGN IN"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/welcome_btn_register"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_password"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/img_logo"
@@ -72,7 +90,7 @@
         app:layout_constraintGuide_begin="331dp" />
 
     <EditText
-        android:id="@+id/text_email"
+        android:id="@+id/welcome_text_email"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -83,14 +101,15 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <EditText
-        android:id="@+id/text_password"
+        android:id="@+id/welcome_text_password"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_email" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,13 +1,12 @@
-package com.example.android.preciousplastic;
+package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.example.android.preciousplastic.activities.SignInActivity;
+import com.example.android.preciousplastic.activities.WelcomeActivity;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.session.PPSession;
 import com.google.firebase.FirebaseApp;
@@ -25,17 +24,14 @@ public class MainActivity extends AppCompatActivity{
         FirebaseApp.initializeApp(this);
         PPSession.setFirebaseAuth(FirebaseAuth.getInstance());
         PPSession.setFirebaseDB(FirebaseDatabase.getInstance());
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-    }
-
-    public void onStartClick(View view){
-        Intent signInIntent = new Intent(this, SignInActivity.class);
-        startActivity(signInIntent);
+        Intent welcomeActivity = new Intent(this, WelcomeActivity.class);
+        startActivity(welcomeActivity);
     }
 
     /**

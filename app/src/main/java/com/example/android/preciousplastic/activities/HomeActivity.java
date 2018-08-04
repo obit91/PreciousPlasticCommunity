@@ -90,7 +90,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
      * Switches activity to the sign-in intent (usually after sign out).
      */
     private void returnToSignIn() {
-        Intent signInIntent = new Intent(this, SignInActivity.class);
+        Intent signInIntent = new Intent(this, WelcomeActivity.class);
         startActivity(signInIntent);
     }
 

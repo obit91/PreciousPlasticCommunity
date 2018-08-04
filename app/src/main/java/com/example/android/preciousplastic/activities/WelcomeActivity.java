@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
+public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
 
@@ -29,18 +28,18 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private UserRepository userRepo;
 
-    private TextView userTextView = null;
+    private TextView emailTextView = null;
     private TextView passwordTextView = null;
     private CheckBox ownerCheckBox = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.lo_welcome);
 
         // setting listeners
-        Button registerButton = (Button)findViewById(R.id.button_register);
-        ImageButton signInButton = (ImageButton)findViewById(R.id.btn_log_in);
+        Button registerButton = (Button)findViewById(R.id.welcome_btn_register);
+        Button signInButton = (Button)findViewById(R.id.welcome_btn_sign_in);
         registerButton.setOnClickListener(this);
         signInButton.setOnClickListener(this);
 
@@ -48,9 +47,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         userRepo = new UserRepository(this);
 
         // gui access
-        userTextView = (TextView) findViewById(R.id.text_email);
-        passwordTextView = (TextView) findViewById(R.id.text_password);
-        ownerCheckBox = (CheckBox)findViewById(R.id.checkbox_owner);
+        emailTextView = (TextView) findViewById(R.id.welcome_text_email);
+        passwordTextView = (TextView) findViewById(R.id.welcome_text_password);
+        //TODO: fix missing checkbox owner
+//        ownerCheckBox = (CheckBox)findViewById(R.id.checkbox_owner);
     }
 
     @Override
@@ -65,16 +65,17 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     public void onSignInClick(View view) {
         Toast.makeText(this, "sign in", Toast.LENGTH_SHORT).show();
-        loginUser(userTextView.getText().toString(), passwordTextView.getText().toString());
+        loginUser(emailTextView.getText().toString(), passwordTextView.getText().toString());
     }
 
     public void onRegisterClick(View view) {
         Toast.makeText(this, "register", Toast.LENGTH_SHORT).show();
-        String email = userTextView.getText().toString();
+        String email = emailTextView.getText().toString();
         String password = passwordTextView.getText().toString();
-        boolean owner = ownerCheckBox.isChecked();
+        //TODO: fix missing owner checkbox
+//        boolean owner = ownerCheckBox.isChecked();
         String nickname = "derp";
-        createUser(email, password, nickname, owner);
+        createUser(email, password, nickname, true);
     }
 
     public void onSignOutClick(View view) {
@@ -102,7 +103,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed.\n" + task.getException(),
+                            Toast.makeText(WelcomeActivity.this, "Authentication failed.\n" + task.getException(),
                                     Toast.LENGTH_SHORT).show();
                         }
                         // ...
@@ -128,7 +129,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed.",
+                            Toast.makeText(WelcomeActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -157,10 +158,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case (R.id.button_register):
+            case (R.id.welcome_btn_register):
                 onRegisterClick(view);
                 break;
-            case (R.id.btn_log_in):
+            case (R.id.welcome_btn_sign_in):
                 onSignInClick(view);
                 break;
         }

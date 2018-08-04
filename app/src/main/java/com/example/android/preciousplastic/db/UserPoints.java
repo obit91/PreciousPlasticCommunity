@@ -116,31 +116,31 @@ public class UserPoints {
                 break;
             case TYPE_2:
                 type2 += value;
-                type1 = Math.max(type2, 0);
+                type2 = Math.max(type2, 0);
                 break;
             case TYPE_3:
                 type3 += value;
-                type1 = Math.max(type3, 0);
+                type3 = Math.max(type3, 0);
                 break;
             case TYPE_4:
                 type4 += value;
-                type1 = Math.max(type4, 0);
+                type4 = Math.max(type4, 0);
                 break;
             case TYPE_5:
                 type5 += value;
-                type1 = Math.max(type5, 0);
+                type5 = Math.max(type5, 0);
                 break;
             case TYPE_6:
                 type6 += value;
-                type1 = Math.max(type6, 0);
+                type6 = Math.max(type6, 0);
                 break;
             case TYPE_7:
                 type7 += value;
-                type1 = Math.max(type7, 0);
+                type7 = Math.max(type7, 0);
                 break;
             case TYPE_8:
                 type8 += value;
-                type1 = Math.max(type8, 0);
+                type8 = Math.max(type8, 0);
                 break;
         }
     }
