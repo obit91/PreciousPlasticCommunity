@@ -28,8 +28,7 @@ public class UserRepository {
     private Context mContext;
 
     public UserRepository(Context context) {
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(DBConstants.DATABASE);
-        mUsersTable = mDatabase.child(DBConstants.USERS_COLLECTION);
+        mUsersTable = PPSession.getFirebaseDB().getReference(DBConstants.USERS_COLLECTION);
         mContext = context;
 
         // Log updated events in db, users collection

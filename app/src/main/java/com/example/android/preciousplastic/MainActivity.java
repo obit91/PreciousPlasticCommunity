@@ -12,6 +12,7 @@ import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.session.PPSession;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         PPSession.setFirebaseAuth(FirebaseAuth.getInstance());
+        PPSession.setFirebaseDB(FirebaseDatabase.getInstance());
         setContentView(R.layout.activity_main);
     }
 
