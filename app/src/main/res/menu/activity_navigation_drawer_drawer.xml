@@ -3,36 +3,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
-
-    <item android:title="Communicate">
+    <item android:title="Navigation">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/drawer_home"
+                android:icon="@drawable/ic_home_black_24dp"
+                android:title="Home" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
+                android:id="@+id/drawer_workshops"
+                android:icon="@drawable/ic_store_mall_directory_black_24dp"
+                android:title="Workshops" />
+            <item
+                android:id="@+id/drawer_bazaar"
+                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:title="Bazaar" />
+            <item
+                android:id="@+id/drawer_map"
+                android:icon="@drawable/ic_map_black_24dp"
+                android:title="Map" />
+
+        </menu>
+    </item>
+
+    <item android:title="My garage">
+        <menu>
+            <item
+                android:id="@+id/drawer_profile"
+                android:icon="@drawable/ic_account_circle_black_24dp"
+                android:title="Send" />
+            <item
+                android:id="@+id/drawer_my_workshop"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="My Workshop" />
+            <item
+                android:id="@+id/drawer_settings"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="Settings" />
+            <item
+                android:id="@+id/drawer_my_cart"
+                android:icon="@drawable/ic_shopping_cart_black_24dp"
+                android:title="My Cart" />
+        </menu>
+    </item>
+
+    <item android:title="The Community">
+        <menu>
+            <item
+                android:id="@+id/drawer_to_website"
+                android:icon="@drawable/ic_insert_link_black_24dp"
+                android:title="To the website" />
+            <item
+                android:id="@+id/drawer_about_us"
+                android:icon="@drawable/ic_info_outline_black_24dp"
                 android:title="Send" />
         </menu>
     </item>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_sign_out"
+            android:icon="@drawable/ic_sign_out_black_24dp"
+            android:title="Sign out" />
+    </group>
 </menu>
