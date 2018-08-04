@@ -70,9 +70,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     public void onRegisterClick(View view) {
         Toast.makeText(this, "register", Toast.LENGTH_SHORT).show();
-        System.out.println(userTextView.getText().toString());
-        System.out.println(passwordTextView.getText().toString());
-        createUser(userTextView.getText().toString(), passwordTextView.getText().toString(), "derp");
+        String email = userTextView.getText().toString();
+        String password = passwordTextView.getText().toString();
+        boolean owner = ownerCheckBox.isChecked();
+        String nickname = "derp";
+        createUser(email, password, nickname, owner);
     }
 
     public void onSignOutClick(View view) {
@@ -86,7 +88,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
      * @param email    desired user email.
      * @param password desired user password.
      */
-    void createUser(String email, String password, final String nickname) {
+    void createUser(String email, String password, final String nickname, final boolean owner) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -95,7 +97,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            userRepo.insertUser(user, nickname, ownerCheckBox.isActivated());
+                            userRepo.insertUser(user, nickname, owner);
                             loggedIn();
                         } else {
                             // If sign in fails, display a message to the user.

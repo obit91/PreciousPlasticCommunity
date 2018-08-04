@@ -41,7 +41,10 @@ public class User {
         this.nickname = nickname;
         this.points = new UserPoints();
         this.owner = owner;
-        this.workshop = new Workshop();
+
+        if (owner) {
+            this.workshop = new Workshop();
+        }
     }
 
     /**
