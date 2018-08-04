@@ -112,27 +112,35 @@ public class UserPoints {
         switch (type) {
             case TYPE_1:
                 type1 += value;
+                type1 = Math.max(type1, 0);
                 break;
             case TYPE_2:
                 type2 += value;
+                type1 = Math.max(type2, 0);
                 break;
             case TYPE_3:
                 type3 += value;
+                type1 = Math.max(type3, 0);
                 break;
             case TYPE_4:
                 type4 += value;
+                type1 = Math.max(type4, 0);
                 break;
             case TYPE_5:
                 type5 += value;
+                type1 = Math.max(type5, 0);
                 break;
             case TYPE_6:
                 type6 += value;
+                type1 = Math.max(type6, 0);
                 break;
             case TYPE_7:
                 type7 += value;
+                type1 = Math.max(type7, 0);
                 break;
             case TYPE_8:
                 type8 += value;
+                type1 = Math.max(type8, 0);
                 break;
         }
     }
