@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/precious_plastic_logo"
+        android:icon="@mipmap/precious_plastic_adaptive_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -24,7 +24,7 @@
         <activity android:name=".activities.HomeActivity" />
         <activity
             android:name=".activities.NavigationDrawer"
-            android:label="@string/title_activity_navigation_drawer"
+            android:label="Precious Plastic"
             android:theme="@style/AppTheme">
             <!--Todo: #drawer and UNhide these:-->
             <!--<intent-filter>-->
