@@ -6,6 +6,14 @@ import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -14,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.preciousplastic.R;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -27,11 +36,12 @@ import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
 import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
 import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
 import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class MapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity {
 
     // url addresses
     private final String BASE_URL = "https://davehakkens.nl";
@@ -53,10 +63,17 @@ class MapActivity extends AppCompatActivity {
         final static String USERNAME = "username";
     }
 
+    private Context context;
     private RequestQueue requestQueue;
     private MapView mapView;
 
-    MapActivity(Context context, HomeActivity delegate){
+    // pop up window when clicking on a map pin
+    PopupWindow popupWindow;
+
+
+    public MapActivity(Context context, HomeActivity delegate){
+
+        this.context = context;
 
         // TODO: handle OSMDROID dangerous permissions
 
@@ -75,6 +92,7 @@ class MapActivity extends AppCompatActivity {
     public void buildMap(MapView mapView){
         this.mapView = mapView;
 
+        // Map settings
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
@@ -87,8 +105,9 @@ class MapActivity extends AppCompatActivity {
         GeoPoint startPoint = new GeoPoint(48.0, 4.0);
         mapController.setCenter(startPoint);
 
-        // TODO get pins and place them on map
+        // place pins on map
         setMapPins();
+
     }
 
     public void onResume(){
@@ -134,13 +153,13 @@ class MapActivity extends AppCompatActivity {
 
     /**
      * Place new Map Pin Keys on the Map View.
-     * @param arrayList holds linkedTreeMaps, each representing a pin key for map
+     * @param pinsArrayList holds linkedTreeMaps, each representing a pin key for map
      */
-    private void handlePinKeys(ArrayList arrayList) {
+    private void handlePinKeys(final ArrayList pinsArrayList) {
 
         // create OverlayItem per each Pin Key
         List<IGeoPoint> points = new ArrayList<>();
-        for (Object entry : arrayList) {
+        for (Object entry : pinsArrayList) {
             LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
             String name = (String) linkedTreeMap.get(MapPinKeys.NAME);
             double lat = (double) linkedTreeMap.get(MapPinKeys.LAT);
@@ -172,10 +191,45 @@ class MapActivity extends AppCompatActivity {
         fastOverlay.setOnClickListener(new SimpleFastPointOverlay.OnClickListener() {
             @Override
             public void onClick(SimpleFastPointOverlay.PointAdapter points, Integer point) {
-                // TODO pop up small window (create in separate layout)
-                Toast.makeText(mapView.getContext()
-                        , "You clicked " + ((LabelledGeoPoint) points.get(point)).getLabel()
-                        , Toast.LENGTH_SHORT).show();
+
+                LabelledGeoPoint chosenPoint =(LabelledGeoPoint) points.get(point);
+                LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(point);
+
+                // Initialize a new instance of LayoutInflater service and inflate the popupWindow layout
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.lo_map_pin_popup,null);
+
+                // set attributes to popup view
+                TextView title = (TextView) popupView.findViewById(R.id.workshopTitle);
+                title.setText(chosenPoint.getLabel());
+                TextView desc = (TextView) popupView.findViewById(R.id.workshopDescription);
+                desc.setText((String) chosenPointInfo.get(MapPinKeys.DESC));
+                Button website = (Button) popupView.findViewById(R.id.websiteBtn);
+                //todo: open browser at website address
+
+                // dismiss popup window if there is already one open
+                if (popupWindow != null){
+                    popupWindow.dismiss();
+                }
+
+                // Initialize a new popupWindow window
+                popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                // Get a reference for the custom view close button
+                ImageButton closeButton = (ImageButton) popupView.findViewById(R.id.closePopupBtn);
+
+                // Set a click listener for the popup window close button
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Dismiss the popup window
+                        popupWindow.dismiss();
+                    }
+                });
+
+                // set location of popup window on screen to the clicked point
+                // TODO: translate point's coords to relative in screen, and set as x&y
+                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
             }
         });
         mapView.getOverlays().add(fastOverlay);
