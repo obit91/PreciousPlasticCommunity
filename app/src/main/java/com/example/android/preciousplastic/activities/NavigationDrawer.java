@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 
@@ -94,29 +95,76 @@ public class NavigationDrawer extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera)
-        {
-            // Handle the camera action
-        }
-        else if (id == R.id.nav_gallery)
+        switch (id)
         {
 
-        }
-        else if (id == R.id.nav_slideshow)
-        {
+            case R.id.drawer_home:
+            {
+                Toast.makeText(this, ("Clicked on " + "Home"), Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.drawer_workshops:
+            {
+                Toast.makeText(this, ("Clicked on " + "workshops"), Toast.LENGTH_SHORT).show();
 
-        }
-        else if (id == R.id.nav_manage)
-        {
+                break;
+            }
+            case R.id.drawer_bazaar:
+            {
+                Toast.makeText(this, ("Clicked on " + "bazaar"), Toast.LENGTH_SHORT).show();
 
-        }
-        else if (id == R.id.nav_share)
-        {
+                break;
+            }
+            case R.id.drawer_map:
+            {
+                Toast.makeText(this, ("Clicked on " + "map"), Toast.LENGTH_SHORT).show();
 
-        }
-        else if (id == R.id.nav_send)
-        {
+                break;
+            }
+            case R.id.drawer_profile:
+            {
+                Toast.makeText(this, ("Clicked on " + "profile"), Toast.LENGTH_SHORT).show();
 
+                break;
+            }
+            case R.id.drawer_my_workshop:
+            {
+                Toast.makeText(this, ("Clicked on " + "My workshop"), Toast.LENGTH_SHORT).show();
+
+                break;
+            }
+            case R.id.drawer_settings:
+            {
+                Toast.makeText(this, ("Clicked on " + "settings"), Toast.LENGTH_SHORT).show();
+
+                break;
+            }
+            case R.id.drawer_my_cart:
+            {
+                Toast.makeText(this, ("Clicked on " + "my cart"), Toast.LENGTH_SHORT).show();
+
+                break;
+            }
+            case R.id.drawer_to_website:
+            {
+                Toast.makeText(this, ("Clicked on " + "website"), Toast.LENGTH_SHORT).show();
+
+                break;
+            }
+            case R.id.drawer_about_us:
+            {
+                Toast.makeText(this, ("Clicked on " + "About us"), Toast.LENGTH_SHORT).show();
+
+                break;
+            }
+            case R.id.drawer_sign_out:
+            {
+                Toast.makeText(this, ("Clicked on " + "Sign out"), Toast.LENGTH_SHORT).show();
+
+                break;
+            }
+            default:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
