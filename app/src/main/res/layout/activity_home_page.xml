@@ -56,4 +56,12 @@
         android:onClick="onDecrementClick"
         android:text="DECREMENT POINTS" />
 
+    <Button
+        android:id="@+id/test_btn_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onOpenDrawer"
+
+        android:text="Open Drawer" />
+
 </LinearLayout>
