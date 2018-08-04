@@ -3,7 +3,7 @@ package com.example.android.preciousplastic.session;
 import com.example.android.preciousplastic.db.entities.User;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Session {
+public class PPSession {
 
     private static User mUser;
     private static FirebaseAuth mAuth;

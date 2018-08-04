@@ -7,11 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.activities.SignInActivity;
 import com.example.android.preciousplastic.db.DBConstants;
-import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.session.Session;
+import com.example.android.preciousplastic.session.PPSession;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -24,7 +22,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
-        Session.setFirebaseAuth(FirebaseAuth.getInstance());
+        PPSession.setFirebaseAuth(FirebaseAuth.getInstance());
         setContentView(R.layout.activity_main);
     }
 

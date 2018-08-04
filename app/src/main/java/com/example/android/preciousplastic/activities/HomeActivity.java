@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,7 +13,7 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
-import com.example.android.preciousplastic.session.Session;
+import com.example.android.preciousplastic.session.PPSession;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -24,7 +23,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private final String TAG = "HOME_ACTIVITY";
 
-    private FirebaseAuth mAuth = Session.getFirebaseAuth();
+    private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
     private UserRepository mUserRepository;
 
     private TextView userTextView = null;
@@ -108,7 +107,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onIncrementClick(View view) {
-        User user = Session.currentUser();
+        User user = PPSession.currentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
         int pointsValueInt = Integer.parseInt(pointsTextView.getText().toString());
         PointsType type = PointsType.getType(pointTypeInt);
@@ -117,7 +116,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onDecrementClick(View view) {
-        User user = Session.currentUser();
+        User user = PPSession.currentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
         int pointsValueInt = Integer.parseInt(pointsTextView.getText().toString());
         user.removePoints(PointsType.getType(pointTypeInt), pointsValueInt);

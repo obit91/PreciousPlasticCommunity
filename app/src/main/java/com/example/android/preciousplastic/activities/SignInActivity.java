@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
-import com.example.android.preciousplastic.session.Session;
+import com.example.android.preciousplastic.session.PPSession;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private FirebaseAuth mAuth = Session.getFirebaseAuth();
+    private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
 
     private final String TAG = "SIGN_IN_ACTIVITY";
 

@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.session.Session;
+import com.example.android.preciousplastic.session.PPSession;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,7 +15,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -58,8 +57,8 @@ public class UserRepository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get User object.
-                Session.setUser(dataSnapshot.getValue(User.class));
-                Log.d(TAG, "userListener: id - " + Session.getUid());
+                PPSession.setUser(dataSnapshot.getValue(User.class));
+                Log.d(TAG, "userListener: id - " + PPSession.getUid());
             }
 
             @Override
