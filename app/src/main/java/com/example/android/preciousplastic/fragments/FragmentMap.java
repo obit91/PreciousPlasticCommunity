@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic.Fragments;
+package com.example.android.preciousplastic.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

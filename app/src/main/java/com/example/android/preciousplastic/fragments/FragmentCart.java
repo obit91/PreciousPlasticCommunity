@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic.Fragments;
+package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,12 +13,12 @@ import com.example.android.preciousplastic.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentAboutUs.OnFragmentInteractionListener} interface
+ * {@link FragmentCart.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentAboutUs#newInstance} factory method to
+ * Use the {@link FragmentCart#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentAboutUs extends Fragment
+public class FragmentCart extends Fragment
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,7 +31,7 @@ public class FragmentAboutUs extends Fragment
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentAboutUs()
+    public FragmentCart()
     {
         // Required empty public constructor
     }
@@ -42,12 +42,12 @@ public class FragmentAboutUs extends Fragment
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentAboutUs.
+     * @return A new instance of fragment FragmentCart.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentAboutUs newInstance(String param1, String param2)
+    public static FragmentCart newInstance(String param1, String param2)
     {
-        FragmentAboutUs fragment = new FragmentAboutUs();
+        FragmentCart fragment = new FragmentCart();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,7 +71,7 @@ public class FragmentAboutUs extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about_us, container, false);
+        return inflater.inflate(R.layout.fragment_cart2, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

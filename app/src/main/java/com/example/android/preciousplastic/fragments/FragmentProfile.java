@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic.Fragments;
+package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,16 +10,8 @@ import android.view.ViewGroup;
 
 import com.example.android.preciousplastic.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FragmentBazaar.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FragmentBazaar#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class FragmentBazaar extends Fragment
-{
+
+public class FragmentProfile extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,8 +23,7 @@ public class FragmentBazaar extends Fragment
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentBazaar()
-    {
+    public FragmentProfile() {
         // Required empty public constructor
     }
 
@@ -42,12 +33,11 @@ public class FragmentBazaar extends Fragment
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentBazaar.
+     * @return A new instance of fragment FragmentProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentBazaar newInstance(String param1, String param2)
-    {
-        FragmentBazaar fragment = new FragmentBazaar();
+    public static FragmentProfile newInstance(String param1, String param2) {
+        FragmentProfile fragment = new FragmentProfile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -56,11 +46,9 @@ public class FragmentBazaar extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
@@ -68,10 +56,11 @@ public class FragmentBazaar extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bazaar, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
