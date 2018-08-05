@@ -38,8 +38,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.lo_welcome);
 
         // setting listeners
-        Button registerButton = (Button)findViewById(R.id.welcome_btn_register);
-        Button signInButton = (Button)findViewById(R.id.welcome_btn_sign_in);
+        Button registerButton = (Button) findViewById(R.id.welcome_btn_register);
+        Button signInButton = (Button) findViewById(R.id.welcome_btn_sign_in);
         registerButton.setOnClickListener(this);
         signInButton.setOnClickListener(this);
 

@@ -16,12 +16,13 @@ public class Workshop {
 
     /**
      * Constructor for a new machine.
-     * @param shredderMachine indicator if the workshop contains a shredder machine.
-     * @param extrusionMachine indicator if the workshop contains an extrusion machine.
-     * @param injectionMachine indicator if the workshop contains an injection machine.
+     *
+     * @param shredderMachine    indicator if the workshop contains a shredder machine.
+     * @param extrusionMachine   indicator if the workshop contains an extrusion machine.
+     * @param injectionMachine   indicator if the workshop contains an injection machine.
      * @param compressionMachine indicator if the workshop contains a compression machine.
      */
-    public Workshop (boolean shredderMachine, boolean extrusionMachine, boolean injectionMachine, boolean compressionMachine) {
+    public Workshop(boolean shredderMachine, boolean extrusionMachine, boolean injectionMachine, boolean compressionMachine) {
         this.shredderMachine = shredderMachine;
         this.extrusionMachine = extrusionMachine;
         this.injectionMachine = injectionMachine;

@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "MAIN_ACTIVITY";
 
@@ -37,12 +37,13 @@ public class MainActivity extends AppCompatActivity{
     /**
      * Handle any responses / notifications from the DbHandler!
      * Important because any calls to the db are done asynchronously.
+     *
      * @param taskType name of task performed
      * @param response content of response
      */
 
     public void onServerResponse(String taskType, String response) {
-        switch (taskType){
+        switch (taskType) {
             case DBConstants.AUTHENTICATION:
                 Toast.makeText(this, "Authenticated: " + response, Toast.LENGTH_SHORT).show();
                 Log.d("authentication", response);

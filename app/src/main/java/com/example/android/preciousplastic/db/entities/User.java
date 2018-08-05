@@ -6,6 +6,7 @@ import com.example.android.preciousplastic.db.Workshop;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +31,11 @@ public class User {
 
     /**
      * Firebase registration constructor.
-     * @param user firebase user.
+     *
+     * @param user     firebase user.
      * @param nickname desired nickname.
      */
-    public User (FirebaseUser user, String nickname, boolean owner) {
+    public User(FirebaseUser user, String nickname, boolean owner) {
         this.uid = user.getUid();
         this.email = user.getEmail();
         this.timeCreated = System.nanoTime();
@@ -51,7 +53,7 @@ public class User {
      * Generates a string of the user.
      */
     @Exclude
-    public String toString(){
+    public String toString() {
         return String.format("Nickname: %s\nEmail: %s\nLast Login: %s",
                 nickname,
                 email,
@@ -60,6 +62,7 @@ public class User {
 
     /**
      * Creates a user map for db updates.
+     *
      * @return a map containing the user values.
      */
     @Exclude
@@ -79,7 +82,8 @@ public class User {
 
     /**
      * Adds points of a certain type.
-     * @param type type to update.
+     *
+     * @param type  type to update.
      * @param value number of points to add.
      */
     public void addPoints(PointsType type, int value) {
@@ -88,7 +92,8 @@ public class User {
 
     /**
      * Adds points of a certain type.
-     * @param type type to update.
+     *
+     * @param type  type to update.
      * @param value number of points to remove.
      */
     public void removePoints(PointsType type, int value) {

@@ -30,8 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.osmdroid.views.MapView;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
-{
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private final String TAG = "HOME_ACTIVITY";
 
@@ -47,8 +46,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         userTextView = (TextView) findViewById(R.id.home_text_mail);
@@ -88,8 +86,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -99,15 +96,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START))
-        {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
+        } else {
             super.onBackPressed();
         }
     }
@@ -117,8 +110,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      *
      * @param view
      */
-    public void onSignOutClick(View view)
-    {
+    public void onSignOutClick(View view) {
         Toast.makeText(this, "sign out", Toast.LENGTH_SHORT).show();
         signOut();
     }
@@ -126,11 +118,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Signs out the current Firebase user.
      */
-    private void signOut()
-    {
+    private void signOut() {
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null)
-        {
+        if (user != null) {
             String mail = user.getEmail();
             mAuth.signOut();
             Log.d(TAG, mail + " Signed out.");
@@ -141,8 +131,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Switches activity to the sign-in intent (usually after sign out).
      */
-    private void returnToSignIn()
-    {
+    private void returnToSignIn() {
         Intent signInIntent = new Intent(this, WelcomeActivity.class);
         startActivity(signInIntent);
     }
@@ -152,18 +141,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      *
      * @param view
      */
-    public void onOpenMapClick(View view)
-    {
-        if (mapActivity != null)
-        {
+    public void onOpenMapClick(View view) {
+        if (mapActivity != null) {
             setContentView(R.layout.activity_map);
             MapView mapView = (MapView) findViewById(R.id.activity_map);
             mapActivity.buildMap(mapView);
         }
     }
 
-    public void onIncrementClick(View view)
-    {
+    public void onIncrementClick(View view) {
         User user = PPSession.currentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
         int pointsValueInt = Integer.parseInt(pointsTextView.getText().toString());
@@ -172,8 +158,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mUserRepository.updateUser(user);
     }
 
-    public void onOpenDrawer(View view)
-    {
+    public void onOpenDrawer(View view) {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //
@@ -189,8 +174,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void onDecrementClick(View view)
-    {
+    public void onDecrementClick(View view) {
         User user = PPSession.currentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
         int pointsValueInt = Integer.parseInt(pointsTextView.getText().toString());
@@ -199,10 +183,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onClick(View view)
-    {
-        switch (view.getId())
-        {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case (R.id.button_sign_out):
                 onSignOutClick(view);
                 break;
@@ -226,77 +208,64 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item)
-    {
+    public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch (id)
-        {
+        switch (id) {
 
-            case R.id.drawer_home:
-            {
+            case R.id.drawer_home: {
                 Toast.makeText(this, ("Clicked on " + "Home"), Toast.LENGTH_SHORT).show();
                 break;
             }
-            case R.id.drawer_workshops:
-            {
+            case R.id.drawer_workshops: {
                 Toast.makeText(this, ("Clicked on " + "workshops"), Toast.LENGTH_SHORT).show();
 
                 break;
             }
-            case R.id.drawer_bazaar:
-            {
+            case R.id.drawer_bazaar: {
                 Toast.makeText(this, ("Clicked on " + "bazaar"), Toast.LENGTH_SHORT).show();
 
                 break;
             }
-            case R.id.drawer_map:
-            {
+            case R.id.drawer_map: {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
                         new FragmentMap()).commit();
 
                 Toast.makeText(this, ("Clicked on " + "map"), Toast.LENGTH_SHORT).show();
                 break;
             }
-            case R.id.drawer_profile:
-            {
+            case R.id.drawer_profile: {
                 Toast.makeText(this, ("Clicked on " + "profile"), Toast.LENGTH_SHORT).show();
 
                 break;
             }
-            case R.id.drawer_my_workshop:
-            {
+            case R.id.drawer_my_workshop: {
                 Toast.makeText(this, ("Clicked on " + "My workshop"), Toast.LENGTH_SHORT).show();
 
                 break;
             }
-            case R.id.drawer_settings:
-            {
+            case R.id.drawer_settings: {
                 Toast.makeText(this, ("Clicked on " + "settings"), Toast.LENGTH_SHORT).show();
 
                 break;
             }
-            case R.id.drawer_my_cart:
-            {
+            case R.id.drawer_my_cart: {
                 Toast.makeText(this, ("Clicked on " + "my cart"), Toast.LENGTH_SHORT).show();
 
                 break;
             }
-            case R.id.drawer_to_website:
-            {
+            case R.id.drawer_to_website: {
                 Toast.makeText(this, ("Clicked on " + "website"), Toast.LENGTH_SHORT).show();
 
                 break;
             }
-            case R.id.drawer_about_us:
-            {
+            case R.id.drawer_about_us: {
                 Toast.makeText(this, ("Clicked on " + "About us"), Toast.LENGTH_SHORT).show();
 
                 break;
             }
-            case R.id.drawer_sign_out:
-            {
+            case R.id.drawer_sign_out: {
                 Toast.makeText(this, ("Clicked on " + "Sign out"), Toast.LENGTH_SHORT).show();
 
                 break;

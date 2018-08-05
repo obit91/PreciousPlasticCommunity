@@ -48,7 +48,7 @@ public class MapActivity extends AppCompatActivity {
     private final String MAP_PINS_SUFFIX = "/wp-json/map/v1/pins";
 
     // keys of pins on map
-    private final class MapPinKeys{
+    private final class MapPinKeys {
         final static String ID = "ID";
         final static String NAME = "name";
         final static String LAT = "lat";
@@ -71,7 +71,7 @@ public class MapActivity extends AppCompatActivity {
     PopupWindow popupWindow;
 
 
-    public MapActivity(Context context, HomeActivity delegate){
+    public MapActivity(Context context, HomeActivity delegate) {
 
         this.context = context;
 
@@ -87,9 +87,10 @@ public class MapActivity extends AppCompatActivity {
 
     /**
      * Define MapView, setup settings, and place pins on map.
+     *
      * @param mapView
      */
-    public void buildMap(MapView mapView){
+    public void buildMap(MapView mapView) {
         this.mapView = mapView;
 
         // Map settings
@@ -110,14 +111,14 @@ public class MapActivity extends AppCompatActivity {
 
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         // refresh osmdroid configuration on resuming,
         // if changes are made to configuration, load them here
         mapView.onResume();
     }
 
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         // if changes are made to configuration, save them here
         mapView.onPause();
@@ -127,23 +128,23 @@ public class MapActivity extends AppCompatActivity {
      * Request from web API all pins from PreciousPlastic Map.
      * Set each pin on MapView.
      */
-    void setMapPins(){
+    void setMapPins() {
 
         String pinsUrl = BASE_URL + MAP_PINS_SUFFIX;
-        StringRequest pinKeyRequest = new StringRequest(Request.Method.GET, pinsUrl, new Response.Listener<String>(){
+        StringRequest pinKeyRequest = new StringRequest(Request.Method.GET, pinsUrl, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response){
+            public void onResponse(String response) {
                 Gson gson = new Gson();
-                try{
+                try {
                     ArrayList arrayList = gson.fromJson(response, ArrayList.class);
                     handlePinKeys(arrayList);
-                } catch (Exception e){
+                } catch (Exception e) {
                     Log.e("exception", e.toString());
                 }
             }
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error){
+            public void onErrorResponse(VolleyError error) {
                 System.out.println("Error response: " + String.valueOf(error));
             }
         });
@@ -153,6 +154,7 @@ public class MapActivity extends AppCompatActivity {
 
     /**
      * Place new Map Pin Keys on the Map View.
+     *
      * @param pinsArrayList holds linkedTreeMaps, each representing a pin key for map
      */
     private void handlePinKeys(final ArrayList pinsArrayList) {
@@ -192,12 +194,12 @@ public class MapActivity extends AppCompatActivity {
             @Override
             public void onClick(SimpleFastPointOverlay.PointAdapter points, Integer point) {
 
-                LabelledGeoPoint chosenPoint =(LabelledGeoPoint) points.get(point);
+                LabelledGeoPoint chosenPoint = (LabelledGeoPoint) points.get(point);
                 LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(point);
 
                 // Initialize a new instance of LayoutInflater service and inflate the popupWindow layout
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.lo_map_pin_popup,null);
+                View popupView = inflater.inflate(R.layout.lo_map_pin_popup, null);
 
                 // set attributes to popup view
                 TextView title = (TextView) popupView.findViewById(R.id.workshopTitle);
@@ -208,7 +210,7 @@ public class MapActivity extends AppCompatActivity {
                 //todo: open browser at website address
 
                 // dismiss popup window if there is already one open
-                if (popupWindow != null){
+                if (popupWindow != null) {
                     popupWindow.dismiss();
                 }
 

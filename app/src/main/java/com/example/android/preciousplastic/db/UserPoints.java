@@ -81,7 +81,8 @@ public class UserPoints {
 
     /**
      * Increments user points by value.
-     * @param type point type to update.
+     *
+     * @param type  point type to update.
      * @param value value to add.
      */
     public void incrementType(PointsType type, int value) {
@@ -90,7 +91,8 @@ public class UserPoints {
 
     /**
      * Decrements user points by value.
-     * @param type point type to update.
+     *
+     * @param type  point type to update.
      * @param value value to add.
      */
     public void decrementType(PointsType type, int value) {
@@ -99,8 +101,9 @@ public class UserPoints {
 
     /**
      * Updates user points by value.
-     * @param type point type to update.
-     * @param value value to add.
+     *
+     * @param type        point type to update.
+     * @param value       value to add.
      * @param subtraction true for subtractions, false for addition.
      */
     private void updateType(PointsType type, int value, boolean subtraction) {

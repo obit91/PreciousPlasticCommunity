@@ -14,21 +14,19 @@ import com.example.android.preciousplastic.session.PPSession;
 
 import org.osmdroid.views.MapView;
 
-public class FragmentMap extends Fragment
-{
+public class FragmentMap extends Fragment {
     private MapActivity mapActivity = null;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
     public void onStart() {
         super.onStart();
 
-        mapActivity =  new MapActivity(PPSession.getContainerContext(), PPSession.getHomeActivity());
+        mapActivity = new MapActivity(PPSession.getContainerContext(), PPSession.getHomeActivity());
         MapView mapView = (MapView) getView().findViewById(R.id.fragment_map);
         mapActivity.buildMap(mapView);
     }
