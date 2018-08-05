@@ -6,9 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.preciousplastic.activities.HomeActivity" >
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="70dp" />
+
     <TextView
         android:id="@+id/home_text_mail"
         android:layout_width="match_parent"
+
         android:layout_height="43dp"
         android:text="email" />
 
@@ -55,13 +60,5 @@
         android:layout_height="wrap_content"
         android:onClick="onDecrementClick"
         android:text="DECREMENT POINTS" />
-
-    <Button
-        android:id="@+id/test_btn_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onOpenDrawer"
-
-        android:text="Open Drawer" />
 
 </LinearLayout>
