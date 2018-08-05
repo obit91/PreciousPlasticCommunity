@@ -305,8 +305,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.drawer_about_us:
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentAboutUs()).commit();
+                FragmentAboutUs fragmentAboutUs = FragmentAboutUs.newInstance(null, null);
+                FragmentTransaction aboutUsTransaction = getSupportFragmentManager()
+                        .beginTransaction();
+                aboutUsTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
+                        R.anim.enter_from_right, R.anim.exit_to_right);
+                aboutUsTransaction.addToBackStack(null);
+                aboutUsTransaction.add(R.id.fragmentContainer, fragmentAboutUs, "FRAGMENT_SETTINGS")
+                        .commit();
                 Toast.makeText(this, ("Clicked on " + "About us"), Toast.LENGTH_SHORT).show();
                 break;
 
