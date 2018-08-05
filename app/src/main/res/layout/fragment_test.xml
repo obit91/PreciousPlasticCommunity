@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    tools:context=".Fragments.FragmentTest">
+
+
+    <!--<Space-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:stateListAnimator="@null" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/home_text_mail"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="43dp"-->
+        <!--android:stateListAnimator="@null"-->
+        <!--android:text="email" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/button_sign_out"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="onSignOutClick"-->
+        <!--android:stateListAnimator="@null"-->
+        <!--android:text="SIGN OUT" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/button_map"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="onOpenMapClick"-->
+        <!--android:stateListAnimator="@null"-->
+        <!--android:text="MAP" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/text_points_value"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:hint="POINTS TO UPDATE"-->
+        <!--android:inputType="numberSigned"-->
+        <!--android:stateListAnimator="@null" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/text_points_type"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:hint="TYPE TO UPDATE"-->
+        <!--android:inputType="numberSigned"-->
+        <!--android:stateListAnimator="@null" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/button_increment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="onIncrementClick"-->
+        <!--android:stateListAnimator="@null"-->
+        <!--android:text="INCREMENT POINTS" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/button_decrement"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="onDecrementClick"-->
+        <!--android:stateListAnimator="@null"-->
+        <!--android:text="DECREMENT POINTS" />-->
+
+</FrameLayout>

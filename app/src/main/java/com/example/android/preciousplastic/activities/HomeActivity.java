@@ -3,6 +3,7 @@ package com.example.android.preciousplastic.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +16,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.Fragments.FragmentAboutUs;
+import com.example.android.preciousplastic.Fragments.FragmentBazaar;
+import com.example.android.preciousplastic.Fragments.FragmentCart;
+import com.example.android.preciousplastic.Fragments.FragmentHome;
+import com.example.android.preciousplastic.Fragments.FragmentMyWorkshop;
+import com.example.android.preciousplastic.Fragments.FragmentProfile;
+import com.example.android.preciousplastic.Fragments.FragmentSettings;
+import com.example.android.preciousplastic.Fragments.FragmentTest;
+import com.example.android.preciousplastic.Fragments.FragmentWorkshops;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.Fragments.FragmentMap;
 import com.example.android.preciousplastic.db.PointsType;
@@ -209,68 +219,88 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.beta_testing:
+                FragmentTest fragMap = FragmentTest.newInstance(null);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
+                        R.anim.enter_from_right, R.anim.exit_to_right);
+                transaction.addToBackStack(null);
+                transaction.add(R.id.fragmentContainer, fragMap, "FRAGMENT_TEST").commit();
+                break;
 
-            case R.id.drawer_home: {
+            case R.id.drawer_home:
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentHome()).commit();
                 Toast.makeText(this, ("Clicked on " + "Home"), Toast.LENGTH_SHORT).show();
                 break;
-            }
-            case R.id.drawer_workshops: {
+
+            case R.id.drawer_workshops:
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentWorkshops()).commit();
                 Toast.makeText(this, ("Clicked on " + "workshops"), Toast.LENGTH_SHORT).show();
-
                 break;
-            }
-            case R.id.drawer_bazaar: {
+
+            case R.id.drawer_bazaar:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentBazaar()).commit();
                 Toast.makeText(this, ("Clicked on " + "bazaar"), Toast.LENGTH_SHORT).show();
-
                 break;
-            }
-            case R.id.drawer_map: {
+
+            case R.id.drawer_map:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
                         new FragmentMap()).commit();
 
                 Toast.makeText(this, ("Clicked on " + "map"), Toast.LENGTH_SHORT).show();
                 break;
-            }
-            case R.id.drawer_profile: {
-                Toast.makeText(this, ("Clicked on " + "profile"), Toast.LENGTH_SHORT).show();
 
-                break;
-            }
-            case R.id.drawer_my_workshop: {
-                Toast.makeText(this, ("Clicked on " + "My workshop"), Toast.LENGTH_SHORT).show();
+            case R.id.drawer_profile:
 
-                break;
-            }
-            case R.id.drawer_settings: {
-                Toast.makeText(this, ("Clicked on " + "settings"), Toast.LENGTH_SHORT).show();
-
-                break;
-            }
-            case R.id.drawer_my_cart: {
-                Toast.makeText(this, ("Clicked on " + "my cart"), Toast.LENGTH_SHORT).show();
-
-                break;
-            }
-            case R.id.drawer_to_website: {
-                Toast.makeText(this, ("Clicked on " + "website"), Toast.LENGTH_SHORT).show();
-
-                break;
-            }
-            case R.id.drawer_about_us: {
-                Toast.makeText(this, ("Clicked on " + "About us"), Toast.LENGTH_SHORT).show();
-
-                break;
-            }
-            case R.id.drawer_sign_out: {
-                Toast.makeText(this, ("Clicked on " + "Sign out"), Toast.LENGTH_SHORT).show();
-
-                break;
-            }
-            case R.id.beta_testing:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentMap()).commit();
-                //Todo Create matching fragment class for testing
+                        new FragmentProfile()).commit();
+                Toast.makeText(this, ("Clicked on " + "profile"), Toast.LENGTH_SHORT).show();
                 break;
+
+            case R.id.drawer_my_workshop:
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentMyWorkshop()).commit();
+                Toast.makeText(this, ("Clicked on " + "My workshop"), Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.drawer_settings:
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentSettings()).commit();
+                Toast.makeText(this, ("Clicked on " + "settings"), Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.drawer_my_cart:
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentCart()).commit();
+                Toast.makeText(this, ("Clicked on " + "my cart"), Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.drawer_to_website:
+
+                // Todo link to open website using intent
+                Toast.makeText(this, ("Clicked on " + "website"), Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.drawer_about_us:
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentAboutUs()).commit();
+                Toast.makeText(this, ("Clicked on " + "About us"), Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.drawer_sign_out:
+                signOut();
+                Toast.makeText(this, ("Clicked on " + "Sign out"), Toast.LENGTH_SHORT).show();
+                break;
+
             default:
                 break;
         }
