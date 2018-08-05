@@ -37,31 +37,31 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.osmdroid.views.MapView;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = "HOME_ACTIVITY";
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
+    /*
     private UserRepository mUserRepository;
-
     private MapActivity mapActivity = null;
-
+*/
     private Class<? extends Fragment> currentFragment;
-
+/*
     private TextView pointsTextView = null;
-    private TextView pointsTypeTextView = null;
+    private TextView pointsTypeTextView = null*/;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
-        mapActivity = new MapActivity(this, this);
-        mUserRepository = new UserRepository(this);
+/*        mapActivity = new MapActivity(this, this);
+        mUserRepository = new UserRepository(this);*/
 
         // updating container context
         PPSession.setContainerContext(this);
 
-        // setting listeners
+/*        // setting listeners
         Button signOutButton = (Button) findViewById(R.id.button_sign_out);
         Button mapButton = (Button) findViewById(R.id.button_map);
         Button incrementButton = (Button) findViewById(R.id.button_increment);
@@ -73,7 +73,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // points values
         pointsTextView = (TextView) findViewById(R.id.text_points_value);
-        pointsTypeTextView = (TextView) findViewById(R.id.text_points_type);
+        pointsTypeTextView = (TextView) findViewById(R.id.text_points_type);*/
 
         //Drawer Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -112,15 +112,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /**
+/*    *//**
      * Logs out the current user.
      *
      * @param view
-     */
+     *//*
     public void onSignOutClick(View view) {
         Toast.makeText(this, "sign out", Toast.LENGTH_SHORT).show();
         signOut();
-    }
+    }*/
 
     /**
      * Signs out the current Firebase user.
@@ -143,11 +143,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(signInIntent);
     }
 
-    /**
+/*    *//**
      * Opens the map.
      *
      * @param view
-     */
+     *//*
     public void onOpenMapClick(View view) {
         if (mapActivity != null) {
             setContentView(R.layout.activity_map);
@@ -205,7 +205,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 onDecrementClick(view);
                 break;
         }
-    }
+    }*/
 
     /**
      * Called when an item in the navigation menu is selected.
@@ -216,6 +216,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        // first close the drawer
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawers();
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -261,8 +266,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

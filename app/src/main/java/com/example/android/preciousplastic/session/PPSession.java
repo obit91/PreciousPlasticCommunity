@@ -57,4 +57,8 @@ public class PPSession {
         PPSession.homeActivity = containerContext;
         PPSession.containerContext = containerContext;
     }
+
+    public static String getEmail() {
+        return mAuth.getCurrentUser().getEmail();
+    }
 }
