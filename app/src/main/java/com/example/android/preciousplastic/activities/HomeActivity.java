@@ -34,7 +34,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 {
 
     private final String TAG = "HOME_ACTIVITY";
-    private Context thisContext;
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
     private UserRepository mUserRepository;
@@ -55,6 +54,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         userTextView = (TextView) findViewById(R.id.home_text_mail);
         mapActivity = new MapActivity(this, this);
         mUserRepository = new UserRepository(this);
+
+        // updating container context
+        PPSession.setContainerContext(this);
 
         // setting listeners
         Button signOutButton = (Button) findViewById(R.id.button_sign_out);
