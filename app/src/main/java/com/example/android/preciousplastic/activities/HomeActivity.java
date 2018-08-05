@@ -69,10 +69,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         pointsTextView = (TextView) findViewById(R.id.text_points_value);
         pointsTypeTextView = (TextView) findViewById(R.id.text_points_type);
 
-        // Drawer
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //Drawer Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Drawer
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -90,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         userTextView.setText(mail);
 
     }
+
     @Override
     public void onBackPressed()
     {
