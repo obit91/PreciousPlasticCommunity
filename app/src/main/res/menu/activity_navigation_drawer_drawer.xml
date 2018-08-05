@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/beta_testing"
+            android:icon="@drawable/ic_bug_report_black_24dp"
+            android:title="Testing" />
+    </group>
+
     <item android:title="Navigation">
         <menu>
             <item

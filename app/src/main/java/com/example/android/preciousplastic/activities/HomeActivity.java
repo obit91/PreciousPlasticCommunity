@@ -270,6 +270,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             }
+            case R.id.beta_testing:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentMap()).commit();
+                //Todo Create matching fragment class for testing
+                break;
             default:
                 break;
         }
