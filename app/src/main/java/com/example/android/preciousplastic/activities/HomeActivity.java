@@ -34,6 +34,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 {
 
     private final String TAG = "HOME_ACTIVITY";
+    private Context thisContext;
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
     private UserRepository mUserRepository;
@@ -250,8 +251,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
             case R.id.drawer_map:
             {
-                Toast.makeText(this, ("Clicked on " + "map"), Toast.LENGTH_SHORT).show();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        new FragmentMap()).commit();
 
+                Toast.makeText(this, ("Clicked on " + "map"), Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.drawer_profile:
