@@ -1,15 +1,14 @@
-package com.example.android.preciousplastic.activities;
+package com.example.android.preciousplastic.Fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.activities.MapActivity;
 import com.example.android.preciousplastic.session.PPSession;
 
 import org.osmdroid.views.MapView;
