@@ -188,5 +188,6 @@ public class UserPoints {
                 break;
         }
         totalPoints += value;
+        totalPoints = Math.max(totalPoints, 0);
     }
 }
