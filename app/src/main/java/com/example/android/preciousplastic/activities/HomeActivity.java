@@ -3,6 +3,7 @@ package com.example.android.preciousplastic.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -220,107 +221,42 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id) {
             case R.id.beta_testing:
-                FragmentTest fragMap = FragmentTest.newInstance(null);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
-                        R.anim.enter_from_right, R.anim.exit_to_right);
-                transaction.addToBackStack(null);
-                transaction.add(R.id.fragmentContainer, fragMap, "FRAGMENT_TEST").commit();
-
-                Toast.makeText(this, ("Clicked on " + "Testing"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentTest.class);
                 break;
-
             case R.id.drawer_home:
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentHome()).commit();
-                Toast.makeText(this, ("Clicked on " + "Home"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentHome.class);
                 break;
-
             case R.id.drawer_workshops:
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentWorkshops()).commit();
-                Toast.makeText(this, ("Clicked on " + "workshops"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentWorkshops.class);
                 break;
-
             case R.id.drawer_bazaar:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentBazaar()).commit();
-                Toast.makeText(this, ("Clicked on " + "bazaar"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentBazaar.class);
                 break;
-
             case R.id.drawer_map:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentMap()).commit();
-
-                Toast.makeText(this, ("Clicked on " + "map"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentMap.class);
                 break;
-
             case R.id.drawer_profile:
-                FragmentProfile fragProfile = FragmentProfile.newInstance(null, null);
-                FragmentTransaction profTransaction = getSupportFragmentManager()
-                        .beginTransaction();
-                profTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
-                        R.anim.enter_from_right, R.anim.exit_to_right);
-                profTransaction.addToBackStack(null);
-                profTransaction.add(R.id.fragmentContainer, fragProfile, "FRAGMENT_PROFILE")
-                        .commit();
-
-                Toast.makeText(this, ("Clicked on " + "profile"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentProfile.class);
                 break;
-
             case R.id.drawer_my_workshop:
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentMyWorkshop()).commit();
-                Toast.makeText(this, ("Clicked on " + "My workshop"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentMyWorkshop.class);
                 break;
-
             case R.id.drawer_settings:
-
-                FragmentSettings fragmentSettings = FragmentSettings.newInstance(null, null);
-                FragmentTransaction settTransaction = getSupportFragmentManager()
-                        .beginTransaction();
-                settTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
-                        R.anim.enter_from_right, R.anim.exit_to_right);
-                settTransaction.addToBackStack(null);
-                settTransaction.add(R.id.fragmentContainer, fragmentSettings, "FRAGMENT_SETTINGS")
-                        .commit();
-                Toast.makeText(this, ("Clicked on " + "settings"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentSettings.class);
                 break;
-
             case R.id.drawer_my_cart:
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentCart()).commit();
-                Toast.makeText(this, ("Clicked on " + "my cart"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentCart.class);
                 break;
-
             case R.id.drawer_to_website:
-
                 // Todo link to open website using intent
                 Toast.makeText(this, ("Clicked on " + "website"), Toast.LENGTH_SHORT).show();
                 break;
-
             case R.id.drawer_about_us:
-
-                FragmentAboutUs fragmentAboutUs = FragmentAboutUs.newInstance(null, null);
-                FragmentTransaction aboutUsTransaction = getSupportFragmentManager()
-                        .beginTransaction();
-                aboutUsTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
-                        R.anim.enter_from_right, R.anim.exit_to_right);
-                aboutUsTransaction.addToBackStack(null);
-                aboutUsTransaction.add(R.id.fragmentContainer, fragmentAboutUs, "FRAGMENT_SETTINGS")
-                        .commit();
-                Toast.makeText(this, ("Clicked on " + "About us"), Toast.LENGTH_SHORT).show();
+                goToFragment(FragmentAboutUs.class);
                 break;
-
             case R.id.drawer_sign_out:
                 signOut();
-                Toast.makeText(this, ("Clicked on " + "Sign out"), Toast.LENGTH_SHORT).show();
                 break;
-
             default:
                 break;
         }
@@ -328,6 +264,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * 3
+     * Switches fragment according to input.
+     *
+     * @param fragmentClass type of fragment to use.
+     */
+    private void goToFragment(final Class<? extends Fragment> fragmentClass) {
+        try {
+            // retrieve details of given fragment class.
+            Fragment fragment = fragmentClass.newInstance();
+            String fragmentName = fragmentClass.getName();
+
+            // transfer control to the new fragment.
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
+                    R.anim.enter_from_right, R.anim.exit_to_right);
+            transaction.addToBackStack(null);
+            transaction.add(R.id.fragmentContainer, fragment, fragmentName).commit();
+            Toast.makeText(this, ("Clicked on " + fragmentName), Toast.LENGTH_SHORT).show();
+        } catch (IllegalAccessException | InstantiationException e) {
+            System.err.println("Invalid class");
+            e.printStackTrace();
+            Log.e(TAG, "goToFragment: class exception");
+        }
     }
 }
 

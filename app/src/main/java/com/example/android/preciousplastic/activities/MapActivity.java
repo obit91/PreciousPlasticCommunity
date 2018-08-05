@@ -47,6 +47,9 @@ public class MapActivity extends AppCompatActivity {
     private final String BASE_URL = "https://davehakkens.nl";
     private final String MAP_PINS_SUFFIX = "/wp-json/map/v1/pins";
 
+    // logging tag
+    private final String TAG = "MAP_ACTIVITY";
+
     // keys of pins on map
     private final class MapPinKeys {
         final static String ID = "ID";
