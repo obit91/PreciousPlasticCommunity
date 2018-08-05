@@ -2,81 +2,122 @@ package com.example.android.preciousplastic.db;
 
 public class UserPoints {
 
-    private int type1;
-    private int type2;
-    private int type3;
-    private int type4;
-    private int type5;
-    private int type6;
-    private int type7;
-    private int type8;
+    private long type1;
+    private long type2;
+    private long type3;
+    private long type4;
+    private long type5;
+    private long type6;
+    private long type7;
+    private long type8;
+    private long totalPoints;
 
     public UserPoints() {
 
     }
 
-    public int getType1() {
+    public long getType1() {
         return type1;
     }
 
-    public void setType1(int type1) {
+    public String getType1AsString() {
+        return String.valueOf(type1);
+    }
+
+    public void setType1(long type1) {
         this.type1 = type1;
     }
 
-    public int getType2() {
+    public long getType2() {
         return type2;
     }
 
-    public void setType2(int type2) {
+    public String getType2AsString() {
+        return String.valueOf(type2);
+    }
+
+    public void setType2(long type2) {
         this.type2 = type2;
     }
 
-    public int getType3() {
+    public long getType3() {
         return type3;
     }
 
-    public void setType3(int type3) {
+    public String getType3AsString() {
+        return String.valueOf(type3);
+    }
+
+    public void setType3(long type3) {
         this.type3 = type3;
     }
 
-    public int getType4() {
+    public long getType4() {
         return type4;
     }
 
-    public void setType4(int type4) {
+    public String getType4AsString() {
+        return String.valueOf(type4);
+    }
+
+    public void setType4(long type4) {
         this.type4 = type4;
     }
 
-    public int getType5() {
+    public long getType5() {
         return type5;
     }
 
-    public void setType5(int type5) {
+    public String getType5AsString() {
+        return String.valueOf(type5);
+    }
+
+    public void setType5(long type5) {
         this.type5 = type5;
     }
 
-    public int getType6() {
+    public long getType6() {
         return type6;
     }
 
-    public void setType6(int type6) {
+    public String getType6AsString() {
+        return String.valueOf(type6);
+    }
+
+    public void setType6(long type6) {
         this.type6 = type6;
     }
 
-    public int getType7() {
+    public long getType7() {
         return type7;
     }
 
-    public void setType7(int type7) {
+    public String getType7AsString() {
+        return String.valueOf(type7);
+    }
+
+    public void setType7(long type7) {
         this.type7 = type7;
     }
 
-    public int getType8() {
+    public long getType8() {
         return type8;
     }
 
-    public void setType8(int type8) {
+    public String getType8AsString() {
+        return String.valueOf(type8);
+    }
+
+    public void setType8(long type8) {
         this.type8 = type8;
+    }
+
+    public long getTotalPoints() {
+        return totalPoints;
+    }
+
+    public String getTotalPointsAsString() {
+        return String.valueOf(totalPoints);
     }
 
     /**
@@ -85,7 +126,7 @@ public class UserPoints {
      * @param type  point type to update.
      * @param value value to add.
      */
-    public void incrementType(PointsType type, int value) {
+    public void incrementType(PointsType type, long value) {
         updateType(type, value, false);
     }
 
@@ -95,7 +136,7 @@ public class UserPoints {
      * @param type  point type to update.
      * @param value value to add.
      */
-    public void decrementType(PointsType type, int value) {
+    public void decrementType(PointsType type, long value) {
         updateType(type, value, true);
     }
 
@@ -106,7 +147,7 @@ public class UserPoints {
      * @param value       value to add.
      * @param subtraction true for subtractions, false for addition.
      */
-    private void updateType(PointsType type, int value, boolean subtraction) {
+    private void updateType(PointsType type, long value, boolean subtraction) {
 
         if (subtraction) {
             value *= -1;
@@ -146,5 +187,6 @@ public class UserPoints {
                 type8 = Math.max(type8, 0);
                 break;
         }
+        totalPoints += value;
     }
 }

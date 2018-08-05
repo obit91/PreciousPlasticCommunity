@@ -86,7 +86,7 @@ public class User {
      * @param type  type to update.
      * @param value number of points to add.
      */
-    public void addPoints(PointsType type, int value) {
+    public void addPoints(PointsType type, long value) {
         points.incrementType(type, value);
     }
 
@@ -96,7 +96,7 @@ public class User {
      * @param type  type to update.
      * @param value number of points to remove.
      */
-    public void removePoints(PointsType type, int value) {
+    public void removePoints(PointsType type, long value) {
         points.decrementType(type, value);
     }
 

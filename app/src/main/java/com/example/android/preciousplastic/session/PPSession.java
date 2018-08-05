@@ -21,7 +21,7 @@ public class PPSession {
         uid = user.getUid();
     }
 
-    public static User currentUser() {
+    public static User getCurrentUser() {
         return mUser;
     }
 

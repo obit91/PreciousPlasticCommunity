@@ -44,19 +44,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
     private UserRepository mUserRepository;
 
-    private TextView userTextView = null;
     private MapActivity mapActivity = null;
+
+    private Class<? extends Fragment> currentFragment;
 
     private TextView pointsTextView = null;
     private TextView pointsTypeTextView = null;
-
-    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
-        userTextView = (TextView) findViewById(R.id.home_text_mail);
         mapActivity = new MapActivity(this, this);
         mUserRepository = new UserRepository(this);
 
@@ -82,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         // Drawer
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -95,10 +93,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        String mail = currentUser.getEmail();
-        userTextView.setText(mail);
+        goToFragment(FragmentHome.class);
 
     }
 
@@ -108,7 +103,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (currentFragment == FragmentHome.class) {
+                Toast.makeText(this, "lol no turning back", Toast.LENGTH_SHORT).show();
+            } else {
+                goToFragment(FragmentHome.class);
+//                super.onBackPressed();
+            }
         }
     }
 
@@ -157,9 +157,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void onIncrementClick(View view) {
-        User user = PPSession.currentUser();
+        User user = PPSession.getCurrentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
-        int pointsValueInt = Integer.parseInt(pointsTextView.getText().toString());
+        long pointsValueInt = Long.parseLong(pointsTextView.getText().toString());
         PointsType type = PointsType.getType(pointTypeInt);
         user.addPoints(type, pointsValueInt);
         mUserRepository.updateUser(user);
@@ -182,9 +182,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void onDecrementClick(View view) {
-        User user = PPSession.currentUser();
+        User user = PPSession.getCurrentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
-        int pointsValueInt = Integer.parseInt(pointsTextView.getText().toString());
+        long pointsValueInt = Long.parseLong(pointsTextView.getText().toString());
         user.removePoints(PointsType.getType(pointTypeInt), pointsValueInt);
         mUserRepository.updateUser(user);
     }
@@ -274,16 +274,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      */
     private void goToFragment(final Class<? extends Fragment> fragmentClass) {
         try {
+            // update current fragment.
+            currentFragment = fragmentClass;
+
             // retrieve details of given fragment class.
             Fragment fragment = fragmentClass.newInstance();
-            String fragmentName = fragmentClass.getName();
+            String fragmentName = fragmentClass.getSimpleName();
 
             // transfer control to the new fragment.
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
                     R.anim.enter_from_right, R.anim.exit_to_right);
             transaction.addToBackStack(null);
-            transaction.add(R.id.fragmentContainer, fragment, fragmentName).commit();
+            transaction.replace(R.id.fragmentContainer, fragment, fragmentName);
+            transaction.commit();
             Toast.makeText(this, ("Clicked on " + fragmentName), Toast.LENGTH_SHORT).show();
         } catch (IllegalAccessException | InstantiationException e) {
             System.err.println("Invalid class");

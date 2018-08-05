@@ -7,8 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.UserPoints;
+import com.example.android.preciousplastic.db.entities.User;
+import com.example.android.preciousplastic.session.PPSession;
 
 
 public class FragmentProfile extends Fragment {
@@ -16,6 +20,15 @@ public class FragmentProfile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private TextView bin1 = null;
+    private TextView bin2 = null;
+    private TextView bin3 = null;
+    private TextView bin4 = null;
+    private TextView bin5 = null;
+    private TextView bin6 = null;
+    private TextView bin7 = null;
+    private TextView binTotal = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -60,7 +73,38 @@ public class FragmentProfile extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        attachBins(view);
+        updateBins(view);
+
         return view;
+    }
+
+    /**
+     * Attaches the score bins on the screen to the corresponding fields.
+     * @param view fragment view.
+     */
+    private void attachBins(View view) {
+        bin1 = view.findViewById(R.id.profile_tv_bin1);
+        bin2 = view.findViewById(R.id.profile_tv_bin2);
+        bin3 = view.findViewById(R.id.profile_tv_bin3);
+        bin4 = view.findViewById(R.id.profile_tv_bin4);
+        bin5 = view.findViewById(R.id.profile_tv_bin5);
+        bin6 = view.findViewById(R.id.profile_tv_bin6);
+        bin7 = view.findViewById(R.id.profile_tv_bin7);
+        binTotal = view.findViewById(R.id.profile_tv_total);
+    }
+
+    private void updateBins(View view) {
+        User currentUser = PPSession.getCurrentUser();
+        UserPoints points = currentUser.getPoints();
+        bin1.setText(points.getType1AsString());
+        bin2.setText(points.getType2AsString());
+        bin3.setText(points.getType3AsString());
+        bin4.setText(points.getType4AsString());
+        bin5.setText(points.getType5AsString());
+        bin6.setText(points.getType6AsString());
+        bin7.setText(points.getType7AsString());
+        binTotal.setText(points.getTotalPointsAsString());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
