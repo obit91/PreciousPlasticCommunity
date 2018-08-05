@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@android:color/holo_blue_bright"
     android:layout_height="match_parent">
 
     <ImageView
@@ -26,20 +27,20 @@
         app:layout_constraintTop_toTopOf="@+id/guideline6"
         app:srcCompat="@drawable/ldpe_4" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
 
-        android:id="@+id/iv_profile_pic_in_profile_lo"
-        android:layout_width="@dimen/profile_page_profile_size"
-        android:layout_height="@dimen/profile_page_profile_size"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/keren_profile"
-        app:civ_border_color="@color/cardview_light_background"
-        app:civ_border_width="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!--android:id="@+id/iv_profile_pic_in_profile_lo"-->
+        <!--android:layout_width="@dimen/profile_page_profile_size"-->
+        <!--android:layout_height="@dimen/profile_page_profile_size"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:src="@drawable/keren_profile"-->
+        <!--app:civ_border_color="@color/cardview_light_background"-->
+        <!--app:civ_border_width="1dp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/profile_iv_bin1"
@@ -212,13 +213,5 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="545dp" />
 
 </android.support.constraint.ConstraintLayout>

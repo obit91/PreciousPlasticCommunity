@@ -226,6 +226,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         R.anim.enter_from_right, R.anim.exit_to_right);
                 transaction.addToBackStack(null);
                 transaction.add(R.id.fragmentContainer, fragMap, "FRAGMENT_TEST").commit();
+
+                Toast.makeText(this, ("Clicked on " + "Testing"), Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.drawer_home:
@@ -256,9 +258,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.drawer_profile:
+                FragmentProfile fragProfile = FragmentProfile.newInstance(null, null);
+                FragmentTransaction profTransaction = getSupportFragmentManager()
+                        .beginTransaction();
+                profTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
+                        R.anim.enter_from_right, R.anim.exit_to_right);
+                profTransaction.addToBackStack(null);
+                profTransaction.add(R.id.fragmentContainer, fragProfile, "FRAGMENT_PROFILE")
+                        .commit();
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentProfile()).commit();
                 Toast.makeText(this, ("Clicked on " + "profile"), Toast.LENGTH_SHORT).show();
                 break;
 
@@ -271,8 +279,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.drawer_settings:
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        new FragmentSettings()).commit();
+                FragmentSettings fragmentSettings = FragmentSettings.newInstance(null, null);
+                FragmentTransaction settTransaction = getSupportFragmentManager()
+                        .beginTransaction();
+                settTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,
+                        R.anim.enter_from_right, R.anim.exit_to_right);
+                settTransaction.addToBackStack(null);
+                settTransaction.add(R.id.fragmentContainer, fragmentSettings, "FRAGMENT_SETTINGS")
+                        .commit();
                 Toast.makeText(this, ("Clicked on " + "settings"), Toast.LENGTH_SHORT).show();
                 break;
 
