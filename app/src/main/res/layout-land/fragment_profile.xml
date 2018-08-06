@@ -10,10 +10,9 @@
         android:id="@+id/profile_iv_bin3"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_marginEnd="130dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/profile_iv_bin4"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
         app:srcCompat="@drawable/pvc_3s" />
 
@@ -21,10 +20,9 @@
         android:id="@+id/profile_iv_bin4"
         android:layout_width="0dp"
         android:layout_height="70dp"
+        android:layout_marginStart="130dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintEnd_toStartOf="@+id/profile_iv_bin3"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
         app:srcCompat="@drawable/ldpe_4s" />
@@ -48,7 +46,7 @@
         android:id="@+id/profile_iv_bin1"
         android:layout_width="70dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="130dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +80,7 @@
         android:id="@+id/profile_iv_bin7"
         android:layout_width="70dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +91,7 @@
         android:id="@+id/profile_iv_bin6"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="130dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
@@ -106,7 +104,7 @@
         android:layout_marginEnd="360dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_end="184dp" />
+        app:layout_constraintGuide_percent="0.5552239" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline5"
@@ -114,20 +112,20 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintGuide_end="292dp" />
+        app:layout_constraintGuide_end="244dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="84dp" />
+        app:layout_constraintGuide_end="56dp" />
 
     <TextView
         android:id="@+id/profile_tv_bin6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="82dp"
+        android:layout_marginStart="160dp"
         android:text="0"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +135,7 @@
         android:id="@+id/profile_tv_bin3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="105dp"
+        android:layout_marginEnd="160dp"
         android:text="0"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -147,7 +145,7 @@
         android:id="@+id/profile_tv_bin4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="105dp"
+        android:layout_marginStart="160dp"
         android:text="0"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +155,7 @@
         android:id="@+id/profile_tv_bin5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="54dp"
         android:text="0"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -167,7 +165,8 @@
         android:id="@+id/profile_tv_bin2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="56dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginTop="4dp"
         android:text="0"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -177,7 +176,7 @@
         android:id="@+id/profile_tv_bin1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="82dp"
+        android:layout_marginEnd="160dp"
         android:text="0"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -187,8 +186,8 @@
         android:id="@+id/profile_tv_bin7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="56dp"
-        android:layout_marginStart="56dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="0"
         android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@+id/profile_iv_bin1"
@@ -199,21 +198,21 @@
         android:id="@+id/profile_tv_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="92dp"
+        android:layout_marginStart="92dp"
         android:text="0"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        tools:layout_editor_absoluteX="176dp" />
+        app:layout_constraintEnd_toStartOf="@+id/profile_iv_bin3"
+        app:layout_constraintStart_toEndOf="@+id/profile_iv_bin4"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
         android:id="@+id/profile_tv_total2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:text="Total:"
-        app:layout_constraintBottom_toTopOf="@+id/profile_tv_total"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        tools:layout_editor_absoluteX="278dp" />
 
 
 </android.support.constraint.ConstraintLayout>
