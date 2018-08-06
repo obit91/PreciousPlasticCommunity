@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@android:color/holo_blue_bright"
+    android:background="@drawable/green_bg_light"
     android:layout_height="match_parent">
 
     <ImageView
@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:srcCompat="@drawable/pvc_3" />
+        app:srcCompat="@drawable/pvc_3s" />
 
     <ImageView
         android:id="@+id/profile_iv_bin4"
@@ -25,7 +25,7 @@
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:srcCompat="@drawable/ldpe_4" />
+        app:srcCompat="@drawable/ldpe_4s" />
 
     <!--<de.hdodenhof.circleimageview.CircleImageView-->
 
@@ -53,7 +53,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
         app:layout_constraintVertical_bias="0.503"
-        app:srcCompat="@drawable/pete_1" />
+        app:srcCompat="@drawable/pete_1s" />
 
     <ImageView
         android:id="@+id/profile_iv_bin2"
@@ -64,7 +64,7 @@
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:srcCompat="@drawable/pp_5" />
+        app:srcCompat="@drawable/pp_5s" />
 
     <ImageView
         android:id="@+id/profile_iv_bin5"
@@ -75,7 +75,7 @@
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:srcCompat="@drawable/hdpe_2" />
+        app:srcCompat="@drawable/hdpe_2s" />
 
     <ImageView
         android:id="@+id/profile_iv_bin7"
@@ -86,7 +86,7 @@
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/other_7" />
+        app:srcCompat="@drawable/other_7s" />
 
     <ImageView
         android:id="@+id/profile_iv_bin6"
@@ -96,7 +96,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:srcCompat="@drawable/ps_6" />
+        app:srcCompat="@drawable/ps_6s" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"
@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="TextView"
-        android:textAlignment="center"
+        android:textAlignment="viewEnd"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/profile_iv_bin3" />
 
@@ -175,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="92dp"
         android:text="TextView"
-        android:textAlignment="center"
+        android:textAlignment="viewEnd"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/profile_iv_bin5" />
 
@@ -212,6 +212,16 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+    <TextView
+        android:id="@+id/profile_tv_total2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Total:"
+        app:layout_constraintBottom_toTopOf="@+id/profile_tv_total"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

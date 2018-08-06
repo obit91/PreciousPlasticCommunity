@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@drawable/orange_bg_light"
     tools:context=".fragments.FragmentSettings">
 
     <!-- TODO: Update blank fragment layout -->
@@ -24,9 +24,9 @@
         android:id="@+id/settings_switch_notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="152dp"
-        android:text="Sound"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="92dp"
+        android:text="Theme: Dark/Light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

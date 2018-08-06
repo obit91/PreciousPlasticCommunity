@@ -71,7 +71,7 @@ public class FragmentCart extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart2, container, false);
+        return inflater.inflate(R.layout.fragment_cart, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
