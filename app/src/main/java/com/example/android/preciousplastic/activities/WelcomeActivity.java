@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,7 +75,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         String password = passwordTextView.getText().toString();
         //TODO: fix missing owner checkbox
 //        boolean owner = ownerCheckBox.isChecked();
-        String nickname = "derp";
+        String nickname = email.substring(0, email.indexOf("@"));
         createUser(email, password, nickname, true);
     }
 
@@ -98,6 +99,11 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest
+                                    .Builder()
+                                    .setDisplayName(nickname)
+                                    .build();
+                            user.updateProfile(profileUpdates);
                             userRepo.insertUser(user, nickname, owner);
                             loggedIn();
                         } else {
@@ -149,8 +155,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
      * Switches activity to the home intent (upon login).
      */
     void loggedIn() {
-        String uid = mAuth.getCurrentUser().getUid();
-        userRepo.updateLastLogin(uid);
+        String nickname = mAuth.getCurrentUser().getDisplayName();
+        userRepo.updateLastLogin(nickname);
         Intent homeIntent = new Intent(this, HomeActivity.class);
         startActivity(homeIntent);
     }

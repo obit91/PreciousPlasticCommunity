@@ -9,7 +9,6 @@ public class UserPoints {
     private long type5;
     private long type6;
     private long type7;
-    private long type8;
     private long totalPoints;
 
     public UserPoints() {
@@ -20,96 +19,84 @@ public class UserPoints {
         return type1;
     }
 
-    public String getType1AsString() {
-        return String.valueOf(type1);
-    }
-
     public void setType1(long type1) {
         this.type1 = type1;
+    }
+
+    public String getType1AsString() {
+        return String.valueOf(type1);
     }
 
     public long getType2() {
         return type2;
     }
 
-    public String getType2AsString() {
-        return String.valueOf(type2);
-    }
-
     public void setType2(long type2) {
         this.type2 = type2;
+    }
+
+    public String getType2AsString() {
+        return String.valueOf(type2);
     }
 
     public long getType3() {
         return type3;
     }
 
-    public String getType3AsString() {
-        return String.valueOf(type3);
-    }
-
     public void setType3(long type3) {
         this.type3 = type3;
+    }
+
+    public String getType3AsString() {
+        return String.valueOf(type3);
     }
 
     public long getType4() {
         return type4;
     }
 
-    public String getType4AsString() {
-        return String.valueOf(type4);
-    }
-
     public void setType4(long type4) {
         this.type4 = type4;
+    }
+
+    public String getType4AsString() {
+        return String.valueOf(type4);
     }
 
     public long getType5() {
         return type5;
     }
 
-    public String getType5AsString() {
-        return String.valueOf(type5);
-    }
-
     public void setType5(long type5) {
         this.type5 = type5;
+    }
+
+    public String getType5AsString() {
+        return String.valueOf(type5);
     }
 
     public long getType6() {
         return type6;
     }
 
-    public String getType6AsString() {
-        return String.valueOf(type6);
-    }
-
     public void setType6(long type6) {
         this.type6 = type6;
+    }
+
+    public String getType6AsString() {
+        return String.valueOf(type6);
     }
 
     public long getType7() {
         return type7;
     }
 
-    public String getType7AsString() {
-        return String.valueOf(type7);
-    }
-
     public void setType7(long type7) {
         this.type7 = type7;
     }
 
-    public long getType8() {
-        return type8;
-    }
-
-    public String getType8AsString() {
-        return String.valueOf(type8);
-    }
-
-    public void setType8(long type8) {
-        this.type8 = type8;
+    public String getType7AsString() {
+        return String.valueOf(type7);
     }
 
     public long getTotalPoints() {
@@ -182,9 +169,7 @@ public class UserPoints {
                 type7 += value;
                 type7 = Math.max(type7, 0);
                 break;
-            case TYPE_8:
-                type8 += value;
-                type8 = Math.max(type8, 0);
+            default:
                 break;
         }
         totalPoints += value;
