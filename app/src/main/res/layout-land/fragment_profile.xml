@@ -80,8 +80,7 @@
         android:id="@+id/profile_iv_bin7"
         android:layout_width="70dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintBottom_toTopOf="@+id/profile_tv_bin7"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +103,7 @@
         android:layout_marginEnd="360dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.5552239" />
+        app:layout_constraintGuide_percent="0.59" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline5"
@@ -112,7 +111,7 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintGuide_end="244dp" />
+        app:layout_constraintGuide_end="209dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline6"
@@ -190,9 +189,10 @@
         android:layout_marginStart="8dp"
         android:text="0"
         android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toStartOf="@+id/profile_iv_bin1"
         app:layout_constraintStart_toEndOf="@+id/profile_iv_bin6"
-        app:layout_constraintTop_toBottomOf="@+id/profile_iv_bin7" />
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
     <TextView
         android:id="@+id/profile_tv_total"
@@ -203,8 +203,9 @@
         android:text="0"
         android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@+id/profile_iv_bin3"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/profile_iv_bin4"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_tv_total2" />
 
     <TextView
         android:id="@+id/profile_tv_total2"
@@ -212,7 +213,9 @@
         android:layout_height="wrap_content"
         android:text="Total:"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        tools:layout_editor_absoluteX="278dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
 
 </android.support.constraint.ConstraintLayout>
