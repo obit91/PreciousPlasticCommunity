@@ -107,7 +107,7 @@ public class UserRepository {
                 });
     }
 
-    public void updateUserPoints(final String nickname, final PointsType type, final long score) {
+    public void updateUserPoints(final String nickname, final PointsType type, final double score) {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -126,7 +126,7 @@ public class UserRepository {
         mUsersTable.child(nickname).addListenerForSingleValueEvent(userListener);
     }
 
-    private void writeUserPoints(final User user, final PointsType type, final long score) {
+    private void writeUserPoints(final User user, final PointsType type, final double score) {
         UserPoints userPoints = user.getPoints();
         userPoints.incrementType(type, score);
         updateUser(user);

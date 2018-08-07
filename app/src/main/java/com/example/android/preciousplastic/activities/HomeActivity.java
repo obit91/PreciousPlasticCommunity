@@ -131,7 +131,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onIncrementClick(View view) {
         User user = PPSession.getCurrentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
-        long pointsValueInt = Long.parseLong(pointsTextView.getText().toString());
+        double pointsValueInt = Double.parseDouble(pointsTextView.getText().toString());
         PointsType type = PointsType.getType(pointTypeInt);
         user.addPoints(type, pointsValueInt);
         mUserRepository.updateUser(user);
@@ -140,7 +140,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onDecrementClick(View view) {
         User user = PPSession.getCurrentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
-        long pointsValueInt = Long.parseLong(pointsTextView.getText().toString());
+        double pointsValueInt = Double.parseDouble(pointsTextView.getText().toString());
         user.removePoints(PointsType.getType(pointTypeInt), pointsValueInt);
         mUserRepository.updateUser(user);
     }

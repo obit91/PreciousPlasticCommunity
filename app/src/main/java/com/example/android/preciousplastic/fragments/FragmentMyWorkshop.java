@@ -168,7 +168,7 @@ public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
 
         String nickname = mNicknameTextView.getText().toString();
         PointsType type = (PointsType)mTypeSpinner.getSelectedItem();
-        long score = Long.parseLong(mScoreTextView.getText().toString());
+        double score = Double.parseDouble(mScoreTextView.getText().toString());
 
         userRepository.updateUserPoints(nickname, type, score);
         PPSession.getHomeActivity().onBackPressed();

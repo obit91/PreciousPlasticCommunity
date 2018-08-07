@@ -16,8 +16,8 @@ public class User {
     private String uid;
     private String email;
     private String nickname;
-    private long timeCreated;
-    private long lastLogin;
+    private double timeCreated;
+    private double lastLogin;
     private UserPoints points;
     private boolean owner;
     private Workshop workshop;
@@ -86,7 +86,7 @@ public class User {
      * @param type  type to update.
      * @param value number of points to add.
      */
-    public void addPoints(PointsType type, long value) {
+    public void addPoints(PointsType type, double value) {
         points.incrementType(type, value);
     }
 
@@ -96,7 +96,7 @@ public class User {
      * @param type  type to update.
      * @param value number of points to remove.
      */
-    public void removePoints(PointsType type, long value) {
+    public void removePoints(PointsType type, double value) {
         points.decrementType(type, value);
     }
 
@@ -124,19 +124,19 @@ public class User {
         this.nickname = nickname;
     }
 
-    public long getTimeCreated() {
+    public double getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(long timeCreated) {
+    public void setTimeCreated(double timeCreated) {
         this.timeCreated = timeCreated;
     }
 
-    public long getLastLogin() {
+    public double getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(long lastLogin) {
+    public void setLastLogin(double lastLogin) {
         this.lastLogin = lastLogin;
     }
 

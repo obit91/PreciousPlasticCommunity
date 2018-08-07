@@ -2,24 +2,24 @@ package com.example.android.preciousplastic.db;
 
 public class UserPoints {
 
-    private long type1;
-    private long type2;
-    private long type3;
-    private long type4;
-    private long type5;
-    private long type6;
-    private long type7;
-    private long totalPoints;
+    private double type1;
+    private double type2;
+    private double type3;
+    private double type4;
+    private double type5;
+    private double type6;
+    private double type7;
+    private double totalPoints;
 
     public UserPoints() {
 
     }
 
-    public long getType1() {
+    public double getType1() {
         return type1;
     }
 
-    public void setType1(long type1) {
+    public void setType1(double type1) {
         this.type1 = type1;
     }
 
@@ -27,11 +27,11 @@ public class UserPoints {
         return String.valueOf(type1);
     }
 
-    public long getType2() {
+    public double getType2() {
         return type2;
     }
 
-    public void setType2(long type2) {
+    public void setType2(double type2) {
         this.type2 = type2;
     }
 
@@ -39,11 +39,11 @@ public class UserPoints {
         return String.valueOf(type2);
     }
 
-    public long getType3() {
+    public double getType3() {
         return type3;
     }
 
-    public void setType3(long type3) {
+    public void setType3(double type3) {
         this.type3 = type3;
     }
 
@@ -51,11 +51,11 @@ public class UserPoints {
         return String.valueOf(type3);
     }
 
-    public long getType4() {
+    public double getType4() {
         return type4;
     }
 
-    public void setType4(long type4) {
+    public void setType4(double type4) {
         this.type4 = type4;
     }
 
@@ -63,11 +63,11 @@ public class UserPoints {
         return String.valueOf(type4);
     }
 
-    public long getType5() {
+    public double getType5() {
         return type5;
     }
 
-    public void setType5(long type5) {
+    public void setType5(double type5) {
         this.type5 = type5;
     }
 
@@ -75,11 +75,11 @@ public class UserPoints {
         return String.valueOf(type5);
     }
 
-    public long getType6() {
+    public double getType6() {
         return type6;
     }
 
-    public void setType6(long type6) {
+    public void setType6(double type6) {
         this.type6 = type6;
     }
 
@@ -87,11 +87,11 @@ public class UserPoints {
         return String.valueOf(type6);
     }
 
-    public long getType7() {
+    public double getType7() {
         return type7;
     }
 
-    public void setType7(long type7) {
+    public void setType7(double type7) {
         this.type7 = type7;
     }
 
@@ -99,7 +99,7 @@ public class UserPoints {
         return String.valueOf(type7);
     }
 
-    public long getTotalPoints() {
+    public double getTotalPoints() {
         return totalPoints;
     }
 
@@ -113,7 +113,7 @@ public class UserPoints {
      * @param type  point type to update.
      * @param value value to add.
      */
-    public void incrementType(PointsType type, long value) {
+    public void incrementType(PointsType type, double value) {
         updateType(type, value, false);
     }
 
@@ -123,7 +123,7 @@ public class UserPoints {
      * @param type  point type to update.
      * @param value value to add.
      */
-    public void decrementType(PointsType type, long value) {
+    public void decrementType(PointsType type, double value) {
         updateType(type, value, true);
     }
 
@@ -134,7 +134,7 @@ public class UserPoints {
      * @param value       value to add.
      * @param subtraction true for subtractions, false for addition.
      */
-    private void updateType(PointsType type, long value, boolean subtraction) {
+    private void updateType(PointsType type, double value, boolean subtraction) {
 
         if (subtraction) {
             value *= -1;
