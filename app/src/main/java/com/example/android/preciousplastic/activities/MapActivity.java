@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.session.PPSession;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -32,6 +33,9 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
 import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
 import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
@@ -171,26 +175,19 @@ public class MapActivity extends AppCompatActivity {
             double lng = (double) linkedTreeMap.get(MapPinKeys.LNG);
             points.add(new LabelledGeoPoint(lat, lng, name));
         }
+
         // wrap points in a theme
         SimplePointTheme pointThm = new SimplePointTheme(points, true);
-
-        // create label style
-        // TODO replace this dummy style with pin images from 'res'
-        Paint textStyle = new Paint();
-        textStyle.setStyle(Paint.Style.FILL);
-        textStyle.setColor(Color.parseColor("#0000ff"));
-        textStyle.setTextAlign(Paint.Align.CENTER);
-        textStyle.setTextSize(24);
 
         // set some visual options for the overlay
         // MEDIUM_OPTIMIZATION: do not use when > 10,000k points
         // 23/07/18 ~8,000k points
         SimpleFastPointOverlayOptions opts = SimpleFastPointOverlayOptions.getDefaultStyle()
                 .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MEDIUM_OPTIMIZATION)
-                .setRadius(7).setIsClickable(true).setCellSize(15).setTextStyle(textStyle);
+                .setRadius(7).setIsClickable(true).setCellSize(15).setMaxNShownLabels(50);
 
         // create the overlay with the theme
-        final SimpleFastPointOverlay fastOverlay = new SimpleFastPointOverlay(pointThm, opts);
+        final PPSimpleFastPointOverlayActivity fastOverlay = new PPSimpleFastPointOverlayActivity(pointThm, opts);
 
         // onClick callback
         fastOverlay.setOnClickListener(new SimpleFastPointOverlay.OnClickListener() {
@@ -233,7 +230,6 @@ public class MapActivity extends AppCompatActivity {
                 });
 
                 // set location of popup window on screen to the clicked point
-                // TODO: translate point's coords to relative in screen, and set as x&y
                 popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
             }
         });
