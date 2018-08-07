@@ -11,12 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.activities.HomeActivity;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.PPSession;
+
+import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -152,8 +154,17 @@ public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
         void onFragmentInteraction(Uri uri);
     }
 
+    /**
+     * Upon clicking confirm, the input would be updated in the db.
+     * @param view button view.
+     */
     private void onConfirmClick(View view) {
         UserRepository userRepository = new UserRepository(getContext());
+
+        if (isTextViewNull(mNicknameTextView) || isTextViewNull(mScoreTextView)) {
+            Toast.makeText(getContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String nickname = mNicknameTextView.getText().toString();
         PointsType type = (PointsType)mTypeSpinner.getSelectedItem();

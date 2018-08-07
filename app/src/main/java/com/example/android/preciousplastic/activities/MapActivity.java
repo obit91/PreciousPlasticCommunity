@@ -44,7 +44,7 @@ public class MapActivity extends AppCompatActivity {
     private final String MAP_PINS_SUFFIX = "/wp-json/map/v1/pins";
 
     // logging tag
-    private final String TAG = "MAP_ACTIVITY";
+    private static final String TAG = "MAP_ACTIVITY";
 
     // keys of pins on map
     private final class MapPinKeys {

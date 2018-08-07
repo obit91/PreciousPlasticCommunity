@@ -26,7 +26,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
 
-    private final String TAG = "WELCOME_ACTIVITY";
+    private static final String TAG = "WELCOME_ACTIVITY";
 
     private UserRepository userRepo;
 

@@ -2,6 +2,7 @@ package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final String TAG = "HOME_ACTIVITY";
+    private static final String TAG = "HOME_ACTIVITY";
+
+    private static final String PRECIOUS_PLASTIC_URL = "https://preciousplastic.com/";
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
     /*
@@ -189,8 +192,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 goToFragment(FragmentCart.class);
                 break;
             case R.id.drawer_to_website:
-                // Todo link to open website using intent
-                Toast.makeText(this, ("Clicked on " + "website"), Toast.LENGTH_SHORT).show();
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PRECIOUS_PLASTIC_URL));
+                startActivity(browserIntent);
                 break;
             case R.id.drawer_about_us:
                 goToFragment(FragmentAboutUs.class);
