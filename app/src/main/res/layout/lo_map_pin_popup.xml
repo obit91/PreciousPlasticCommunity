@@ -1,40 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="@dimen/map_popup_width"
-    android:layout_height="@dimen/map_popup_height"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@android:color/white"
     android:id="@+id/popupLayout">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/workshopTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20dp"
+            android:fontFamily="Varela Round,Arial,sans-serif"
+            android:textColor="@color/mapPopupTitle"/>
+
+        <TextView
+            android:id="@+id/workshopDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <Button
+            android:id="@+id/websiteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Website" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
     <ImageButton
         android:id="@+id/closePopupBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="right|top"
         app:srcCompat="@android:drawable/ic_delete" />
-
-    <TextView
-        android:id="@+id/workshopTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:fontFamily="Varela Round,Arial,sans-serif"
-        android:textColor="@color/mapPopupTitle"/>
-
-    <TextView
-        android:id="@+id/workshopDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <Button
-        android:id="@+id/websiteBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Website" />
-
-
-
-</LinearLayout>
+    </FrameLayout>
+</FrameLayout>
