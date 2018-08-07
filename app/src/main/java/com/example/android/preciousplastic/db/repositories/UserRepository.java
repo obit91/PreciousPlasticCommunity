@@ -75,7 +75,7 @@ public class UserRepository {
      */
     public void insertUser(FirebaseUser firebaseUser, String nickname, boolean owner) {
         User user = new User(firebaseUser, nickname, owner);
-        mUsersTable.child(user.getUid()).setValue(user, new DatabaseReference.CompletionListener() {
+        mUsersTable.child(nickname).setValue(user, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 String msg;
                 if (error == null) {
@@ -112,7 +112,7 @@ public class UserRepository {
      */
     public void updateUser(User user) {
         Map<String, Object> tablesToUpdate = new HashMap<>();
-        tablesToUpdate.put(user.getUid(), user.toMap());
+        tablesToUpdate.put(user.getNickname(), user.toMap());
         mUsersTable.updateChildren(tablesToUpdate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

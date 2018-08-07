@@ -22,20 +22,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- TODO: switch text type to alphanumeric below (mw_et_nickname) -->
+
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/mw_et_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Give points to email"
-        android:inputType="textEmailAddress"
+        android:hint="Give points to nickname"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mw_tv_title" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/mw_et_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -44,6 +46,25 @@
         android:hint="Amount of points to give"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
+
+    <Spinner
+        android:id="@+id/mw_spinner_type"
+        android:layout_width="219dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mw_et_score" />
+
+    <Button
+        android:id="@+id/mw_btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="156dp"
+        android:text="CONFIRM"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mw_spinner_type" />
 
 </android.support.constraint.ConstraintLayout>

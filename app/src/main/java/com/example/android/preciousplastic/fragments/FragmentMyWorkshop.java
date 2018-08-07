@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.PointsType;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,12 +23,17 @@ import com.example.android.preciousplastic.R;
  * Use the {@link FragmentMyWorkshop#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMyWorkshop extends Fragment
+public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private Spinner mTypeSpinner = null;
+    private TextView mNicknameTextView = null;
+    private TextView mScoreTextView = null;
+    private Button mConfirmButton = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -71,7 +81,25 @@ public class FragmentMyWorkshop extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_workshop, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_workshop, container, false);
+
+        // update spinner
+        mTypeSpinner = (Spinner) view.findViewById(R.id.mw_spinner_type);
+        ArrayAdapter<PointsType> pointsTypeArrayAdapter = new ArrayAdapter<PointsType>(
+                getContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                PointsType.values());
+        mTypeSpinner.setAdapter(pointsTypeArrayAdapter);
+
+        // set button listener
+        mConfirmButton = (Button) view.findViewById(R.id.mw_btn_confirm);
+        mConfirmButton.setOnClickListener(this);
+
+        // set TextView fields
+        mNicknameTextView = (TextView)view.findViewById(R.id.mw_et_nickname);
+        mScoreTextView = (TextView)view.findViewById(R.id.mw_et_score);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -119,5 +147,21 @@ public class FragmentMyWorkshop extends Fragment
     {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void onConfirmClick(View view) {
+        String nickname = mNicknameTextView.getText().toString();
+        long score = Long.parseLong(mScoreTextView.getText().toString());
+        PointsType type = (PointsType)mTypeSpinner.getSelectedItem();
+        System.out.println("test");
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case (R.id.mw_btn_confirm):
+                onConfirmClick(view);
+                break;
+        }
     }
 }
