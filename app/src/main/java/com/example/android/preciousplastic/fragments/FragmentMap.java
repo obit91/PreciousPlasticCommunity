@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.activities.MapActivity;
-import com.example.android.preciousplastic.session.PPSession;
+import com.example.android.preciousplastic.utils.PPSession;
 
 import org.osmdroid.views.MapView;
 

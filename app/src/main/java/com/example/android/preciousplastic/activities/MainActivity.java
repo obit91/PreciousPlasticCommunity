@@ -6,9 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.android.preciousplastic.activities.WelcomeActivity;
 import com.example.android.preciousplastic.db.DBConstants;
-import com.example.android.preciousplastic.session.PPSession;
+import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         switch (taskType) {
             case DBConstants.AUTHENTICATION:
                 Toast.makeText(this, "Authenticated: " + response, Toast.LENGTH_SHORT).show();
-                Log.d("authentication", response);
+                Log.i("authentication", response);
                 break;
             default:
                 break;

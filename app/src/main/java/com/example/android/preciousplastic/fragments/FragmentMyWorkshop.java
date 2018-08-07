@@ -13,7 +13,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.activities.HomeActivity;
 import com.example.android.preciousplastic.db.PointsType;
+import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.example.android.preciousplastic.utils.PPSession;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -150,10 +153,14 @@ public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
     }
 
     private void onConfirmClick(View view) {
+        UserRepository userRepository = new UserRepository(getContext());
+
         String nickname = mNicknameTextView.getText().toString();
-        long score = Long.parseLong(mScoreTextView.getText().toString());
         PointsType type = (PointsType)mTypeSpinner.getSelectedItem();
-        System.out.println("test");
+        long score = Long.parseLong(mScoreTextView.getText().toString());
+
+        userRepository.updateUserPoints(nickname, type, score);
+        PPSession.getHomeActivity().onBackPressed();
     }
 
     @Override

@@ -10,14 +10,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.fragments.FragmentAboutUs;
@@ -31,14 +26,9 @@ import com.example.android.preciousplastic.fragments.FragmentTest;
 import com.example.android.preciousplastic.fragments.FragmentWorkshops;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.fragments.FragmentMap;
-import com.example.android.preciousplastic.db.PointsType;
-import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.db.repositories.UserRepository;
-import com.example.android.preciousplastic.session.PPSession;
+import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.osmdroid.views.MapView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -63,20 +53,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // updating container context
         PPSession.setContainerContext(this);
-
-/*        // setting listeners
-        Button signOutButton = (Button) findViewById(R.id.button_sign_out);
-        Button mapButton = (Button) findViewById(R.id.button_map);
-        Button incrementButton = (Button) findViewById(R.id.button_increment);
-        Button decrementButton = (Button) findViewById(R.id.button_decrement);
-        signOutButton.setOnClickListener(this);
-        mapButton.setOnClickListener(this);
-        incrementButton.setOnClickListener(this);
-        decrementButton.setOnClickListener(this);
-
-        // points values
-        pointsTextView = (TextView) findViewById(R.id.text_points_value);
-        pointsTypeTextView = (TextView) findViewById(R.id.text_points_type);*/
 
         //Drawer Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -135,7 +111,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (user != null) {
             String mail = user.getEmail();
             mAuth.signOut();
-            Log.d(TAG, mail + " Signed out.");
+            Log.i(TAG, mail + " Signed out.");
         }
         returnToSignIn();
     }
@@ -148,19 +124,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(signInIntent);
     }
 
-    /*    *//**
-     * Opens the map.
-     *
-     * @param view
-     *//*
-    public void onOpenMapClick(View view) {
-        if (mapActivity != null) {
-            setContentView(R.layout.activity_map);
-            MapView mapView = (MapView) findViewById(R.id.activity_map);
-            mapActivity.buildMap(mapView);
-        }
-    }
-
+/*
     public void onIncrementClick(View view) {
         User user = PPSession.getCurrentUser();
         int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
@@ -168,22 +132,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         PointsType type = PointsType.getType(pointTypeInt);
         user.addPoints(type, pointsValueInt);
         mUserRepository.updateUser(user);
-    }
-
-    public void onOpenDrawer(View view) {
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.addDrawerListener(toggle);
-//        toggle.syncState();
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-//
-
     }
 
     public void onDecrementClick(View view) {
@@ -194,24 +142,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mUserRepository.updateUser(user);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case (R.id.button_sign_out):
-                onSignOutClick(view);
-                break;
-            case (R.id.button_map):
-                onOpenMapClick(view);
-                break;
-            case (R.id.button_increment):
-                onIncrementClick(view);
-                break;
-            case (R.id.button_decrement):
-                onDecrementClick(view);
-                break;
-        }
-    }*/
-
+*/
     /**
      * Called when an item in the navigation menu is selected.
      *
@@ -275,12 +206,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * 3
      * Switches fragment according to input.
      *
      * @param fragmentClass type of fragment to use.
      */
     private void goToFragment(final Class<? extends Fragment> fragmentClass) {
+
+        if (fragmentClass == currentFragment) {
+            Toast.makeText(this, "Useless user is useless!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         try {
             // update current fragment.
             currentFragment = fragmentClass;
@@ -296,11 +232,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             transaction.addToBackStack(null);
             transaction.replace(R.id.fragmentContainer, fragment, fragmentName);
             transaction.commit();
-            Toast.makeText(this, ("Clicked on " + fragmentName), Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "goToFragment: " + fragmentName);
         } catch (IllegalAccessException | InstantiationException e) {
-            System.err.println("Invalid class");
-            e.printStackTrace();
-            Log.e(TAG, "goToFragment: class exception");
+            Log.e(TAG, "goToFragment: " + e.getMessage());
         }
     }
 }

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.session.PPSession;
+import com.example.android.preciousplastic.utils.PPSession;
 
 public class FragmentHome extends Fragment
 {
@@ -68,7 +68,7 @@ public class FragmentHome extends Fragment
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mEmail = view.findViewById(R.id.home_tv_email);
+        mEmail = (TextView)view.findViewById(R.id.home_tv_email);
         mEmail.setText(PPSession.getEmail());
         return view;
     }

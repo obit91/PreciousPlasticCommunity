@@ -9,10 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.session.PPSession;
 
 public class FragmentSettings extends Fragment {
     private Switch themeSwitch = null;

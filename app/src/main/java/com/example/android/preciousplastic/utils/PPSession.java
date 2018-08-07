@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic.session;
+package com.example.android.preciousplastic.utils;
 
 import android.content.Context;
 

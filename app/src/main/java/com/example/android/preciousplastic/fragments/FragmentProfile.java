@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.UserPoints;
 import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.session.PPSession;
+import com.example.android.preciousplastic.utils.PPSession;
 
 
 public class FragmentProfile extends Fragment {
@@ -84,14 +84,14 @@ public class FragmentProfile extends Fragment {
      * @param view fragment view.
      */
     private void attachBins(View view) {
-        bin1 = view.findViewById(R.id.profile_tv_bin1);
-        bin2 = view.findViewById(R.id.profile_tv_bin2);
-        bin3 = view.findViewById(R.id.profile_tv_bin3);
-        bin4 = view.findViewById(R.id.profile_tv_bin4);
-        bin5 = view.findViewById(R.id.profile_tv_bin5);
-        bin6 = view.findViewById(R.id.profile_tv_bin6);
-        bin7 = view.findViewById(R.id.profile_tv_bin7);
-        binTotal = view.findViewById(R.id.profile_tv_total);
+        bin1 = (TextView)view.findViewById(R.id.profile_tv_bin1);
+        bin2 = (TextView)view.findViewById(R.id.profile_tv_bin2);
+        bin3 = (TextView)view.findViewById(R.id.profile_tv_bin3);
+        bin4 = (TextView)view.findViewById(R.id.profile_tv_bin4);
+        bin5 = (TextView)view.findViewById(R.id.profile_tv_bin5);
+        bin6 = (TextView)view.findViewById(R.id.profile_tv_bin6);
+        bin7 = (TextView)view.findViewById(R.id.profile_tv_bin7);
+        binTotal = (TextView)view.findViewById(R.id.profile_tv_total);
     }
 
     private void updateBins(View view) {
