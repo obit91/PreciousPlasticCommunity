@@ -20,7 +20,8 @@ import com.example.android.preciousplastic.fragments.FragmentAboutUs;
 import com.example.android.preciousplastic.fragments.FragmentBazaar;
 import com.example.android.preciousplastic.fragments.FragmentCart;
 import com.example.android.preciousplastic.fragments.FragmentHome;
-import com.example.android.preciousplastic.fragments.FragmentMyWorkshop;
+import com.example.android.preciousplastic.fragments.FragmentMyWorkshopNonOwner;
+import com.example.android.preciousplastic.fragments.FragmentMyWorkshopOwner;
 import com.example.android.preciousplastic.fragments.FragmentProfile;
 import com.example.android.preciousplastic.fragments.FragmentSettings;
 import com.example.android.preciousplastic.fragments.FragmentTest;
@@ -38,21 +39,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final String PRECIOUS_PLASTIC_URL = "https://preciousplastic.com/";
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
-    /*
-    private UserRepository mUserRepository;
-    private MapActivity mapActivity = null;
-*/
     private Class<? extends Fragment> currentFragment;
-/*
-    private TextView pointsTextView = null;
-    private TextView pointsTypeTextView = null*/;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
-/*        mapActivity = new MapActivity(this, this);
-        mUserRepository = new UserRepository(this);*/
 
         // updating container context
         PPSession.setContainerContext(this);
@@ -96,16 +88,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /*    *//**
-     * Logs out the current user.
-     *
-     * @param view
-     *//*
-    public void onSignOutClick(View view) {
-        Toast.makeText(this, "sign out", Toast.LENGTH_SHORT).show();
-        signOut();
-    }*/
-
     /**
      * Signs out the current Firebase user.
      */
@@ -127,25 +109,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(signInIntent);
     }
 
-/*
-    public void onIncrementClick(View view) {
-        User user = PPSession.getCurrentUser();
-        int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
-        double pointsValueInt = Double.parseDouble(pointsTextView.getText().toString());
-        PointsType type = PointsType.getType(pointTypeInt);
-        user.addPoints(type, pointsValueInt);
-        mUserRepository.updateUser(user);
-    }
-
-    public void onDecrementClick(View view) {
-        User user = PPSession.getCurrentUser();
-        int pointTypeInt = Integer.parseInt(pointsTypeTextView.getText().toString());
-        double pointsValueInt = Double.parseDouble(pointsTextView.getText().toString());
-        user.removePoints(PointsType.getType(pointTypeInt), pointsValueInt);
-        mUserRepository.updateUser(user);
-    }
-
-*/
     /**
      * Called when an item in the navigation menu is selected.
      *
@@ -183,7 +146,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 goToFragment(FragmentProfile.class);
                 break;
             case R.id.drawer_my_workshop:
-                goToFragment(FragmentMyWorkshop.class);
+                //TODO: on register wait until current user is pulled (use callback functions).
+                if (PPSession.getCurrentUser().isOwner()) {
+                    goToFragment(FragmentMyWorkshopOwner.class);
+                } else {
+                    goToFragment(FragmentMyWorkshopNonOwner.class);
+                }
                 break;
             case R.id.drawer_settings:
                 goToFragment(FragmentSettings.class);
@@ -239,6 +207,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } catch (IllegalAccessException | InstantiationException e) {
             Log.e(TAG, "goToFragment: " + e.getMessage());
         }
+    }
+
+    /**
+     * External method to switch fragments from fragments.
+     * @param fragmentClass fragment to switch to.
+     */
+    public void switchFragment(final Class<? extends Fragment> fragmentClass) {
+        goToFragment(fragmentClass);
     }
 }
 

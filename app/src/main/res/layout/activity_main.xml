@@ -13,19 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="82dp"
-        android:text="main screen sortof" />
-
-    <Button
-        android:id="@+id/sign_in_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="241dp"
-        android:onClick="onStartClick"
-        android:text="Sign In" />
+        android:layout_centerInParent="true"
+        android:text="SPLASH SCREEN WITH LOGO" />
 
 </RelativeLayout>

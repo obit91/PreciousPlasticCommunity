@@ -163,4 +163,14 @@ public class User {
     public void setWorkshop(Workshop workshop) {
         this.workshop = workshop;
     }
+
+    /**
+     * Promotes a user to an owner account.
+     */
+    public void makeOwner() {
+        if (!owner) {
+            owner = true;
+            workshop = new Workshop();
+        }
+    }
 }

@@ -107,6 +107,10 @@ public class UserPoints {
         return String.valueOf(totalPoints);
     }
 
+    public void setTotalPoints(double totalPoints) {
+        this.totalPoints = totalPoints;
+    }
+
     /**
      * Increments user points by value.
      *

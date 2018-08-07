@@ -11,14 +11,12 @@ public class PPSession {
 
     private static User mUser;
     private static FirebaseAuth mAuth;
-    private static String uid;
     private static FirebaseDatabase firebaseDB;
     private static Context containerContext;
     private static HomeActivity homeActivity;
 
-    public static void setUser(User user) {
+    public static void setCurrentUser(User user) {
         mUser = user;
-        uid = user.getUid();
     }
 
     public static User getCurrentUser() {
@@ -31,10 +29,6 @@ public class PPSession {
 
     public static FirebaseAuth getFirebaseAuth() {
         return mAuth;
-    }
-
-    public static String getUid() {
-        return uid;
     }
 
     public static FirebaseDatabase getFirebaseDB() {

@@ -7,10 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
@@ -23,22 +20,19 @@ import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentMyWorkshop.OnFragmentInteractionListener} interface
+ * {@link FragmentMyWorkshopNonOwner.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentMyWorkshop#newInstance} factory method to
+ * Use the {@link FragmentMyWorkshopNonOwner#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
+public class FragmentMyWorkshopNonOwner extends Fragment implements View.OnClickListener
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private Spinner mTypeSpinner = null;
-    private TextView mNicknameTextView = null;
-    private TextView mScoreTextView = null;
-    private Button mConfirmButton = null;
+    private Button mBecomeOwnerButton = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -46,7 +40,7 @@ public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentMyWorkshop()
+    public FragmentMyWorkshopNonOwner()
     {
         // Required empty public constructor
     }
@@ -57,12 +51,12 @@ public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentMyWorkshop.
+     * @return A new instance of fragment FragmentMyWorkshopNonOwner.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentMyWorkshop newInstance(String param1, String param2)
+    public static FragmentMyWorkshopNonOwner newInstance(String param1, String param2)
     {
-        FragmentMyWorkshop fragment = new FragmentMyWorkshop();
+        FragmentMyWorkshopNonOwner fragment = new FragmentMyWorkshopNonOwner();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -86,23 +80,11 @@ public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_workshop, container, false);
-
-        // update spinner
-        mTypeSpinner = (Spinner) view.findViewById(R.id.mw_spinner_type);
-        ArrayAdapter<PointsType> pointsTypeArrayAdapter = new ArrayAdapter<PointsType>(
-                getContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                PointsType.values());
-        mTypeSpinner.setAdapter(pointsTypeArrayAdapter);
+        View view = inflater.inflate(R.layout.fragment_my_workshop_non_owner, container, false);
 
         // set button listener
-        mConfirmButton = (Button) view.findViewById(R.id.mw_btn_confirm);
-        mConfirmButton.setOnClickListener(this);
-
-        // set TextView fields
-        mNicknameTextView = (TextView)view.findViewById(R.id.mw_et_nickname);
-        mScoreTextView = (TextView)view.findViewById(R.id.mw_et_score);
+        mBecomeOwnerButton = (Button) view.findViewById(R.id.mw_non_owner_btn_become_owner);
+        mBecomeOwnerButton.setOnClickListener(this);
 
         return view;
     }
@@ -155,30 +137,20 @@ public class FragmentMyWorkshop extends Fragment implements View.OnClickListener
     }
 
     /**
-     * Upon clicking confirm, the input would be updated in the db.
+     * Upon clicking on become an owner the user gets promoted into an owner user.
      * @param view button view.
      */
-    private void onConfirmClick(View view) {
+    private void onBecomeOwnerClick(View view) {
         UserRepository userRepository = new UserRepository(getContext());
-
-        if (isTextViewNull(mNicknameTextView) || isTextViewNull(mScoreTextView)) {
-            Toast.makeText(getContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String nickname = mNicknameTextView.getText().toString();
-        PointsType type = (PointsType)mTypeSpinner.getSelectedItem();
-        double score = Double.parseDouble(mScoreTextView.getText().toString());
-
-        userRepository.updateUserPoints(nickname, type, score);
-        PPSession.getHomeActivity().onBackPressed();
+        userRepository.becomeOwner();
+        PPSession.getHomeActivity().switchFragment(FragmentMyWorkshopOwner.class);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case (R.id.mw_btn_confirm):
-                onConfirmClick(view);
+            case (R.id.mw_non_owner_btn_become_owner):
+                onBecomeOwnerClick(view);
                 break;
         }
     }

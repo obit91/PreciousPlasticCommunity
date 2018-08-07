@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.DBConstants;
+import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +23,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,7 +36,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     private TextView emailTextView = null;
     private TextView passwordTextView = null;
-    private CheckBox ownerCheckBox = null;
+
+    private DatabaseReference mUsersTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
         // db access
         userRepo = new UserRepository(this);
+        mUsersTable = PPSession.getFirebaseDB().getReference(DBConstants.USERS_COLLECTION);
 
         // gui access
         emailTextView = (TextView) findViewById(R.id.welcome_text_email);
@@ -62,7 +68,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            loggedIn();
+            loggedIn(currentUser.getDisplayName());
         }
     }
 
@@ -78,12 +84,30 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         //TODO: fix missing owner checkbox
 //        boolean owner = ownerCheckBox.isChecked();
         String nickname = email.substring(0, email.indexOf("@"));
-        createUser(email, password, nickname, true);
+        createUser(email, password, nickname, false);
     }
 
     public void onSignOutClick(View view) {
         Toast.makeText(this, "sign out", Toast.LENGTH_SHORT).show();
         signOut();
+    }
+
+    /**
+     * Create new document in 'users' collection in database.
+     * Document will have unique identifier of param nickName.
+     */
+    public void insertUser(FirebaseUser firebaseUser, final String nickname, boolean owner) {
+        User user = new User(firebaseUser, nickname, owner);
+        mUsersTable.child(nickname).setValue(user, new DatabaseReference.CompletionListener() {
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error == null) {
+                    Log.i(TAG, "insertUser: created " + nickname);
+                    loggedIn(nickname);
+                } else {
+                    Log.e(TAG, "insertUser: " + error.getMessage());
+                }
+            }
+        });
     }
 
     /**
@@ -106,8 +130,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                                     .setDisplayName(nickname)
                                     .build();
                             user.updateProfile(profileUpdates);
-                            userRepo.insertUser(user, nickname, owner);
-                            loggedIn();
+                            insertUser(user, nickname, owner);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
@@ -133,7 +156,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.i(TAG, "signInWithEmail:success");
-                            loggedIn();
+                            loggedIn(mAuth.getCurrentUser().getDisplayName());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "signInWithEmail:failure", task.getException());
@@ -156,8 +179,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     /**
      * Switches activity to the home intent (upon login).
      */
-    void loggedIn() {
-        String nickname = mAuth.getCurrentUser().getDisplayName();
+    void loggedIn(final String nickname) {
         userRepo.updateLastLogin(nickname);
         Intent homeIntent = new Intent(this, HomeActivity.class);
         startActivity(homeIntent);

@@ -1,10 +1,13 @@
 package com.example.android.preciousplastic.db.repositories;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.activities.MainActivity;
+import com.example.android.preciousplastic.activities.WelcomeActivity;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
@@ -34,46 +37,11 @@ public class UserRepository {
     }
 
     /**
-     * Listens for changes in the current user.
+     * Updates the last login of the user.
+     * @param nickname user that logged in.
      */
-    private void currentUserListener(String uid) {
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get User object.
-                PPSession.setUser(dataSnapshot.getValue(User.class));
-                Log.i(TAG, "userListener: id - " + PPSession.getUid());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting User failed, log a message
-                Log.e(TAG, "userListener:onCancelled", databaseError.toException());
-            }
-        };
-        mUsersTable.child(uid).addValueEventListener(userListener);
-    }
-
-    /**
-     * Create new document in 'users' collection in database.
-     * Document will have unique identifier of param nickName.
-     */
-    public void insertUser(FirebaseUser firebaseUser, final String nickname, boolean owner) {
-        User user = new User(firebaseUser, nickname, owner);
-        mUsersTable.child(nickname).setValue(user, new DatabaseReference.CompletionListener() {
-            public void onComplete(DatabaseError error, DatabaseReference ref) {
-                if (error == null) {
-                    Log.i(TAG, "insertUser: created " + nickname);
-                } else {
-                    Log.e(TAG, "insertUser: " + error.getMessage());
-                }
-            }
-        });
-    }
-
-    public void updateLastLogin(String uid) {
-        currentUserListener(uid);
-        mUsersTable.child(uid).child("lastLogin").setValue(System.nanoTime(), new DatabaseReference.CompletionListener() {
+    public void updateLastLogin(String nickname) {
+        mUsersTable.child(nickname).child("lastLogin").setValue(System.nanoTime(), new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 if (error == null) {
                     Log.i(TAG, "updateLastLogin: " + System.nanoTime());
@@ -134,5 +102,32 @@ public class UserRepository {
         Toast.makeText(mContext,
                 String.format(message, user.getNickname(), score, type),
                 Toast.LENGTH_SHORT).show();
+    }
+
+    public void becomeOwner() {
+
+        final String nickname = PPSession.getCurrentUser().getNickname();
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user == null) {
+                    Log.e(TAG, "becomeOwner: failed to retrieve current user.");
+                } else {
+                    user.makeOwner();
+                    updateUser(user);
+                    String msg = "becomeOwner: %s has become an owner.";
+                    Log.i(TAG, String.format(msg, nickname));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting User failed, log a message
+                Log.e(TAG, "becomeOwner:onCancelled", databaseError.toException());
+            }
+        };
+        mUsersTable.child(nickname).addListenerForSingleValueEvent(userListener);
     }
 }
