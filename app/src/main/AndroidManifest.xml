@@ -28,16 +28,6 @@
         <activity
             android:name=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.NavigationDrawer"
-            android:label="Precious Plastic"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--Todo: #drawer and UNhide these:-->
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
 
     </application>
 

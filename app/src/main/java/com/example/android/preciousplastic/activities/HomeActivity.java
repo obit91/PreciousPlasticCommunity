@@ -1,6 +1,7 @@
 package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,6 +96,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onStart() {
         super.onStart();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         goToFragment(FragmentHome.class);
 
     }
@@ -112,7 +117,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-/*    *//**
+    /*    *//**
      * Logs out the current user.
      *
      * @param view
@@ -143,7 +148,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(signInIntent);
     }
 
-/*    *//**
+    /*    *//**
      * Opens the map.
      *
      * @param view

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/orange_bg_light"
-    tools:context=".fragments.FragmentSettings">
+    tools:context=".activities.HomeActivity">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -21,12 +21,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:id="@+id/settings_switch_notifications"
+        android:id="@+id/settings_switch_themes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="168dp"
         android:layout_marginTop="92dp"
-        android:text="Theme: Dark/Light"
+        android:text="Theme: Light/Dark"
+        android:thumbTint="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

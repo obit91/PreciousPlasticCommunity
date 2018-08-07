@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <translate
-        android:duration="200"
+        android:duration="180"
         android:fromXDelta="0%"
         android:fromYDelta="0%"
         android:toXDelta="100%"
