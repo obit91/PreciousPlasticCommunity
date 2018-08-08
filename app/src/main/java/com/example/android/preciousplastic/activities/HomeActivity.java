@@ -16,21 +16,23 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.fragments.FragmentAboutUs;
 import com.example.android.preciousplastic.fragments.FragmentBazaar;
 import com.example.android.preciousplastic.fragments.FragmentCart;
 import com.example.android.preciousplastic.fragments.FragmentHome;
+import com.example.android.preciousplastic.fragments.FragmentMap;
 import com.example.android.preciousplastic.fragments.FragmentMyWorkshopNonOwner;
 import com.example.android.preciousplastic.fragments.FragmentMyWorkshopOwner;
 import com.example.android.preciousplastic.fragments.FragmentProfile;
 import com.example.android.preciousplastic.fragments.FragmentSettings;
 import com.example.android.preciousplastic.fragments.FragmentTest;
 import com.example.android.preciousplastic.fragments.FragmentWorkshops;
-import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.fragments.FragmentMap;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.Serializable;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final String PRECIOUS_PLASTIC_URL = "https://preciousplastic.com/";
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
-    private Class<? extends Fragment> currentFragment;
+    private Class<? extends Fragment> currentFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +67,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("activeFragment", currentFragment);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        /**
+         * Restoring the previous opened fragment.
+         */
+        if (currentFragment != FragmentHome.class && savedInstanceState != null) {
+            Serializable activeFragment = savedInstanceState.getSerializable("activeFragment");
+            Fragment fragment = (Fragment)activeFragment;
+            goToFragment(fragment.getClass());
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        goToFragment(FragmentHome.class);
-
+        if (currentFragment == null) {
+            goToFragment(FragmentHome.class);
+        }
     }
 
     @Override
@@ -83,7 +105,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "lol no turning back", Toast.LENGTH_SHORT).show();
             } else {
                 goToFragment(FragmentHome.class);
-//                super.onBackPressed();
             }
         }
     }
@@ -177,14 +198,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void goToFragment(final Class<? extends Fragment> fragmentClass) {
 
         if (fragmentClass == currentFragment) {
-            Toast.makeText(this, "Useless user is useless!", Toast.LENGTH_SHORT).show();
+            String msg = "Useless user is useless! <%s>";
+            Toast.makeText(this, String.format(msg, fragmentClass.getSimpleName()), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        try {
-            // update current fragment.
-            currentFragment = fragmentClass;
+        // update current fragment.
+        currentFragment = fragmentClass;
 
+        performFragmentSwitch(fragmentClass);
+    }
+
+    /**
+     * Implements a fragment switch.
+     * @param fragmentClass fragment to switch to.
+     */
+    private void performFragmentSwitch(Class<? extends Fragment> fragmentClass) {
+        try {
             // retrieve details of given fragment class.
             Fragment fragment = fragmentClass.newInstance();
             String fragmentName = fragmentClass.getSimpleName();

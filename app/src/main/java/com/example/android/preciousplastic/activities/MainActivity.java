@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private static final boolean ACTIVE_USER = true;
     private static final boolean NO_ACTIVE_USER = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
