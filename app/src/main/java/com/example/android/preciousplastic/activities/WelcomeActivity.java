@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.example.android.preciousplastic.fragments.FragmentHome;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,16 +30,16 @@ import com.google.firebase.database.DatabaseReference;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
+    private FirebaseAuth mAuth;
 
     private static final String TAG = "WELCOME_ACTIVITY";
+
+    private static boolean active = false;
 
     private UserRepository userRepo;
 
     private TextView emailTextView = null;
     private TextView passwordTextView = null;
-
-    private DatabaseReference mUsersTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,35 +52,45 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         registerButton.setOnClickListener(this);
         signInButton.setOnClickListener(this);
 
-        // db access
-        userRepo = new UserRepository(this);
-        mUsersTable = PPSession.getFirebaseDB().getReference(DBConstants.USERS_COLLECTION);
-
         // gui access
         emailTextView = (TextView) findViewById(R.id.welcome_text_email);
         passwordTextView = (TextView) findViewById(R.id.welcome_text_password);
-        //TODO: fix missing checkbox owner
-//        ownerCheckBox = (CheckBox)findViewById(R.id.checkbox_owner);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        active = true;
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            loggedIn(currentUser.getDisplayName());
-        }
+
+        // user access
+        mAuth = PPSession.getFirebaseAuth();
+
+        // db access
+        userRepo = new UserRepository(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
+
+    public static boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "lol no turning back", Toast.LENGTH_SHORT).show();
     }
 
     public void onSignInClick(View view) {
-        Toast.makeText(this, "sign in", Toast.LENGTH_SHORT).show();
         loginUser(emailTextView.getText().toString(), passwordTextView.getText().toString());
     }
 
     public void onRegisterClick(View view) {
-        Toast.makeText(this, "register", Toast.LENGTH_SHORT).show();
         String email = emailTextView.getText().toString();
         String password = passwordTextView.getText().toString();
         //TODO: fix missing owner checkbox
@@ -87,18 +99,14 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         createUser(email, password, nickname, false);
     }
 
-    public void onSignOutClick(View view) {
-        Toast.makeText(this, "sign out", Toast.LENGTH_SHORT).show();
-        signOut();
-    }
-
     /**
      * Create new document in 'users' collection in database.
      * Document will have unique identifier of param nickName.
      */
     public void insertUser(FirebaseUser firebaseUser, final String nickname, boolean owner) {
         User user = new User(firebaseUser, nickname, owner);
-        mUsersTable.child(nickname).setValue(user, new DatabaseReference.CompletionListener() {
+        DatabaseReference usersTable = PPSession.getUsersTable();
+        usersTable.child(nickname).setValue(user, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 if (error == null) {
                     Log.i(TAG, "insertUser: created " + nickname);
@@ -171,9 +179,9 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
      * Logs out the currently connected user.
      */
     private void signOut() {
-        String mail = mAuth.getCurrentUser().getEmail();
+        String nickname = mAuth.getCurrentUser().getDisplayName();
         mAuth.signOut();
-        Log.i(TAG, mail + " Signed out.");
+        Log.i(TAG, nickname + " Signed out.");
     }
 
     /**

@@ -94,19 +94,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void signOut() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            String mail = user.getEmail();
+            String nickname = user.getDisplayName();
+            String msg = "SignOut: %s signed out.";
             mAuth.signOut();
-            Log.i(TAG, mail + " Signed out.");
+            Log.i(TAG, String.format(msg, nickname));
         }
-        returnToSignIn();
-    }
-
-    /**
-     * Switches activity to the sign-in intent (usually after sign out).
-     */
-    private void returnToSignIn() {
-        Intent signInIntent = new Intent(this, WelcomeActivity.class);
-        startActivity(signInIntent);
     }
 
     /**
@@ -168,6 +160,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.drawer_sign_out:
                 signOut();
+                finish();
                 break;
             default:
                 break;

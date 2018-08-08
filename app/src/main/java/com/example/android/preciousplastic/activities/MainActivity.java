@@ -2,13 +2,13 @@ package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MAIN_ACTIVITY";
 
-    private DatabaseReference mUsersTable;
+    private static final boolean ACTIVE_USER = true;
+    private static final boolean NO_ACTIVE_USER = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,31 +35,55 @@ public class MainActivity extends AppCompatActivity {
 
         // init firebase
         FirebaseApp.initializeApp(this);
-        PPSession.setFirebaseAuth(FirebaseAuth.getInstance());
-        PPSession.setFirebaseDB(FirebaseDatabase.getInstance());
-        mUsersTable = PPSession.getFirebaseDB().getReference(DBConstants.USERS_COLLECTION);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.i(TAG, "onStart: Starting a new flow.");
+        PPSession.setFirebaseDB(FirebaseDatabase.getInstance());
+        fireBaseAuthInit();
+    }
 
-        // init current user
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            currentUserListener(currentUser.getDisplayName());
-        } else {
-            Log.i(TAG, "onStart: New device (app started with no current user).");
-            startApp();
-        }
+    /**
+     * Initiates firebase authentication.
+     */
+    private void fireBaseAuthInit() {
+        FirebaseAuth.AuthStateListener authListener;
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+                    if (currentUser.getDisplayName() != null) {
+                        currentUserListener(currentUser.getDisplayName());
+                        startApp(ACTIVE_USER);
+                    } else {
+                        Log.i(TAG, "fireBaseAuthInit: Created user, awaiting nickname update.");
+                    }
+                } else {
+                    Log.i(TAG, "fireBaseAuthInit: New device (app started with no current user).");
+                    startApp(NO_ACTIVE_USER);
+                }
+            }
+        };
+        firebaseAuth.addAuthStateListener(authListener);
+        PPSession.setFirebaseAuth(firebaseAuth);
     }
 
     /**
      * Starts the app after retrieving the main user.
+     * @param activeUser true if the user is already authenticated.
      */
-    private void startApp() {
-        Intent welcomeActivity = new Intent(this, WelcomeActivity.class);
-        startActivity(welcomeActivity);
+    private void startApp(boolean activeUser) {
+        if (activeUser) {
+            Intent homeActivity = new Intent(this, HomeActivity.class);
+            startActivity(homeActivity);
+        } else {
+            Intent welcomeActivity = new Intent(this, WelcomeActivity.class);
+            startActivity(welcomeActivity);
+        }
     }
 
     /**
@@ -67,16 +93,9 @@ public class MainActivity extends AppCompatActivity {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (PPSession.getCurrentUser() == null) {
-                    PPSession.setCurrentUser(dataSnapshot.getValue(User.class));
-                    String msg = "currentUserListener: listening to current user <%s>";
-                    Log.i(TAG, String.format(msg, nickname));
-                    startApp();
-                } else {
-                    PPSession.setCurrentUser(dataSnapshot.getValue(User.class));
-                    String msg = "currentUserListener: updating current user <%s>";
-                    Log.i(TAG, String.format(msg, nickname));
-                }
+                PPSession.setCurrentUser(dataSnapshot.getValue(User.class));
+                String msg = "currentUserListener: updating current user <%s>";
+                Log.i(TAG, String.format(msg, nickname));
             }
 
             @Override
@@ -86,6 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         };
-        mUsersTable.child(nickname).addValueEventListener(userListener);
+        PPSession.getUsersTable().child(nickname).addValueEventListener(userListener);
     }
 }

@@ -1,13 +1,10 @@
 package com.example.android.preciousplastic.db.repositories;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.android.preciousplastic.activities.MainActivity;
-import com.example.android.preciousplastic.activities.WelcomeActivity;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
@@ -15,7 +12,6 @@ import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,11 +24,9 @@ public class UserRepository {
 
     private static final String TAG = "USER_REPOSITORY";
 
-    private DatabaseReference mUsersTable;
     private Context mContext;
 
     public UserRepository(Context context) {
-        mUsersTable = PPSession.getFirebaseDB().getReference(DBConstants.USERS_COLLECTION);
         mContext = context;
     }
 
@@ -41,7 +35,7 @@ public class UserRepository {
      * @param nickname user that logged in.
      */
     public void updateLastLogin(String nickname) {
-        mUsersTable.child(nickname).child("lastLogin").setValue(System.nanoTime(), new DatabaseReference.CompletionListener() {
+        PPSession.getUsersTable().child(nickname).child("lastLogin").setValue(System.nanoTime(), new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 if (error == null) {
                     Log.i(TAG, "updateLastLogin: " + System.nanoTime());
@@ -60,7 +54,7 @@ public class UserRepository {
     public void updateUser(User user) {
         Map<String, Object> tablesToUpdate = new HashMap<>();
         tablesToUpdate.put(user.getNickname(), user.toMap());
-        mUsersTable.updateChildren(tablesToUpdate)
+        PPSession.getUsersTable().updateChildren(tablesToUpdate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -91,7 +85,7 @@ public class UserRepository {
                 Log.e(TAG, "updateUserPoints:onCancelled", databaseError.toException());
             }
         };
-        mUsersTable.child(nickname).addListenerForSingleValueEvent(userListener);
+        PPSession.getUsersTable().child(nickname).addListenerForSingleValueEvent(userListener);
     }
 
     private void writeUserPoints(final User user, final PointsType type, final double score) {
@@ -128,6 +122,6 @@ public class UserRepository {
                 Log.e(TAG, "becomeOwner:onCancelled", databaseError.toException());
             }
         };
-        mUsersTable.child(nickname).addListenerForSingleValueEvent(userListener);
+        PPSession.getUsersTable().child(nickname).addListenerForSingleValueEvent(userListener);
     }
 }
