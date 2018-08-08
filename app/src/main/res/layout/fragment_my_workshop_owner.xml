@@ -44,7 +44,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Amount of points to give"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
 

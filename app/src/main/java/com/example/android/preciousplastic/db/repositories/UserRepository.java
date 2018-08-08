@@ -75,7 +75,7 @@ public class UserRepository {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 writeUserPoints(user, type, score);
-                String msg = "updateUserPoints: <nick, type, score> = <%s><%s><%d>";
+                String msg = "updateUserPoints: <nick, type, score> = <%s><%s><%.2f>";
                 Log.i(TAG, String.format(msg, nickname, type, score));
             }
 
@@ -92,7 +92,7 @@ public class UserRepository {
         UserPoints userPoints = user.getPoints();
         userPoints.incrementType(type, score);
         updateUser(user);
-        String message = "User %s: incremented %d points of %s";
+        String message = "User %s: incremented %.2f points of %s";
         Toast.makeText(mContext,
                 String.format(message, user.getNickname(), score, type),
                 Toast.LENGTH_SHORT).show();
