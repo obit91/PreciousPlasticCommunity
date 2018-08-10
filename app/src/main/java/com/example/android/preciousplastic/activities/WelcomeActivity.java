@@ -104,12 +104,13 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
      * Document will have unique identifier of param nickName.
      */
     public void insertUser(FirebaseUser firebaseUser, final String nickname, boolean owner) {
-        User user = new User(firebaseUser, nickname, owner);
+        final User user = new User(firebaseUser, nickname, owner);
         DatabaseReference usersTable = PPSession.getUsersTable();
         usersTable.child(nickname).setValue(user, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
                 if (error == null) {
                     Log.i(TAG, "insertUser: created " + nickname);
+                    PPSession.setCurrentUser(user);
                     loggedIn(nickname);
                 } else {
                     Log.e(TAG, "insertUser: " + error.getMessage());
@@ -187,7 +188,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     /**
      * Switches activity to the home intent (upon login).
      */
-    void loggedIn(final String nickname) {
+    void loggedIn(String nickname) {
         userRepo.updateLastLogin(nickname);
         Intent homeIntent = new Intent(this, HomeActivity.class);
         startActivity(homeIntent);
