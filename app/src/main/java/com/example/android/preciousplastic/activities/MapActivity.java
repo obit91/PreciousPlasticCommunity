@@ -1,6 +1,10 @@
 package com.example.android.preciousplastic.activities;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,19 +25,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.utils.PPSession;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
-import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
-import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
-import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
-import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,73 +162,73 @@ public class MapActivity extends AppCompatActivity {
     private void handlePinKeys(final ArrayList pinsArrayList) {
 
         // create OverlayItem per each Pin Key
-        List<IGeoPoint> points = new ArrayList<>();
+        List<OverlayItem> points = new ArrayList<>();
         for (Object entry : pinsArrayList) {
             LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
             String name = (String) linkedTreeMap.get(MapPinKeys.NAME);
             double lat = (double) linkedTreeMap.get(MapPinKeys.LAT);
             double lng = (double) linkedTreeMap.get(MapPinKeys.LNG);
-            points.add(new LabelledGeoPoint(lat, lng, name));
+            OverlayItem tmpOverlayItem = new OverlayItem(name, "desc!", new GeoPoint(lat, lng));
+            points.add(tmpOverlayItem);
         }
 
-        // wrap points in a theme
-        SimplePointTheme pointThm = new SimplePointTheme(points, true);
+        // icon for workshops
+        BitmapFactory.Options opt =  new BitmapFactory.Options();
+        opt.inSampleSize = 1;
+        Bitmap bitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.precious_plastic_logo_small, opt);
+        Drawable drawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), bitmap);
 
-        // set some visual options for the overlay
-        // MEDIUM_OPTIMIZATION: do not use when > 10,000k points
-        // 23/07/18 ~8,000k points
-        SimpleFastPointOverlayOptions opts = SimpleFastPointOverlayOptions.getDefaultStyle()
-                .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MEDIUM_OPTIMIZATION)
-                .setRadius(7).setIsClickable(true).setCellSize(15).setMaxNShownLabels(50);
+        // workshop pins overlay
+        ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(points, drawable,
+            new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                @Override
+                public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+                    LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
 
-        // create the overlay with the theme
-        final PPSimpleFastPointOverlayActivity fastOverlay = new PPSimpleFastPointOverlayActivity(pointThm, opts);
+                    // Initialize a new instance of LayoutInflater service and inflate the popupWindow layout
+                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View popupView = inflater.inflate(R.layout.lo_map_pin_popup, null);
 
-        // onClick callback
-        fastOverlay.setOnClickListener(new SimpleFastPointOverlay.OnClickListener() {
-            @Override
-            public void onClick(SimpleFastPointOverlay.PointAdapter points, Integer point) {
+                    // set attributes to popup view
+                    TextView title = popupView.findViewById(R.id.workshopTitle);
+                    title.setText(item.getTitle());
+                    TextView desc = popupView.findViewById(R.id.workshopDescription);
+                    desc.setText((String) chosenPointInfo.get(MapPinKeys.DESC));
+                    Button website = popupView.findViewById(R.id.websiteBtn);
+                    //todo: open browser at website address
 
-                LabelledGeoPoint chosenPoint = (LabelledGeoPoint) points.get(point);
-                LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(point);
-
-                // Initialize a new instance of LayoutInflater service and inflate the popupWindow layout
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.lo_map_pin_popup, null);
-
-                // set attributes to popup view
-                TextView title = (TextView) popupView.findViewById(R.id.workshopTitle);
-                title.setText(chosenPoint.getLabel());
-                TextView desc = (TextView) popupView.findViewById(R.id.workshopDescription);
-                desc.setText((String) chosenPointInfo.get(MapPinKeys.DESC));
-                Button website = (Button) popupView.findViewById(R.id.websiteBtn);
-                //todo: open browser at website address
-
-                // dismiss popup window if there is already one open
-                if (popupWindow != null) {
-                    popupWindow.dismiss();
-                }
-
-                // Initialize a new popupWindow window
-                popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                // Get a reference for the custom view close button
-                ImageButton closeButton = (ImageButton) popupView.findViewById(R.id.closePopupBtn);
-
-                // Set a click listener for the popup window close button
-                closeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // Dismiss the popup window
+                    // dismiss popup window if there is already one open
+                    if (popupWindow != null) {
                         popupWindow.dismiss();
                     }
-                });
 
-                // set location of popup window on screen to the clicked point
-                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-            }
-        });
-        mapView.getOverlays().add(fastOverlay);
+                    // Initialize a new popupWindow window
+                    popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                    // Get a reference for the custom view close button
+                    ImageButton closeButton = popupView.findViewById(R.id.closePopupBtn);
+
+                    // Set a click listener for the popup window close button
+                    closeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Dismiss the popup window
+                            popupWindow.dismiss();
+                        }
+                    });
+
+                    // set location of popup window on screen to the clicked point
+                    popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+                    return true;
+                }
+                @Override
+                public boolean onItemLongPress(final int index, final OverlayItem item) {
+                    return false;
+                }
+            }, PPSession.getContainerContext());
+
+        // set the overlay on the map
+        mapView.getOverlays().add(mOverlay);
     }
 
 }
