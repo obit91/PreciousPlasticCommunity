@@ -57,12 +57,15 @@ public class MapActivity extends AppCompatActivity {
         final static String LNG = "lng";
         final static String DESC = "description";
         final static String SITE = "website";
-        final static String FILTERS = "filters";
         final static String IMGS = "imgs";
         final static String STATUS = "status";
         final static String CREATED = "created_date";
         final static String MODIFIED = "modified_date";
         final static String USERNAME = "username";
+        final static String FILTERS = "filters";
+        final static String FILTERS_STARTED = "STARTED";    //Want to get started
+        final static String FILTERS_WORKSHOP = "WORKSHOP";  // Workspace
+        final static String FILTERS_MACHINE = "MACHINE";    // Machine Builder
     }
 
     private Context context;
@@ -162,73 +165,108 @@ public class MapActivity extends AppCompatActivity {
     private void handlePinKeys(final ArrayList pinsArrayList) {
 
         // create OverlayItem per each Pin Key
-        List<OverlayItem> points = new ArrayList<>();
+        List<OverlayItem> workshopPoints = new ArrayList<>();
+        List<OverlayItem> startedPoints = new ArrayList<>();
+        List<OverlayItem> machinePoints = new ArrayList<>();
         for (Object entry : pinsArrayList) {
             LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
             String name = (String) linkedTreeMap.get(MapPinKeys.NAME);
             double lat = (double) linkedTreeMap.get(MapPinKeys.LAT);
             double lng = (double) linkedTreeMap.get(MapPinKeys.LNG);
             OverlayItem tmpOverlayItem = new OverlayItem(name, "desc!", new GeoPoint(lat, lng));
-            points.add(tmpOverlayItem);
-        }
 
-        // icon for workshops
+            // separate between STARTED / MACHINE / WORKSHOPS
+            ArrayList<String> filters = (ArrayList<String>) linkedTreeMap.get(MapPinKeys.FILTERS);
+            switch (filters.get(0)){
+                case MapPinKeys.FILTERS_WORKSHOP:
+                    workshopPoints.add(tmpOverlayItem);
+                    break;
+                case MapPinKeys.FILTERS_STARTED:
+                    startedPoints.add(tmpOverlayItem);
+                    break;
+                case MapPinKeys.FILTERS_MACHINE:
+                    machinePoints.add(tmpOverlayItem);
+                    break;
+            }
+        }
+        // bitmap options
         BitmapFactory.Options opt =  new BitmapFactory.Options();
         opt.inSampleSize = 1;
-        Bitmap bitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.precious_plastic_logo_small, opt);
-        Drawable drawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), bitmap);
 
-        // workshop pins overlay
-        ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(points, drawable,
-            new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                @Override
-                public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                    LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
+        // workshop overlay
+        Bitmap workshopBitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.precious_plastic_logo_small, opt);
+        Drawable workshopDrawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), workshopBitmap);
+        ItemizedIconOverlay<OverlayItem> workshopOverlay = getOverlay(workshopPoints, workshopDrawable);
 
-                    // Initialize a new instance of LayoutInflater service and inflate the popupWindow layout
-                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View popupView = inflater.inflate(R.layout.lo_map_pin_popup, null);
+        // machine builders overlay
+        Bitmap machineBitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.machine_logo_small, opt);
+        Drawable machineDrawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), machineBitmap);
+        ItemizedIconOverlay<OverlayItem> machineOverlay = getOverlay(machinePoints, machineDrawable);
 
-                    // set attributes to popup view
-                    TextView title = popupView.findViewById(R.id.workshopTitle);
-                    title.setText(item.getTitle());
-                    TextView desc = popupView.findViewById(R.id.workshopDescription);
-                    desc.setText((String) chosenPointInfo.get(MapPinKeys.DESC));
-                    Button website = popupView.findViewById(R.id.websiteBtn);
-                    //todo: open browser at website address
+        // getting stated overlay
+        Bitmap startedBitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.started_logo_small, opt);
+        Drawable startedDrawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), startedBitmap);
+        ItemizedIconOverlay<OverlayItem> startedOverlay = getOverlay(startedPoints, startedDrawable);
 
-                    // dismiss popup window if there is already one open
-                    if (popupWindow != null) {
-                        popupWindow.dismiss();
+        // set the overlays on the map
+        mapView.getOverlays().add(workshopOverlay);
+        mapView.getOverlays().add(machineOverlay);
+        mapView.getOverlays().add(startedOverlay);
+    }
+
+    private void showPinPopUp(String title, String desc, String website){
+
+        // Initialize a new instance of LayoutInflater service and inflate the popupWindow layout
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.lo_map_pin_popup, null);
+
+        // set attributes to popup view
+        TextView titleTxt = popupView.findViewById(R.id.workshopTitle);
+        titleTxt.setText(title);
+        TextView descTxt = popupView.findViewById(R.id.workshopDescription);
+        descTxt.setText(desc);
+        Button websiteBtn = popupView.findViewById(R.id.websiteBtn);
+        //todo: open browser at website address
+
+        // dismiss popup window if there is already one open
+        if (popupWindow != null) {
+            popupWindow.dismiss();
+        }
+
+        // Initialize a new popupWindow window
+        popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        // Get a reference for the custom view close button
+        ImageButton closeButton = popupView.findViewById(R.id.closePopupBtn);
+
+        // Set a click listener for the popup window close button
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Dismiss the popup window
+                popupWindow.dismiss();
+            }
+        });
+        // set location of popup window on screen to the clicked point
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+    }
+
+    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon){
+        ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(points, icon,
+                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                    @Override
+                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+                        LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
+                        String desc = (String) chosenPointInfo.get(MapPinKeys.DESC);
+                        showPinPopUp(item.getTitle(), desc, "website");
+                        return true;
                     }
-
-                    // Initialize a new popupWindow window
-                    popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                    // Get a reference for the custom view close button
-                    ImageButton closeButton = popupView.findViewById(R.id.closePopupBtn);
-
-                    // Set a click listener for the popup window close button
-                    closeButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // Dismiss the popup window
-                            popupWindow.dismiss();
-                        }
-                    });
-
-                    // set location of popup window on screen to the clicked point
-                    popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-                    return true;
-                }
-                @Override
-                public boolean onItemLongPress(final int index, final OverlayItem item) {
-                    return false;
-                }
-            }, PPSession.getContainerContext());
-
-        // set the overlay on the map
-        mapView.getOverlays().add(mOverlay);
+                    @Override
+                    public boolean onItemLongPress(final int index, final OverlayItem item) {
+                        return false;
+                    }
+                }, PPSession.getContainerContext());
+        return mOverlay;
     }
 
 }
