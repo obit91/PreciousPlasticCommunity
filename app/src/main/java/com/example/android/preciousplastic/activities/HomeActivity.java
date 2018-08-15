@@ -64,6 +64,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        PPSession.setMapActivity(new MapActivity());
     }
 
     @Override

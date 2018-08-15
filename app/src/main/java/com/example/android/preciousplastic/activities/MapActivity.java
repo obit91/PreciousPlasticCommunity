@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -63,7 +62,7 @@ public class MapActivity extends AppCompatActivity {
         final static String MODIFIED = "modified_date";
         final static String USERNAME = "username";
         final static String FILTERS = "filters";
-        final static String FILTERS_STARTED = "STARTED";    //Want to get started
+        final static String FILTERS_STARTED = "STARTED";    // Want to get started
         final static String FILTERS_WORKSHOP = "WORKSHOP";  // Workspace
         final static String FILTERS_MACHINE = "MACHINE";    // Machine Builder
     }
@@ -72,13 +71,16 @@ public class MapActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private MapView mapView;
 
+    // Overlays containing pins for map
+    ArrayList<ItemizedIconOverlay<OverlayItem>> overlayList;
+
     // pop up window when clicking on a map pin
     PopupWindow popupWindow;
 
 
-    public MapActivity(Context context, HomeActivity delegate) {
+    public MapActivity() {
 
-        this.context = context;
+        this.context = PPSession.getContainerContext();
 
         // TODO: handle OSMDROID dangerous permissions
 
@@ -88,14 +90,16 @@ public class MapActivity extends AppCompatActivity {
         // Instantiate the RequestQueue (for internet requests)
         requestQueue = Volley.newRequestQueue(context);
 
+        // prepare overlays for map
+        // TODO: put in async
+        overlayList = new ArrayList<>();
+        createOverlays();
     }
 
-    /**
-     * Define MapView, setup settings, and place pins on map.
-     *
-     * @param mapView
-     */
-    public void buildMap(MapView mapView) {
+    public void buildMap(MapView mapView){
+
+        assert overlayList != null;
+
         this.mapView = mapView;
 
         // Map settings
@@ -111,9 +115,10 @@ public class MapActivity extends AppCompatActivity {
         GeoPoint startPoint = new GeoPoint(48.0, 4.0);
         mapController.setCenter(startPoint);
 
-        // place pins on map
-        setMapPins();
-
+        // add pre-define overlays to mapView
+        for (ItemizedIconOverlay<OverlayItem> mOverlay: overlayList){
+            mapView.getOverlays().add(mOverlay);
+        }
     }
 
     public void onResume() {
@@ -131,9 +136,9 @@ public class MapActivity extends AppCompatActivity {
 
     /**
      * Request from web API all pins from PreciousPlastic Map.
-     * Set each pin on MapView.
+     * Set each pin in its overlay.
      */
-    void setMapPins() {
+    private void createOverlays() {
 
         String pinsUrl = BASE_URL + MAP_PINS_SUFFIX;
         StringRequest pinKeyRequest = new StringRequest(Request.Method.GET, pinsUrl, new Response.Listener<String>() {
@@ -159,10 +164,13 @@ public class MapActivity extends AppCompatActivity {
 
     /**
      * Place new Map Pin Keys on the Map View.
-     *
      * @param pinsArrayList holds linkedTreeMaps, each representing a pin key for map
      */
     private void handlePinKeys(final ArrayList pinsArrayList) {
+
+
+        // create grid to use for clustering
+
 
         // create OverlayItem per each Pin Key
         List<OverlayItem> workshopPoints = new ArrayList<>();
@@ -186,18 +194,19 @@ public class MapActivity extends AppCompatActivity {
                     machinePoints.add(tmpOverlayItem);
             }
         }
-        // create and add overlays to mapView
-        addOverlay(MapPinKeys.FILTERS_WORKSHOP, workshopPoints);
-        addOverlay(MapPinKeys.FILTERS_STARTED, startedPoints);
-        addOverlay(MapPinKeys.FILTERS_MACHINE, machinePoints);
+        // create overlays
+        addOverlay(MapPinKeys.FILTERS_WORKSHOP, workshopPoints, pinsArrayList);
+        addOverlay(MapPinKeys.FILTERS_STARTED, startedPoints, pinsArrayList);
+        addOverlay(MapPinKeys.FILTERS_MACHINE, machinePoints, pinsArrayList);
     }
 
     /**
-     * Will create an overlay for all given points, and add it to mapView.
+     * Will create an overlay for all given points.
      * @param overlayType WORKSHOP / STARTED / MACHINE
      * @param points all items to add to overlay
+     * @param pinsArrayList list of original items
      */
-    private void addOverlay(String overlayType, List<OverlayItem> points){
+    private void addOverlay(String overlayType, List<OverlayItem> points, final ArrayList pinsArrayList){
 
         // bitmap options
         BitmapFactory.Options opt =  new BitmapFactory.Options();
@@ -207,20 +216,20 @@ public class MapActivity extends AppCompatActivity {
         Bitmap bitmap;
         switch (overlayType){
             case MapPinKeys.FILTERS_WORKSHOP:
-                bitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.precious_plastic_logo_small, opt);
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.precious_plastic_logo_small, opt);
                 break;
             case MapPinKeys.FILTERS_MACHINE:
-                bitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.machine_logo_small, opt);
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.machine_logo_small, opt);
                 break;
             case MapPinKeys.FILTERS_STARTED:
-                bitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.started_logo_small, opt);
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.started_logo_small, opt);
                 break;
             default:
                 return;
         }
-        Drawable drawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), bitmap);
-        ItemizedIconOverlay<OverlayItem> mOverlay = getOverlay(points, drawable);
-        mapView.getOverlays().add(mOverlay);
+        Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
+        ItemizedIconOverlay<OverlayItem> mOverlay = getOverlay(points, drawable, pinsArrayList);
+        overlayList.add(mOverlay);
     }
 
     private void showPinPopUp(String title, String desc, String website){
@@ -260,12 +269,13 @@ public class MapActivity extends AppCompatActivity {
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
     }
 
-    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon){
+    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon, final ArrayList pinsArrayList){
         ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(points, icon,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                         LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
+                        // TODO: store description in overlayItem instead of having to query pointListArray (if possible)
                         String desc = (String) chosenPointInfo.get(MapPinKeys.DESC);
                         showPinPopUp(item.getTitle(), desc, "website");
                         return true;
@@ -274,7 +284,7 @@ public class MapActivity extends AppCompatActivity {
                     public boolean onItemLongPress(final int index, final OverlayItem item) {
                         return false;
                     }
-                }, PPSession.getContainerContext());
+                }, context);
         return mOverlay;
     }
 
