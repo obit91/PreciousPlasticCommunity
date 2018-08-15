@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
@@ -40,6 +39,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
@@ -88,14 +88,13 @@ public class MapActivity extends AppCompatActivity {
     private MapView mapView;
 
     // Overlays containing pins for map
-    // Map Keys: WORKSHOP / MACHINE / STARTED --> Overlay
-    Map<PinFilter, ItemizedIconOverlay<OverlayItem>> overlayMap;
+    List<ItemizedIconOverlay<OverlayItem>> overlayList;
 
     // 2d grids containing overlay items, used for clustering pins
     // Map Keys: WORKSHOP / MACHINE / STARTED --> 2d grid list
     Map<PinFilter, List<List<List<OverlayItem>>>> gridMap;
 
-    // Key: WORKSHOP/STARATED/MACHINE, Value: List of all points
+    // Key: WORKSHOP/STARTED/MACHINE, Value: List of all points
     Map<PinFilter, List<OverlayItem>> allPoints;
 
     // list of pins as will be pulled from web.
@@ -104,8 +103,14 @@ public class MapActivity extends AppCompatActivity {
     // pop up window when clicking on a map pin
     PopupWindow popupWindow;
 
-    // current zoom level (rounded) in map
+    // current zoom level (rounded) in map and View location coordinates
     int zoomLevel = 0;
+    int x = 0;
+    int y = 0;
+
+    // ===========================================================
+    // Constructors
+    // ===========================================================
 
     public MapActivity() {
 
@@ -124,6 +129,10 @@ public class MapActivity extends AppCompatActivity {
         initOverlaysGrid();
         initOverlays();
     }
+
+    // ===========================================================
+    // Public Methods
+    // ===========================================================
 
     public void buildMap(MapView mapView){
 
@@ -148,13 +157,14 @@ public class MapActivity extends AppCompatActivity {
         mapView.addMapListener(new MapListener() {
             @Override
             public boolean onScroll(ScrollEvent event) {
-                return false;
+                MapActivity.this.onScroll(event);
+                return true;
             }
-
             @Override
             public boolean onZoom(ZoomEvent event) {
-                MapActivity.this.onZoom();
-                return false;
+                Log.d("MapListener", "zoom");
+                MapActivity.this.onZoom(event);
+                return true;
             }
         });
 
@@ -163,21 +173,8 @@ public class MapActivity extends AppCompatActivity {
         drawOverlaysOnMap();
     }
 
-    private void drawOverlaysOnMap(){
-        mapView.getOverlays().clear();
-        for (ItemizedIconOverlay<OverlayItem> mOverlay: overlayMap.values()){
-            mapView.getOverlays().add(mOverlay);
-        }
-    }
-
-    private void onZoom(){
-        int newZoom = (int) mapView.getZoomLevelDouble();
-        // process only if zoom jump is significant and repeats itself twice (user halts on zoom)
-        if (newZoom != zoomLevel){
-            zoomLevel = newZoom;
-            setOverlays();
-            drawOverlaysOnMap();
-        }
+    public static boolean isWithin(Point p, MapView mapView) {
+        return (p.x > 0 & p.x < mapView.getWidth() & p.y > 0 & p.y < mapView.getHeight());
     }
 
     public void onResume() {
@@ -193,11 +190,48 @@ public class MapActivity extends AppCompatActivity {
         mapView.onPause();
     }
 
+    public void onScroll(ScrollEvent scrollEvent){
+        int newX = scrollEvent.getX();
+        int newY = scrollEvent.getY();
+        // process only if movement is significant
+        if (Math.hypot(newX-x, newY-y) > 100){
+            onMove();
+        }
+    }
+
+    public void onZoom(ZoomEvent zoomEvent){
+        int newZoom = (int) zoomEvent.getZoomLevel();
+        // process only if zoom jump is significant and repeats itself twice (user halts on zoom)
+        if (newZoom != zoomLevel){
+            zoomLevel = newZoom;
+            onMove();
+        }
+    }
+
+    /**
+     * Something changed on screen, update map pins.
+     */
+    public void onMove(){
+        setOverlays();
+        drawOverlaysOnMap();
+    }
+
+    // ===========================================================
+    // Private Methods
+    // ===========================================================
+
+    private void drawOverlaysOnMap(){
+        mapView.getOverlays().clear();
+        for (ItemizedIconOverlay<OverlayItem> mOverlay: overlayList){
+            mapView.getOverlays().add(mOverlay);
+        }
+    }
+
     private void setOverlays(){
 
         // initialize containers
         initOverlaysGrid();
-        overlayMap = new TreeMap<>();
+        overlayList = new ArrayList<>();
 
         for (PinFilter pinFilter : gridMap.keySet()) {
 
@@ -217,35 +251,26 @@ public class MapActivity extends AppCompatActivity {
                     double fractionX = ((double) p.x / (double) mapView.getWidth());
                     binX = (int) (Math.floor(DENSITY_X * fractionX));
                     double fractionY = ((double) p.y / (double) mapView.getHeight());
-                    binY = (int) (Math
-                            .floor(DENSITY_Y * fractionY));
+                    binY = (int) (Math.floor(DENSITY_Y * fractionY));
                     grid.get(binX).get(binY).add(overlayItem); // just push the reference
-                }else{
-                    Rect drawingRect = new Rect();
-                    Point currDevicePos = new Point();
-
-                    mapView.getDrawingRect(drawingRect);
-                    Boolean within = drawingRect.contains(p.x, p.y);
-                    Log.d("not isWithin", String.valueOf(within));
                 }
             }
             // drawing
+            List<OverlayItem> singleItems = new ArrayList<>();
+            List<OverlayItem> groupItems = new ArrayList<>();
             for (int k = 0; k < DENSITY_X; k++) {
                 for (int l = 0; l < DENSITY_Y; l++) {
                     List<OverlayItem> gridOverlayItemList = grid.get(k).get(l);
                     if (gridOverlayItemList.size() > 1) {
-                        addOverlay(pinFilter, PinType.GROUP, gridOverlayItemList);
+                        singleItems.addAll(gridOverlayItemList);
                     } else if (gridOverlayItemList.size() == 1) {
-                        // draw single pin
-                        addOverlay(pinFilter, PinType.SINGLE, gridOverlayItemList);
+                        groupItems.add(gridOverlayItemList.get(0));
                     }
                 }
             }
+            addOverlay(pinFilter, PinType.SINGLE, singleItems);
+            addOverlay(pinFilter, PinType.GROUP, groupItems);
         }
-    }
-
-    public static boolean isWithin(Point p, MapView mapView) {
-        return (p.x > 0 & p.x < mapView.getWidth() & p.y > 0 & p.y < mapView.getHeight());
     }
 
     /**
@@ -374,8 +399,8 @@ public class MapActivity extends AppCompatActivity {
                 return;
         }
         Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
-        ItemizedIconOverlay<OverlayItem> mOverlay = getOverlay(points, drawable);
-        overlayMap.put(overlayType, mOverlay);
+        ItemizedIconOverlay<OverlayItem> mOverlay = getOverlay(points, drawable, pinType);
+        overlayList.add(mOverlay);
     }
 
     private void showPinPopUp(String title, String desc, String website){
@@ -415,15 +440,17 @@ public class MapActivity extends AppCompatActivity {
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
     }
 
-    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon){
+    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon, final PinType pinType){
         ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(points, icon,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
-                        // TODO: store description in overlayItem instead of having to query pointListArray (if possible)
-                        String desc = (String) chosenPointInfo.get(MapPinKeys.DESC);
-                        showPinPopUp(item.getTitle(), desc, "website");
+                        if (pinType == PinType.SINGLE) {
+                            LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
+                            // TODO: store description in overlayItem instead of having to query pointListArray (if possible)
+                            String desc = (String) chosenPointInfo.get(MapPinKeys.DESC);
+                            showPinPopUp(item.getTitle(), desc, "website");
+                        }
                         return true;
                     }
                     @Override
