@@ -180,38 +180,47 @@ public class MapActivity extends AppCompatActivity {
             switch (filters.get(0)){
                 case MapPinKeys.FILTERS_WORKSHOP:
                     workshopPoints.add(tmpOverlayItem);
-                    break;
                 case MapPinKeys.FILTERS_STARTED:
                     startedPoints.add(tmpOverlayItem);
-                    break;
                 case MapPinKeys.FILTERS_MACHINE:
                     machinePoints.add(tmpOverlayItem);
-                    break;
             }
         }
+        // create and add overlays to mapView
+        addOverlay(MapPinKeys.FILTERS_WORKSHOP, workshopPoints);
+        addOverlay(MapPinKeys.FILTERS_STARTED, startedPoints);
+        addOverlay(MapPinKeys.FILTERS_MACHINE, machinePoints);
+    }
+
+    /**
+     * Will create an overlay for all given points, and add it to mapView.
+     * @param overlayType WORKSHOP / STARTED / MACHINE
+     * @param points all items to add to overlay
+     */
+    private void addOverlay(String overlayType, List<OverlayItem> points){
+
         // bitmap options
         BitmapFactory.Options opt =  new BitmapFactory.Options();
         opt.inSampleSize = 1;
 
-        // workshop overlay
-        Bitmap workshopBitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.precious_plastic_logo_small, opt);
-        Drawable workshopDrawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), workshopBitmap);
-        ItemizedIconOverlay<OverlayItem> workshopOverlay = getOverlay(workshopPoints, workshopDrawable);
-
-        // machine builders overlay
-        Bitmap machineBitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.machine_logo_small, opt);
-        Drawable machineDrawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), machineBitmap);
-        ItemizedIconOverlay<OverlayItem> machineOverlay = getOverlay(machinePoints, machineDrawable);
-
-        // getting stated overlay
-        Bitmap startedBitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.started_logo_small, opt);
-        Drawable startedDrawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), startedBitmap);
-        ItemizedIconOverlay<OverlayItem> startedOverlay = getOverlay(startedPoints, startedDrawable);
-
-        // set the overlays on the map
-        mapView.getOverlays().add(workshopOverlay);
-        mapView.getOverlays().add(machineOverlay);
-        mapView.getOverlays().add(startedOverlay);
+        // create bitmap
+        Bitmap bitmap;
+        switch (overlayType){
+            case MapPinKeys.FILTERS_WORKSHOP:
+                bitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.precious_plastic_logo_small, opt);
+                break;
+            case MapPinKeys.FILTERS_MACHINE:
+                bitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.machine_logo_small, opt);
+                break;
+            case MapPinKeys.FILTERS_STARTED:
+                bitmap = BitmapFactory.decodeResource(PPSession.getContainerContext().getResources(), R.drawable.started_logo_small, opt);
+                break;
+            default:
+                return;
+        }
+        Drawable drawable = new BitmapDrawable(PPSession.getContainerContext().getResources(), bitmap);
+        ItemizedIconOverlay<OverlayItem> mOverlay = getOverlay(points, drawable);
+        mapView.getOverlays().add(mOverlay);
     }
 
     private void showPinPopUp(String title, String desc, String website){
