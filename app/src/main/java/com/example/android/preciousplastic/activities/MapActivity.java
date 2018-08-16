@@ -363,18 +363,18 @@ public class MapActivity extends AppCompatActivity {
         opt.inSampleSize = 1;
 
         // create bitmap
-        Bitmap bitmap;
+        Drawable drawable;
         switch (pinType) {
             case SINGLE:
                 switch (overlayType) {
                     case WORKSHOP:
-                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.precious_plastic_logo_small, opt);
+                        drawable = context.getResources().getDrawable(R.drawable.precious_plastic_logo_small);
                         break;
                     case MACHINE:
-                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.machine_logo_small, opt);
+                        drawable = context.getResources().getDrawable(R.drawable.ic_machine_pin_foreground);
                         break;
                     case STARTED:
-                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.started_logo_small, opt);
+                        drawable = context.getResources().getDrawable(R.drawable.ic_started_pin_foreground);
                         break;
                     default:
                         return;
@@ -383,14 +383,13 @@ public class MapActivity extends AppCompatActivity {
             case GROUP:
                 switch (overlayType) {
                     case WORKSHOP:
-                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blue_background, opt);
+                        drawable = context.getResources().getDrawable(R.drawable.blue_cluster);
                         break;
                     case MACHINE:
-                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.grey_background, opt);
+                        drawable = context.getResources().getDrawable(R.drawable.grey_cluster);
                         break;
                     case STARTED:
-                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yellow_background, opt);
-                        break;
+                        drawable = context.getResources().getDrawable(R.drawable.orange_cluster);                        break;
                     default:
                         return;
                 }
@@ -398,7 +397,6 @@ public class MapActivity extends AppCompatActivity {
             default:
                 return;
         }
-        Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
         ItemizedIconOverlay<OverlayItem> mOverlay = getOverlay(points, drawable, pinType);
         overlayList.add(mOverlay);
     }
