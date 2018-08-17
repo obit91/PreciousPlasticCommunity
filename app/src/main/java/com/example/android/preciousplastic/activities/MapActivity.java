@@ -162,7 +162,6 @@ public class MapActivity extends AppCompatActivity {
             }
             @Override
             public boolean onZoom(ZoomEvent event) {
-                Log.d("MapListener", "zoom");
                 MapActivity.this.onZoom(event);
                 return true;
             }
@@ -227,6 +226,10 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Fill the clustering grid with the Overlay Items.
+     * Create the relevant overlays and store them in a container.
+     */
     private void setOverlays(){
 
         // initialize containers
@@ -234,7 +237,6 @@ public class MapActivity extends AppCompatActivity {
         overlayList = new ArrayList<>();
 
         for (PinFilter pinFilter : gridMap.keySet()) {
-
             List<OverlayItem> overlayItemList = allPoints.get(pinFilter);
             List<List<List<OverlayItem>>> grid = gridMap.get(pinFilter);
 
@@ -255,16 +257,16 @@ public class MapActivity extends AppCompatActivity {
                     grid.get(binX).get(binY).add(overlayItem); // just push the reference
                 }
             }
-            // drawing
+            // collect items from grid and assign to overlays
             List<OverlayItem> singleItems = new ArrayList<>();
             List<OverlayItem> groupItems = new ArrayList<>();
             for (int k = 0; k < DENSITY_X; k++) {
                 for (int l = 0; l < DENSITY_Y; l++) {
                     List<OverlayItem> gridOverlayItemList = grid.get(k).get(l);
                     if (gridOverlayItemList.size() > 1) {
-                        singleItems.addAll(gridOverlayItemList);
+                        groupItems.addAll(gridOverlayItemList);
                     } else if (gridOverlayItemList.size() == 1) {
-                        groupItems.add(gridOverlayItemList.get(0));
+                        singleItems.add(gridOverlayItemList.get(0));
                     }
                 }
             }
@@ -294,7 +296,7 @@ public class MapActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error response: " + String.valueOf(error));
+                Log.e("Error response", String.valueOf(error));
             }
         });
         // Add the request to requestQueue
@@ -337,15 +339,22 @@ public class MapActivity extends AppCompatActivity {
             double lng = (double) linkedTreeMap.get(MapPinKeys.LNG);
             OverlayItem tmpOverlayItem = new OverlayItem(name, "desc!", new GeoPoint(lat, lng));
 
-            // separate between STARTED / MACHINE / WORKSHOPS
+            // separate between WORKSHOPS / MACHINE / STARTED
+            // give precedence in this order, as some items may match several features
+            // TODO: allow pin to have several filters?
             ArrayList<String> filters = (ArrayList<String>) linkedTreeMap.get(MapPinKeys.FILTERS);
             switch (filters.get(0)){
                 case MapPinKeys.FILTERS_WORKSHOP:
                     allPoints.get(PinFilter.WORKSHOP).add(tmpOverlayItem);
-                case MapPinKeys.FILTERS_STARTED:
-                    allPoints.get(PinFilter.STARTED).add(tmpOverlayItem);
+                    break;
                 case MapPinKeys.FILTERS_MACHINE:
                     allPoints.get(PinFilter.MACHINE).add(tmpOverlayItem);
+                    break;
+                case MapPinKeys.FILTERS_STARTED:
+                    allPoints.get(PinFilter.STARTED).add(tmpOverlayItem);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -378,8 +387,7 @@ public class MapActivity extends AppCompatActivity {
                         break;
                     default:
                         return;
-                }
-                break;
+                } break;
             case GROUP:
                 switch (overlayType) {
                     case WORKSHOP:
@@ -392,8 +400,7 @@ public class MapActivity extends AppCompatActivity {
                         drawable = context.getResources().getDrawable(R.drawable.orange_cluster);                        break;
                     default:
                         return;
-                }
-                break;
+                } break;
             default:
                 return;
         }
