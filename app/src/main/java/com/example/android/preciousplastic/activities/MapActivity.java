@@ -1,11 +1,13 @@
 package com.example.android.preciousplastic.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -408,7 +410,7 @@ public class MapActivity extends AppCompatActivity {
         overlayList.add(mOverlay);
     }
 
-    private void showPinPopUp(String title, String desc, String website){
+    private void showPinPopUp(String title, String desc, final String website){
 
         // Initialize a new instance of LayoutInflater service and inflate the popupWindow layout
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -420,7 +422,18 @@ public class MapActivity extends AppCompatActivity {
         TextView descTxt = popupView.findViewById(R.id.workshopDescription);
         descTxt.setText(desc);
         Button websiteBtn = popupView.findViewById(R.id.websiteBtn);
-        //todo: open browser at website address
+        websiteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Log.i("Website OnClick", website);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                    context.startActivity(browserIntent);
+                }catch (Exception e){
+                    Log.e("Website OnClick error", e.toString());
+                }
+            }
+        });
 
         // dismiss popup window if there is already one open
         if (popupWindow != null) {
@@ -454,7 +467,7 @@ public class MapActivity extends AppCompatActivity {
                             LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
                             // TODO: store description in overlayItem instead of having to query pointListArray (if possible)
                             String desc = (String) chosenPointInfo.get(MapPinKeys.DESC);
-                            showPinPopUp(item.getTitle(), desc, "website");
+                            showPinPopUp(item.getTitle(), desc, (String) chosenPointInfo.get(MapPinKeys.SITE));
                         }
                         return true;
                     }
