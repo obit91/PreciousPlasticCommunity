@@ -26,7 +26,7 @@ public class FragmentMap extends Fragment {
         super.onStart();
 
         mapActivity = PPSession.getMapActivity();
-        MapView mapView = getView().findViewById(R.id.fragment_map);
+        MapView mapView = getView().findViewById(R.id.map_view);
         mapActivity.buildMap(mapView);
     }
 }

@@ -2,10 +2,9 @@ package com.example.android.preciousplastic.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
@@ -15,10 +14,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,6 +37,7 @@ import com.google.gson.internal.LinkedTreeMap;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
@@ -41,7 +46,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
@@ -51,41 +56,9 @@ import java.util.TreeMap;
 
 public class MapActivity extends AppCompatActivity {
 
-    // url addresses
-    private final String BASE_URL = "https://davehakkens.nl";
-    private final String MAP_PINS_SUFFIX = "/wp-json/map/v1/pins";
-
-    // logging tag
-    private static final String TAG = "MAP_ACTIVITY";
-
-    // keys of pins on map
-    private final class MapPinKeys {
-        final static String ID = "ID";
-        final static String NAME = "name";
-        final static String LAT = "lat";
-        final static String LNG = "lng";
-        final static String DESC = "description";
-        final static String SITE = "website";
-        final static String IMGS = "imgs";
-        final static String STATUS = "status";
-        final static String CREATED = "created_date";
-        final static String MODIFIED = "modified_date";
-        final static String USERNAME = "username";
-        final static String FILTERS = "filters";
-        final static String FILTERS_STARTED = "STARTED";    // Want to get started
-        final static String FILTERS_WORKSHOP = "WORKSHOP";  // Workspace
-        final static String FILTERS_MACHINE = "MACHINE";    // Machine Builder
-    }
-
-    // grid density binning
-    private final static int DENSITY_X = 10;
-    private final static int DENSITY_Y = 10;
-
-    // pin can be drawn as single, or as a group icon
-    enum PinType {SINGLE, GROUP}
-    enum PinFilter {STARTED, WORKSHOP, MACHINE}
 
     private Context context;
+    private Resources resources;
     private RequestQueue requestQueue;
     private MapView mapView;
 
@@ -94,10 +67,10 @@ public class MapActivity extends AppCompatActivity {
 
     // 2d grids containing overlay items, used for clustering pins
     // Map Keys: WORKSHOP / MACHINE / STARTED --> 2d grid list
-    Map<PinFilter, List<List<List<OverlayItem>>>> gridMap;
+    Map<MapConstants.PinFilter, List<List<List<OverlayItem>>>> gridMap;
 
     // Key: WORKSHOP/STARTED/MACHINE, Value: List of all points
-    Map<PinFilter, List<OverlayItem>> allPoints;
+    Map<MapConstants.PinFilter, List<OverlayItem>> allPoints;
 
     // list of pins as will be pulled from web.
     ArrayList pinsArrayList;
@@ -105,10 +78,19 @@ public class MapActivity extends AppCompatActivity {
     // pop up window when clicking on a map pin
     PopupWindow popupWindow;
 
+    // pop up window for filter options & hazard reporting
+    PopupWindow filterWindow;
+
     // current zoom level (rounded) in map and View location coordinates
     int zoomLevel = 0;
     int x = 0;
     int y = 0;
+
+    // overlay with long click listener
+    MapEventsOverlay OverlayEvents;
+
+    // map filters which to be shown on map
+    Map<Integer, Boolean> filtersActivated;
 
     // ===========================================================
     // Constructors
@@ -117,6 +99,7 @@ public class MapActivity extends AppCompatActivity {
     public MapActivity() {
 
         this.context = PPSession.getContainerContext();
+        resources = PPSession.getHomeActivity().getResources();
 
         // TODO: handle OSMDROID dangerous permissions
 
@@ -125,6 +108,13 @@ public class MapActivity extends AppCompatActivity {
 
         // Instantiate the RequestQueue (for internet requests)
         requestQueue = Volley.newRequestQueue(context);
+
+        // initialize filters mapping
+        filtersActivated = new TreeMap<>();
+        filtersActivated.put(R.id.filter_workspace_checkbox, true);
+        filtersActivated.put(R.id.filter_started_checkbox, true);
+        filtersActivated.put(R.id.filter_machine_checkbox, true);
+        filtersActivated.put(R.id.filter_hazard_checkbox, true);
 
         // prepare overlays for map
         // TODO: put in async
@@ -155,6 +145,9 @@ public class MapActivity extends AppCompatActivity {
         GeoPoint startPoint = new GeoPoint(48.0, 4.0);
         mapController.setCenter(startPoint);
 
+        // add Image Button which opens a filter window
+        setFilterListeners();
+
         // set map's onZoom
         mapView.addMapListener(new MapListener() {
             @Override
@@ -169,9 +162,29 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
+        // set map's LongClickListener
+        MapEventsReceiver mReceive = new MapEventsReceiver() {
+            @Override
+            public boolean singleTapConfirmedHelper(GeoPoint p) {
+                return false;
+            }
+
+            @Override
+            public boolean longPressHelper(GeoPoint p) {
+                onLongClick(p);
+                return true;
+            }
+        };
+        OverlayEvents = new MapEventsOverlay(context, mReceive);
+        mapView.getOverlays().add(OverlayEvents);
+
         // set and draw overlays on map
         setOverlays();
         drawOverlaysOnMap();
+    }
+
+    public void onLongClick(GeoPoint p){
+        reportHazard(p);
     }
 
     public static boolean isWithin(Point p, MapView mapView) {
@@ -221,8 +234,48 @@ public class MapActivity extends AppCompatActivity {
     // Private Methods
     // ===========================================================
 
+    /**
+     * Set OnClickListener to open a window with filter options.
+     */
+    private void setFilterListeners(){
+        FrameLayout mapLayout = (FrameLayout) PPSession.getHomeActivity().findViewById(R.id.fragment_map);
+        ImageButton imageButton = (ImageButton) mapLayout.getChildAt(1);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (filterWindow == null) {
+
+                    // open filters popup window
+                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                    LinearLayout filterView = (LinearLayout) inflater.inflate(R.layout.lo_map_filter, null);
+                    filterWindow = new PopupWindow(filterView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    filterWindow.showAtLocation(filterView, Gravity.CENTER, 0, 0);
+
+                    // connect listeners to checkboxes
+                    for (int i =0; i < filterView.getChildCount(); i++){
+                        RelativeLayout singleCheckboxLayout = (RelativeLayout) filterView.getChildAt(i);
+                        final CheckBox checkbox = (CheckBox) singleCheckboxLayout.getChildAt(0);
+                        checkbox.setChecked(filtersActivated.get(checkbox.getId()));
+                        checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                filtersActivated.put(checkbox.getId(), b);
+                                mapView.invalidate();
+                                // TODO: not updating (neither is postInvalidate). mapView not refreshing.
+                            }
+                        });
+                    }
+                } else {
+                    filterWindow.dismiss();
+                    filterWindow = null;
+                }
+            }
+        });
+    }
+
     private void drawOverlaysOnMap(){
         mapView.getOverlays().clear();
+        mapView.getOverlays().add(OverlayEvents);
         for (ItemizedIconOverlay<OverlayItem> mOverlay: overlayList){
             mapView.getOverlays().add(mOverlay);
         }
@@ -238,7 +291,10 @@ public class MapActivity extends AppCompatActivity {
         initOverlaysGrid();
         overlayList = new ArrayList<>();
 
-        for (PinFilter pinFilter : gridMap.keySet()) {
+        for (MapConstants.PinFilter pinFilter : gridMap.keySet()) {
+            if (!(filtersActivated.get(MapConstants.filterConstsMap.get(pinFilter)))){
+                continue;
+            }
             List<OverlayItem> overlayItemList = allPoints.get(pinFilter);
             List<List<List<OverlayItem>>> grid = gridMap.get(pinFilter);
 
@@ -253,17 +309,17 @@ public class MapActivity extends AppCompatActivity {
 
                 if (isWithin(p, mapView)) {
                     double fractionX = ((double) p.x / (double) mapView.getWidth());
-                    binX = (int) (Math.floor(DENSITY_X * fractionX));
+                    binX = (int) (Math.floor(MapConstants.DENSITY_X * fractionX));
                     double fractionY = ((double) p.y / (double) mapView.getHeight());
-                    binY = (int) (Math.floor(DENSITY_Y * fractionY));
+                    binY = (int) (Math.floor(MapConstants.DENSITY_Y * fractionY));
                     grid.get(binX).get(binY).add(overlayItem); // just push the reference
                 }
             }
             // collect items from grid and assign to overlays
             List<OverlayItem> singleItems = new ArrayList<>();
             List<OverlayItem> groupItems = new ArrayList<>();
-            for (int k = 0; k < DENSITY_X; k++) {
-                for (int l = 0; l < DENSITY_Y; l++) {
+            for (int k = 0; k < MapConstants.DENSITY_X; k++) {
+                for (int l = 0; l < MapConstants.DENSITY_Y; l++) {
                     List<OverlayItem> gridOverlayItemList = grid.get(k).get(l);
                     if (gridOverlayItemList.size() > 1) {
                         groupItems.addAll(gridOverlayItemList);
@@ -272,8 +328,8 @@ public class MapActivity extends AppCompatActivity {
                     }
                 }
             }
-            addOverlay(pinFilter, PinType.SINGLE, singleItems);
-            addOverlay(pinFilter, PinType.GROUP, groupItems);
+            addOverlay(pinFilter, MapConstants.PinType.SINGLE, singleItems);
+            addOverlay(pinFilter, MapConstants.PinType.GROUP, groupItems);
         }
     }
 
@@ -283,7 +339,7 @@ public class MapActivity extends AppCompatActivity {
      */
     private void initOverlays() {
 
-        String pinsUrl = BASE_URL + MAP_PINS_SUFFIX;
+        String pinsUrl = MapConstants.BASE_URL + MapConstants.MAP_PINS_SUFFIX;
         StringRequest pinKeyRequest = new StringRequest(Request.Method.GET, pinsUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -310,11 +366,11 @@ public class MapActivity extends AppCompatActivity {
      */
     private void initOverlaysGrid(){
         gridMap = new TreeMap<>();
-        for (PinFilter pinFilter: PinFilter.values()){
-            gridMap.put(pinFilter, new ArrayList<List<List<OverlayItem>>>(DENSITY_X));
-            for (int i = 0; i < DENSITY_X; i++) {
-                ArrayList<List<OverlayItem>> column = new ArrayList<>(DENSITY_Y);
-                for (int j = 0; j < DENSITY_Y; j++) {
+        for (MapConstants.PinFilter pinFilter: MapConstants.PinFilter.values()){
+            gridMap.put(pinFilter, new ArrayList<List<List<OverlayItem>>>(MapConstants.DENSITY_X));
+            for (int i = 0; i < MapConstants.DENSITY_X; i++) {
+                ArrayList<List<OverlayItem>> column = new ArrayList<>(MapConstants.DENSITY_Y);
+                for (int j = 0; j < MapConstants.DENSITY_Y; j++) {
                     column.add(new ArrayList<OverlayItem>());
                 }
                 gridMap.get(pinFilter).add(column);
@@ -329,31 +385,31 @@ public class MapActivity extends AppCompatActivity {
 
         // initialize allPoints container
         allPoints = new TreeMap<>();
-        for (PinFilter pinFilter: PinFilter.values()){
+        for (MapConstants.PinFilter pinFilter: MapConstants.PinFilter.values()){
             allPoints.put(pinFilter, new ArrayList<OverlayItem>());
         }
 
         // create OverlayItem per each Pin Key, and set to allPoints container
         for (Object entry : pinsArrayList) {
             LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
-            String name = (String) linkedTreeMap.get(MapPinKeys.NAME);
-            double lat = (double) linkedTreeMap.get(MapPinKeys.LAT);
-            double lng = (double) linkedTreeMap.get(MapPinKeys.LNG);
+            String name = (String) linkedTreeMap.get(MapConstants.MapPinKeys.NAME);
+            double lat = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LAT);
+            double lng = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LNG);
             OverlayItem tmpOverlayItem = new OverlayItem(name, "desc!", new GeoPoint(lat, lng));
 
             // separate between WORKSHOPS / MACHINE / STARTED
             // give precedence in this order, as some items may match several features
             // TODO: allow pin to have several filters?
-            ArrayList<String> filters = (ArrayList<String>) linkedTreeMap.get(MapPinKeys.FILTERS);
+            ArrayList<String> filters = (ArrayList<String>) linkedTreeMap.get(MapConstants.MapPinKeys.FILTERS);
             switch (filters.get(0)){
-                case MapPinKeys.FILTERS_WORKSHOP:
-                    allPoints.get(PinFilter.WORKSHOP).add(tmpOverlayItem);
+                case MapConstants.MapPinKeys.FILTERS_WORKSHOP:
+                    allPoints.get(MapConstants.PinFilter.WORKSHOP).add(tmpOverlayItem);
                     break;
-                case MapPinKeys.FILTERS_MACHINE:
-                    allPoints.get(PinFilter.MACHINE).add(tmpOverlayItem);
+                case MapConstants.MapPinKeys.FILTERS_MACHINE:
+                    allPoints.get(MapConstants.PinFilter.MACHINE).add(tmpOverlayItem);
                     break;
-                case MapPinKeys.FILTERS_STARTED:
-                    allPoints.get(PinFilter.STARTED).add(tmpOverlayItem);
+                case MapConstants.MapPinKeys.FILTERS_STARTED:
+                    allPoints.get(MapConstants.PinFilter.STARTED).add(tmpOverlayItem);
                     break;
                 default:
                     break;
@@ -367,7 +423,7 @@ public class MapActivity extends AppCompatActivity {
      * @param pinType icon should be SINGLE / GROUP
      * @param points all items to add to overlay
      */
-    private void addOverlay(PinFilter overlayType, PinType pinType, List<OverlayItem> points){
+    private void addOverlay(MapConstants.PinFilter overlayType, MapConstants.PinType pinType, List<OverlayItem> points){
 
         // bitmap options
         BitmapFactory.Options opt =  new BitmapFactory.Options();
@@ -458,16 +514,16 @@ public class MapActivity extends AppCompatActivity {
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
     }
 
-    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon, final PinType pinType){
+    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon, final MapConstants.PinType pinType){
         ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(points, icon,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        if (pinType == PinType.SINGLE) {
+                        if (pinType == MapConstants.PinType.SINGLE) {
                             LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
                             // TODO: store description in overlayItem instead of having to query pointListArray (if possible)
-                            String desc = (String) chosenPointInfo.get(MapPinKeys.DESC);
-                            showPinPopUp(item.getTitle(), desc, (String) chosenPointInfo.get(MapPinKeys.SITE));
+                            String desc = (String) chosenPointInfo.get(MapConstants.MapPinKeys.DESC);
+                            showPinPopUp(item.getTitle(), desc, (String) chosenPointInfo.get(MapConstants.MapPinKeys.SITE));
                         }
                         return true;
                     }
@@ -479,5 +535,8 @@ public class MapActivity extends AppCompatActivity {
         return mOverlay;
     }
 
+    private void reportHazard(GeoPoint p){
+        Toast.makeText(context, "Where's the fire?!", Toast.LENGTH_SHORT).show();
+    }
 }
 

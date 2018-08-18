@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/fragment_map"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <org.osmdroid.views.MapView
-        android:id="@+id/fragment_map"
+        android:id="@+id/map_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-</LinearLayout>
+    <ImageButton
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/filter_icon"/>
+
+</FrameLayout>

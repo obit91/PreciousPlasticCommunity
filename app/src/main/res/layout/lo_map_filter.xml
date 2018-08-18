@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_alignParentStart="true"
+    android:id="@+id/filter_checkboxes"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/map_filter_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/map_filter_checkbox_height"
+        android:paddingStart="10dp"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/filter_workspace_checkbox"
+            android:layout_width="@dimen/map_filter_checkbox_width"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/filter_workspace_checkbox"
+            android:gravity="center"
+            android:layout_marginStart="10dp"
+            android:text="@string/workspaces" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/map_filter_checkbox_height"
+        android:gravity="clip_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp">
+        <CheckBox
+            android:id="@+id/filter_machine_checkbox"
+            android:layout_width="@dimen/map_filter_checkbox_width"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/filter_machine_checkbox"
+            android:gravity="center"
+            android:text="@string/machine_builders" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/map_filter_checkbox_height"
+        android:paddingStart="10dp"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/filter_started_checkbox"
+            android:layout_width="@dimen/map_filter_checkbox_width"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/filter_started_checkbox"
+            android:gravity="center"
+            android:text="@string/want_to_get_started" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/map_filter_checkbox_height"
+        android:paddingStart="10dp"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/filter_hazard_checkbox"
+            android:layout_width="@dimen/map_filter_checkbox_width"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/filter_hazard_checkbox"
+            android:gravity="center"
+            android:layout_marginStart="10dp"
+            android:id="@+id/hazard_text"
+            android:text="@string/hazards" />
+        
+    </RelativeLayout>
+
+</LinearLayout>
+
+
