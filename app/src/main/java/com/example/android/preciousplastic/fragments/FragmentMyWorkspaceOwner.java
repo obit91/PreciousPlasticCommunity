@@ -29,15 +29,15 @@ import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentMyWorkshopOwner.OnFragmentInteractionListener} interface
+ * {@link FragmentMyWorkspaceOwner.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentMyWorkshopOwner#newInstance} factory method to
+ * Use the {@link FragmentMyWorkspaceOwner#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickListener
+public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickListener
 {
 
-    private final String TAG = "FragmentMyWorkshopOwner";
+    private final String TAG = "FragmentMyWorkspaceOwner";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,7 +61,7 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentMyWorkshopOwner()
+    public FragmentMyWorkspaceOwner()
     {
         // Required empty public constructor
     }
@@ -72,12 +72,12 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentMyWorkshopOwner.
+     * @return A new instance of fragment FragmentMyWorkspaceOwner.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentMyWorkshopOwner newInstance(String param1, String param2)
+    public static FragmentMyWorkspaceOwner newInstance(String param1, String param2)
     {
-        FragmentMyWorkshopOwner fragment = new FragmentMyWorkshopOwner();
+        FragmentMyWorkspaceOwner fragment = new FragmentMyWorkspaceOwner();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -101,7 +101,7 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_workshop_owner, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_workspace_owner, container, false);
 
         // update spinner
         mTypeSpinner = (Spinner) view.findViewById(R.id.mw_spinner_type);

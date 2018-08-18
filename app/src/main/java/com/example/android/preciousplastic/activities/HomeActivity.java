@@ -22,12 +22,12 @@ import com.example.android.preciousplastic.fragments.FragmentBazaar;
 import com.example.android.preciousplastic.fragments.FragmentCart;
 import com.example.android.preciousplastic.fragments.FragmentHome;
 import com.example.android.preciousplastic.fragments.FragmentMap;
-import com.example.android.preciousplastic.fragments.FragmentMyWorkshopNonOwner;
-import com.example.android.preciousplastic.fragments.FragmentMyWorkshopOwner;
+import com.example.android.preciousplastic.fragments.FragmentMyWorkspaceNonOwner;
+import com.example.android.preciousplastic.fragments.FragmentMyWorkspaceOwner;
 import com.example.android.preciousplastic.fragments.FragmentProfile;
 import com.example.android.preciousplastic.fragments.FragmentSettings;
 import com.example.android.preciousplastic.fragments.FragmentTest;
-import com.example.android.preciousplastic.fragments.FragmentWorkshops;
+import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -148,8 +148,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_home:
                 goToFragment(FragmentHome.class);
                 break;
-            case R.id.drawer_workshops:
-                goToFragment(FragmentWorkshops.class);
+            case R.id.drawer_workspaces:
+                goToFragment(FragmentWorkspaces.class);
                 break;
             case R.id.drawer_bazaar:
                 goToFragment(FragmentBazaar.class);
@@ -160,12 +160,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_profile:
                 goToFragment(FragmentProfile.class);
                 break;
-            case R.id.drawer_my_workshop:
+            case R.id.drawer_my_workspace:
                 //TODO: on register wait until current user is pulled (use callback functions).
                 if (PPSession.getCurrentUser().isOwner()) {
-                    goToFragment(FragmentMyWorkshopOwner.class);
+                    goToFragment(FragmentMyWorkspaceOwner.class);
                 } else {
-                    goToFragment(FragmentMyWorkshopNonOwner.class);
+                    goToFragment(FragmentMyWorkspaceNonOwner.class);
                 }
                 break;
             case R.id.drawer_settings:

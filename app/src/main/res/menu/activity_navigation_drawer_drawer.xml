@@ -17,9 +17,9 @@
                 android:icon="@drawable/ic_home_black_24dp"
                 android:title="Home" />
             <item
-                android:id="@+id/drawer_workshops"
+                android:id="@+id/drawer_workspaces"
                 android:icon="@drawable/ic_store_mall_directory_black_24dp"
-                android:title="Workshops" />
+                android:title="workspaces" />
             <item
                 android:id="@+id/drawer_bazaar"
                 android:icon="@drawable/ic_shopping_basket_black_24dp"
@@ -39,9 +39,9 @@
                 android:icon="@drawable/ic_account_circle_black_24dp"
                 android:title="Profile" />
             <item
-                android:id="@+id/drawer_my_workshop"
+                android:id="@+id/drawer_my_workspace"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="My Workshop" />
+                android:title="My workspace" />
             <item
                 android:id="@+id/drawer_settings"
                 android:icon="@drawable/ic_settings_black_24dp"
