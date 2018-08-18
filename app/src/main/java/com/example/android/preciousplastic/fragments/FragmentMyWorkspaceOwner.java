@@ -4,11 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,27 +22,38 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.utils.ViewTools;
 
 import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentMyWorkshopOwner.OnFragmentInteractionListener} interface
+ * {@link FragmentMyWorkspaceOwner.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentMyWorkshopOwner#newInstance} factory method to
+ * Use the {@link FragmentMyWorkspaceOwner#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickListener
+public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickListener
 {
+
+    private final String TAG = "FragmentMyWorkspaceOwner";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private Spinner mTypeSpinner = null;
-    private TextView mNicknameTextView = null;
+    private EditText mNicknameEditView = null;
+    private EditText mWeightEditView = null;
     private TextView mScoreTextView = null;
+    private Button mConfirmButton = null;
+
+    private PointsType mType = null;
+    private Double mWeight = null;
+    private Double mScore = null;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -45,7 +61,7 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentMyWorkshopOwner()
+    public FragmentMyWorkspaceOwner()
     {
         // Required empty public constructor
     }
@@ -56,12 +72,12 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentMyWorkshopOwner.
+     * @return A new instance of fragment FragmentMyWorkspaceOwner.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentMyWorkshopOwner newInstance(String param1, String param2)
+    public static FragmentMyWorkspaceOwner newInstance(String param1, String param2)
     {
-        FragmentMyWorkshopOwner fragment = new FragmentMyWorkshopOwner();
+        FragmentMyWorkspaceOwner fragment = new FragmentMyWorkspaceOwner();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -85,7 +101,7 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_workshop_owner, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_workspace_owner, container, false);
 
         // update spinner
         mTypeSpinner = (Spinner) view.findViewById(R.id.mw_spinner_type);
@@ -95,15 +111,52 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
                 PointsType.values());
         mTypeSpinner.setAdapter(pointsTypeArrayAdapter);
 
-        // set button listener
-        Button mConfirmButton = (Button) view.findViewById(R.id.mw_btn_confirm);
-        mConfirmButton.setOnClickListener(this);
+        mConfirmButton = (Button) view.findViewById(R.id.mw_btn_confirm);
 
         // set TextView fields
-        mNicknameTextView = (TextView)view.findViewById(R.id.mw_et_nickname);
-        mScoreTextView = (TextView)view.findViewById(R.id.mw_et_score);
+        mNicknameEditView = (EditText) view.findViewById(R.id.mw_et_nickname);
+        mWeightEditView = (EditText)view.findViewById(R.id.mw_et_weight);
+        mScoreTextView = (TextView)view.findViewById(R.id.mw_tv_score);
 
         return view;
+    }
+
+    public void onStart() {
+        super.onStart();
+
+        // spinner listener
+        mTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                typeUpdated();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // button listener
+        mConfirmButton.setOnClickListener(this);
+
+        // weight listener
+        mWeightEditView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                weightUpdated(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -160,17 +213,71 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
     private void onConfirmClick(View view) {
         UserRepository userRepository = new UserRepository(getContext());
 
-        if (isTextViewNull(mNicknameTextView) || isTextViewNull(mScoreTextView)) {
-            Toast.makeText(getContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
+        if (isTextViewNull(mNicknameEditView) || isTextViewNull(mWeightEditView)) {
+            showToast("Please enter all required fields");
             return;
         }
 
-        String nickname = mNicknameTextView.getText().toString();
-        PointsType type = (PointsType)mTypeSpinner.getSelectedItem();
-        double score = Double.parseDouble(mScoreTextView.getText().toString());
+        String nickname = mNicknameEditView.getText().toString();
 
-        userRepository.updateUserPoints(nickname, type, score);
+        userRepository.updateUserPoints(nickname, mType, mScore);
         PPSession.getHomeActivity().onBackPressed();
+    }
+
+    /**
+     * Gets called upon updating the current plastic weight, parses the weight input.
+     * @param newValue new weight inputted.
+     */
+    private void weightUpdated(String newValue) {
+        if (ViewTools.isTextViewNull(mWeightEditView)) {
+            resetScore();
+            return;
+        }
+
+        mWeight = Double.parseDouble(newValue);
+
+        if (mWeight <= 0) {
+            resetScore();
+            showToast("Weight must be greater than zero.");
+            return;
+        }
+        calculateScore();
+    }
+
+    /**
+     * Gets called upon choosing a type from the spinner and parses the item.
+     */
+    private void typeUpdated() {
+        mType = (PointsType)mTypeSpinner.getSelectedItem();
+        calculateScore();
+    }
+
+    /**
+     * Resets the current plastic score and updates the UI accordingly.
+     */
+    private void resetScore() {
+        mScore = 0.0;
+        mScoreTextView.setText(String.valueOf(mScore));
+    }
+
+    /**
+     * Calculates the current plastic score, and updates the UI accordingly.
+     */
+    private void calculateScore() {
+        Log.i(TAG, "calculateScore: <weight, type>: <" + mWeight + "," + mType + ">");
+        if (mWeight == null || mType == null) {
+            return;
+        }
+        mScore = mWeight * mType.getPointValue();
+        mScoreTextView.setText(String.valueOf(mScore));
+    }
+
+    /**
+     * Shows the input message to the user.
+     * @param msg message to show.
+     */
+    private void showToast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -178,6 +285,8 @@ public class FragmentMyWorkshopOwner extends Fragment implements View.OnClickLis
         switch (view.getId()) {
             case (R.id.mw_btn_confirm):
                 onConfirmClick(view);
+                break;
+            default:
                 break;
         }
     }

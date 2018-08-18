@@ -8,24 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.PPSession;
-
-import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentMyWorkshopNonOwner.OnFragmentInteractionListener} interface
+ * {@link FragmentMyWorkspaceNonOwner.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentMyWorkshopNonOwner#newInstance} factory method to
+ * Use the {@link FragmentMyWorkspaceNonOwner#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMyWorkshopNonOwner extends Fragment implements View.OnClickListener
+public class FragmentMyWorkspaceNonOwner extends Fragment implements View.OnClickListener
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,7 +36,7 @@ public class FragmentMyWorkshopNonOwner extends Fragment implements View.OnClick
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentMyWorkshopNonOwner()
+    public FragmentMyWorkspaceNonOwner()
     {
         // Required empty public constructor
     }
@@ -51,12 +47,12 @@ public class FragmentMyWorkshopNonOwner extends Fragment implements View.OnClick
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentMyWorkshopNonOwner.
+     * @return A new instance of fragment FragmentMyWorkspaceNonOwner.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentMyWorkshopNonOwner newInstance(String param1, String param2)
+    public static FragmentMyWorkspaceNonOwner newInstance(String param1, String param2)
     {
-        FragmentMyWorkshopNonOwner fragment = new FragmentMyWorkshopNonOwner();
+        FragmentMyWorkspaceNonOwner fragment = new FragmentMyWorkspaceNonOwner();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,7 +76,7 @@ public class FragmentMyWorkshopNonOwner extends Fragment implements View.OnClick
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_workshop_non_owner, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_workspace_non_owner, container, false);
 
         // set button listener
         mBecomeOwnerButton = (Button) view.findViewById(R.id.mw_non_owner_btn_become_owner);
@@ -143,7 +139,7 @@ public class FragmentMyWorkshopNonOwner extends Fragment implements View.OnClick
     private void onBecomeOwnerClick(View view) {
         UserRepository userRepository = new UserRepository(getContext());
         userRepository.becomeOwner();
-        PPSession.getHomeActivity().switchFragment(FragmentMyWorkshopOwner.class);
+        PPSession.getHomeActivity().switchFragment(FragmentMyWorkspaceOwner.class);
     }
 
     @Override

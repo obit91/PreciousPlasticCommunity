@@ -1,14 +1,24 @@
 package com.example.android.preciousplastic.db;
 
 public enum PointsType {
-    TYPE_1,
-    TYPE_2,
-    TYPE_3,
-    TYPE_4,
-    TYPE_5,
-    TYPE_6,
-    TYPE_7,
-    TYPE_8;
+    TYPE_1(1),
+    TYPE_2(2),
+    TYPE_3(3),
+    TYPE_4(4),
+    TYPE_5(5),
+    TYPE_6(6),
+    TYPE_7(7);
+
+    // points worth by type
+    private final double value;
+
+    PointsType(double value) {
+        this.value = value;
+    }
+
+    public double getPointValue() {
+        return value;
+    }
 
     public static PointsType getType(int type) {
         switch (type) {
@@ -26,8 +36,6 @@ public enum PointsType {
                 return TYPE_6;
             case (7):
                 return TYPE_7;
-            case (8):
-                return TYPE_8;
             default:
                 return null;
         }
