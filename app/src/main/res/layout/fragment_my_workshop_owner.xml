@@ -28,23 +28,25 @@
         android:id="@+id/mw_et_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
-        android:hint="Give points to nickname"
+        android:hint="Nickname"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mw_tv_title" />
 
     <EditText
-        android:id="@+id/mw_et_score"
+        android:id="@+id/mw_et_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Amount of points to give"
+        android:hint="Plastic Weight"
         android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.078"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
 
@@ -55,16 +57,27 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mw_et_score" />
+        app:layout_constraintTop_toBottomOf="@+id/mw_et_weight" />
 
     <Button
         android:id="@+id/mw_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="240dp"
+        android:layout_marginStart="252dp"
         android:layout_marginTop="156dp"
         android:text="CONFIRM"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mw_spinner_type" />
+
+    <TextView
+        android:id="@+id/mw_tv_score"
+        android:layout_width="113dp"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="60dp"
+        android:text="Score"
+        app:layout_constraintLeft_toRightOf="@+id/mw_et_nickname"
+        app:layout_constraintTop_toBottomOf="@+id/mw_tv_title" />
 
 </android.support.constraint.ConstraintLayout>
