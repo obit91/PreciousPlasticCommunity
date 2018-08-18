@@ -1,6 +1,6 @@
 package com.example.android.preciousplastic.db;
 
-public class Workshop {
+public class Workspace {
 
     private boolean shredderMachine;
     private boolean extrusionMachine;
@@ -10,19 +10,19 @@ public class Workshop {
     /**
      * Default empty constructor for firebase.
      */
-    public Workshop() {
+    public Workspace() {
 
     }
 
     /**
      * Constructor for a new machine.
      *
-     * @param shredderMachine    indicator if the workshop contains a shredder machine.
-     * @param extrusionMachine   indicator if the workshop contains an extrusion machine.
-     * @param injectionMachine   indicator if the workshop contains an injection machine.
-     * @param compressionMachine indicator if the workshop contains a compression machine.
+     * @param shredderMachine    indicator if the workspace contains a shredder machine.
+     * @param extrusionMachine   indicator if the workspace contains an extrusion machine.
+     * @param injectionMachine   indicator if the workspace contains an injection machine.
+     * @param compressionMachine indicator if the workspace contains a compression machine.
      */
-    public Workshop(boolean shredderMachine, boolean extrusionMachine, boolean injectionMachine, boolean compressionMachine) {
+    public Workspace(boolean shredderMachine, boolean extrusionMachine, boolean injectionMachine, boolean compressionMachine) {
         this.shredderMachine = shredderMachine;
         this.extrusionMachine = extrusionMachine;
         this.injectionMachine = injectionMachine;

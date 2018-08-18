@@ -25,7 +25,7 @@
             android:layout_gravity="center">
 
         <TextView
-            android:id="@+id/workshopTitle"
+            android:id="@+id/workspaceTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""
@@ -34,7 +34,7 @@
             android:textColor="@color/mapPrimary"/>
 
         <TextView
-            android:id="@+id/workshopDescription"
+            android:id="@+id/workspaceDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="" />

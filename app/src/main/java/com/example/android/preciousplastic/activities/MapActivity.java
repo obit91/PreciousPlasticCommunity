@@ -66,10 +66,10 @@ public class MapActivity extends AppCompatActivity {
     List<ItemizedIconOverlay<OverlayItem>> overlayList;
 
     // 2d grids containing overlay items, used for clustering pins
-    // Map Keys: WORKSHOP / MACHINE / STARTED --> 2d grid list
+    // Map Keys: WORKSPACE / MACHINE / STARTED --> 2d grid list
     Map<MapConstants.PinFilter, List<List<List<OverlayItem>>>> gridMap;
 
-    // Key: WORKSHOP/STARTED/MACHINE, Value: List of all points
+    // Key: WORKSPACE/STARTED/MACHINE, Value: List of all points
     Map<MapConstants.PinFilter, List<OverlayItem>> allPoints;
 
     // list of pins as will be pulled from web.
@@ -397,13 +397,13 @@ public class MapActivity extends AppCompatActivity {
             double lng = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LNG);
             OverlayItem tmpOverlayItem = new OverlayItem(name, "desc!", new GeoPoint(lat, lng));
 
-            // separate between WORKSHOPS / MACHINE / STARTED
+            // separate between WORKSPACES / MACHINE / STARTED
             // give precedence in this order, as some items may match several features
             // TODO: allow pin to have several filters?
             ArrayList<String> filters = (ArrayList<String>) linkedTreeMap.get(MapConstants.MapPinKeys.FILTERS);
             switch (filters.get(0)){
-                case MapConstants.MapPinKeys.FILTERS_WORKSHOP:
-                    allPoints.get(MapConstants.PinFilter.WORKSHOP).add(tmpOverlayItem);
+                case MapConstants.MapPinKeys.FILTERS_WORKSPACE:
+                    allPoints.get(MapConstants.PinFilter.WORKSPACE).add(tmpOverlayItem);
                     break;
                 case MapConstants.MapPinKeys.FILTERS_MACHINE:
                     allPoints.get(MapConstants.PinFilter.MACHINE).add(tmpOverlayItem);
@@ -419,7 +419,7 @@ public class MapActivity extends AppCompatActivity {
 
     /**
      * Will create an overlay for all given points.
-     * @param overlayType WORKSHOP / STARTED / MACHINE
+     * @param overlayType WORKSPACE / STARTED / MACHINE
      * @param pinType icon should be SINGLE / GROUP
      * @param points all items to add to overlay
      */
@@ -434,7 +434,7 @@ public class MapActivity extends AppCompatActivity {
         switch (pinType) {
             case SINGLE:
                 switch (overlayType) {
-                    case WORKSHOP:
+                    case WORKSPACE:
                         drawable = context.getResources().getDrawable(R.drawable.precious_plastic_logo_small);
                         break;
                     case MACHINE:
@@ -448,7 +448,7 @@ public class MapActivity extends AppCompatActivity {
                 } break;
             case GROUP:
                 switch (overlayType) {
-                    case WORKSHOP:
+                    case WORKSPACE:
                         drawable = context.getResources().getDrawable(R.drawable.blue_cluster);
                         break;
                     case MACHINE:
@@ -473,9 +473,9 @@ public class MapActivity extends AppCompatActivity {
         View popupView = inflater.inflate(R.layout.lo_map_pin_popup, null);
 
         // set attributes to popup view
-        TextView titleTxt = popupView.findViewById(R.id.workshopTitle);
+        TextView titleTxt = popupView.findViewById(R.id.workspaceTitle);
         titleTxt.setText(title);
-        TextView descTxt = popupView.findViewById(R.id.workshopDescription);
+        TextView descTxt = popupView.findViewById(R.id.workspaceDescription);
         descTxt.setText(desc);
         Button websiteBtn = popupView.findViewById(R.id.websiteBtn);
         websiteBtn.setOnClickListener(new View.OnClickListener() {

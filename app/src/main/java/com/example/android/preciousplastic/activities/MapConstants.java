@@ -29,7 +29,7 @@ public class MapConstants {
         final static String USERNAME = "username";
         final static String FILTERS = "filters";
         final static String FILTERS_STARTED = "STARTED";    // Want to get started
-        final static String FILTERS_WORKSHOP = "WORKSHOP";  // Workspace
+        final static String FILTERS_WORKSPACE = "WORKSPACE";  // Workspace
         final static String FILTERS_MACHINE = "MACHINE";    // Machine Builder
     }
 
@@ -39,13 +39,13 @@ public class MapConstants {
 
     // pin can be drawn as single, or as a group icon
     enum PinType {SINGLE, GROUP}
-    enum PinFilter {STARTED, WORKSHOP, MACHINE, HAZARDS}
+    enum PinFilter {STARTED, WORKSPACE, MACHINE, HAZARDS}
 
     // map between pinFilter values and filters layout (resources) consts
     public static Map<PinFilter, Integer> filterConstsMap = createFiltersMap();
     public static Map<PinFilter, Integer> createFiltersMap() {
         TreeMap<PinFilter, Integer> map = new TreeMap<>();
-        map.put(PinFilter.WORKSHOP, R.id.filter_workspace_checkbox);
+        map.put(PinFilter.WORKSPACE, R.id.filter_workspace_checkbox);
         map.put(PinFilter.MACHINE, R.id.filter_machine_checkbox);
         map.put(PinFilter.STARTED, R.id.filter_started_checkbox);
         map.put(PinFilter.HAZARDS, R.id.filter_hazard_checkbox);

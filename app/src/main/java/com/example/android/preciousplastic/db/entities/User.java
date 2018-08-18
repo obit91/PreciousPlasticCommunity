@@ -2,7 +2,7 @@ package com.example.android.preciousplastic.db.entities;
 
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
-import com.example.android.preciousplastic.db.Workshop;
+import com.example.android.preciousplastic.db.Workspace;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -20,7 +20,7 @@ public class User {
     private double lastLogin;
     private UserPoints points;
     private boolean owner;
-    private Workshop workshop;
+    private Workspace workspace;
 
     /**
      * Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -45,7 +45,7 @@ public class User {
         this.owner = owner;
 
         if (owner) {
-            this.workshop = new Workshop();
+            this.workspace = new Workspace();
         }
     }
 
@@ -75,7 +75,7 @@ public class User {
         result.put("lastLogin", lastLogin);
         result.put("points", points);
         result.put("owner", owner);
-        result.put("workshop", workshop);
+        result.put("workspace", workspace);
 
         return result;
     }
@@ -156,12 +156,12 @@ public class User {
         this.owner = owner;
     }
 
-    public Workshop getWorkshop() {
-        return workshop;
+    public Workspace getWorkspace() {
+        return workspace;
     }
 
-    public void setWorkshop(Workshop workshop) {
-        this.workshop = workshop;
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
     }
 
     /**
@@ -170,7 +170,7 @@ public class User {
     public void makeOwner() {
         if (!owner) {
             owner = true;
-            workshop = new Workshop();
+            workspace = new Workspace();
         }
     }
 }
