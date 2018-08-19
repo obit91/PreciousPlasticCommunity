@@ -142,7 +142,7 @@ public class MapActivity extends AppCompatActivity {
         IMapController mapController = mapView.getController();
         // TODO: set to user's own location
         mapController.setZoom(9.0);
-        GeoPoint startPoint = new GeoPoint(48.0, 4.0);
+        GeoPoint startPoint = new GeoPoint(30.0, 30.0);
         mapController.setCenter(startPoint);
 
         // add Image Button which opens a filter window
@@ -443,6 +443,9 @@ public class MapActivity extends AppCompatActivity {
                     case STARTED:
                         drawable = context.getResources().getDrawable(R.drawable.ic_started_pin_foreground);
                         break;
+                    case HAZARDS:
+                        drawable = context.getResources().getDrawable(R.drawable.hazard_icon);
+                        break;
                     default:
                         return;
                 } break;
@@ -455,7 +458,11 @@ public class MapActivity extends AppCompatActivity {
                         drawable = context.getResources().getDrawable(R.drawable.grey_cluster);
                         break;
                     case STARTED:
-                        drawable = context.getResources().getDrawable(R.drawable.orange_cluster);                        break;
+                        drawable = context.getResources().getDrawable(R.drawable.orange_cluster);
+                        break;
+                    case HAZARDS:
+                        drawable = context.getResources().getDrawable(R.drawable.yellow_cluster);
+                        break;
                     default:
                         return;
                 } break;

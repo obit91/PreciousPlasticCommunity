@@ -7,6 +7,7 @@ public class DBConstants {
 
     // tables
     public static final String USERS_COLLECTION = "users";
+    public static final String HAZARDS_COLLECTIONS = "hazards";
 
     // authentication type
     public static final String AUTHENTICATION = "User Authentication";

@@ -17,6 +17,7 @@ public class PPSession {
 
     private static FirebaseDatabase mFirebaseDB;
     private static DatabaseReference mUsersTable;
+    private static DatabaseReference mHazardsTable;
 
     private static Context containerContext;
     private static HomeActivity homeActivity;
@@ -57,11 +58,16 @@ public class PPSession {
     public static void setFirebaseDB(FirebaseDatabase mFirebaseDB) {
         PPSession.mFirebaseDB = mFirebaseDB;
         mUsersTable = mFirebaseDB.getReference(DBConstants.USERS_COLLECTION);
+        mHazardsTable = mFirebaseDB.getReference(DBConstants.HAZARDS_COLLECTIONS);
 
     }
 
     public static DatabaseReference getUsersTable() {
         return PPSession.mUsersTable;
+    }
+
+    public static DatabaseReference getHazardsTable() {
+        return PPSession.mHazardsTable;
     }
 
     public static Context getContainerContext() {
