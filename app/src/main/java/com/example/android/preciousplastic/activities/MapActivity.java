@@ -31,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.repositories.HazardRepository;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -63,23 +64,23 @@ public class MapActivity extends AppCompatActivity {
     private MapView mapView;
 
     // Overlays containing pins for map
-    List<ItemizedIconOverlay<OverlayItem>> overlayList;
+    private List<ItemizedIconOverlay<OverlayItem>> overlayList;
 
     // 2d grids containing overlay items, used for clustering pins
     // Map Keys: WORKSPACE / MACHINE / STARTED --> 2d grid list
-    Map<MapConstants.PinFilter, List<List<List<OverlayItem>>>> gridMap;
+    private Map<MapConstants.PinFilter, List<List<List<OverlayItem>>>> gridMap;
 
     // Key: WORKSPACE/STARTED/MACHINE, Value: List of all points
-    Map<MapConstants.PinFilter, List<OverlayItem>> allPoints;
+    private Map<MapConstants.PinFilter, List<OverlayItem>> allPoints;
 
     // list of pins as will be pulled from web.
-    ArrayList pinsArrayList;
+    private ArrayList pinsArrayList;
 
     // pop up window when clicking on a map pin
-    PopupWindow popupWindow;
+    private PopupWindow popupWindow;
 
     // pop up window for filter options & hazard reporting
-    PopupWindow filterWindow;
+    private PopupWindow filterWindow;
 
     // current zoom level (rounded) in map and View location coordinates
     int zoomLevel = 0;
@@ -87,10 +88,12 @@ public class MapActivity extends AppCompatActivity {
     int y = 0;
 
     // overlay with long click listener
-    MapEventsOverlay OverlayEvents;
+    private MapEventsOverlay OverlayEvents;
 
     // map filters which to be shown on map
-    Map<Integer, Boolean> filtersActivated;
+    private Map<Integer, Boolean> filtersActivated;
+
+    private HazardRepository hazardRepository;
 
     // ===========================================================
     // Constructors
@@ -98,8 +101,9 @@ public class MapActivity extends AppCompatActivity {
 
     public MapActivity() {
 
-        this.context = PPSession.getContainerContext();
+        context = PPSession.getContainerContext();
         resources = PPSession.getHomeActivity().getResources();
+        hazardRepository = new HazardRepository(context);
 
         // TODO: handle OSMDROID dangerous permissions
 
@@ -544,6 +548,7 @@ public class MapActivity extends AppCompatActivity {
 
     private void reportHazard(GeoPoint p){
         Toast.makeText(context, "Where's the fire?!", Toast.LENGTH_SHORT).show();
+        hazardRepository.insertHazard(PPSession.getFirebaseAuth().getCurrentUser(), p, "serious hazard");
     }
 }
 

@@ -54,16 +54,17 @@ public class HazardRepository {
      * Document will have unique identifier of param 'id'.
      */
     public void insertHazard(FirebaseUser firebaseUser, final GeoPoint location, final String desc) {
-        final String hazardId = "0";  //todo SOMETHING
-        final Hazard hazard = new Hazard(firebaseUser, hazardId, location, desc);
         DatabaseReference hazardsTable = PPSession.getHazardsTable();
-        hazardsTable.child(hazardId).setValue(hazard, new DatabaseReference.CompletionListener() {
+        DatabaseReference newHazard = hazardsTable.push();
+        final String hazardId = newHazard.getKey();
+        final Hazard hazard = new Hazard(firebaseUser, hazardId, location, desc);
+        newHazard.setValue(hazard, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
-                if (error == null) {
-                    Log.i(TAG, "insertHazard: created " + hazardId);
-                } else {
-                    Log.e(TAG, "insertHazard: " + error.getMessage());
-                }
+            if (error == null) {
+                Log.i(TAG, "insertHazard: created " + hazardId);
+            } else {
+                Log.e(TAG, "insertHazard: " + error.getMessage());
+            }
             }
         });
     }
