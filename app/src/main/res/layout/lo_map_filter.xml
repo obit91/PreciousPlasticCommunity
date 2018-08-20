@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_alignParentStart="true"
     android:id="@+id/filter_checkboxes"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/map_filter_background">
+    android:background="@drawable/map_popup_background">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -83,7 +81,7 @@
             android:layout_marginStart="10dp"
             android:id="@+id/hazard_text"
             android:text="@string/hazards" />
-        
+
     </RelativeLayout>
 
 </LinearLayout>

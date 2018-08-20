@@ -7,15 +7,25 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -82,6 +92,9 @@ public class MapActivity extends AppCompatActivity {
     // pop up window for filter options & hazard reporting
     private PopupWindow filterWindow;
 
+    // pop up window for reporting hazards
+    private PopupWindow hazardWindow;
+
     // current zoom level (rounded) in map and View location coordinates
     int zoomLevel = 0;
     int x = 0;
@@ -95,12 +108,15 @@ public class MapActivity extends AppCompatActivity {
 
     private HazardRepository hazardRepository;
 
+    private boolean initialized = false;
+
     // ===========================================================
     // Constructors
     // ===========================================================
 
     public MapActivity() {
 
+        Log.i("map", "oncreate");
         context = PPSession.getContainerContext();
         resources = PPSession.getHomeActivity().getResources();
         hazardRepository = new HazardRepository(context);
@@ -124,6 +140,9 @@ public class MapActivity extends AppCompatActivity {
         // TODO: put in async
         initOverlaysGrid();
         initOverlays();
+
+        // Do not add any more code after this point!
+        initialized = true;
     }
 
     // ===========================================================
@@ -131,6 +150,8 @@ public class MapActivity extends AppCompatActivity {
     // ===========================================================
 
     public void buildMap(MapView mapView){
+
+        if (!initialized){ return; }
 
         this.mapView = mapView;
 
@@ -232,6 +253,38 @@ public class MapActivity extends AppCompatActivity {
     public void onMove(){
         setOverlays();
         drawOverlaysOnMap();
+    }
+
+    /**
+     * Make keyboard disappear when user clicks on screen
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+
+        View v = getCurrentFocus();
+        boolean ret = super.dispatchTouchEvent(event);
+
+        if (v instanceof EditText) {
+            View w = getCurrentFocus();
+            int scrcoords[] = new int[2];
+            w.getLocationOnScreen(scrcoords);
+            float x = event.getRawX() + w.getLeft() - scrcoords[0];
+            float y = event.getRawY() + w.getTop() - scrcoords[1];
+
+            if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight()
+                    || y < w.getTop() || y > w.getBottom()) ) {
+                Toast.makeText(context, "trying to hide keyboard", Toast.LENGTH_SHORT).show();
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+            }
+        }
+        return ret;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.i("onCreate", "map");
+        super.onCreate(savedInstanceState);
     }
 
     // ===========================================================
@@ -546,9 +599,47 @@ public class MapActivity extends AppCompatActivity {
         return mOverlay;
     }
 
-    private void reportHazard(GeoPoint p){
-        Toast.makeText(context, "Where's the fire?!", Toast.LENGTH_SHORT).show();
-        hazardRepository.insertHazard(PPSession.getFirebaseAuth().getCurrentUser(), p, "serious hazard");
+    private void reportHazard(final GeoPoint p){
+
+        if (hazardWindow == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+            final View hazardView = inflater.inflate(R.layout.lo_hazard_report, null);
+            hazardWindow = new PopupWindow(hazardView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            hazardWindow.showAtLocation(hazardView, Gravity.CENTER, 0, 0);
+
+            // connect all buttons
+            final EditText desc = hazardView.findViewById(R.id.hazard_desc);
+            Button reportButton = hazardView.findViewById(R.id.submit_hazard_report);
+            reportButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (TextUtils.isEmpty(desc.getText())){
+                        Toast.makeText(context, "Forgot some description?", Toast.LENGTH_SHORT).show();
+                    } else {
+                        hazardRepository.insertHazard(PPSession.getFirebaseAuth().getCurrentUser(), p, "serious hazard");
+                        Toast.makeText(context, "Hazard reported", Toast.LENGTH_SHORT).show();
+                        hazardWindow.dismiss();
+                        hazardWindow = null;
+                    }
+                }
+            });
+            ImageButton closeButton = hazardView.findViewById(R.id.close_hazard_btn);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    hazardWindow.dismiss();
+                    hazardWindow = null;
+                }
+            });
+            // show soft keyboard
+            if (desc.requestFocus()) {
+                Log.i("requestfocus", "yes");
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean res = imm.showSoftInput(desc, InputMethodManager.SHOW_IMPLICIT);
+                Log.i("requestfocus1", String.valueOf(res));
+            }
+        }
     }
 }
 

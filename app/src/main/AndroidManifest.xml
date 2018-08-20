@@ -29,6 +29,8 @@
         <activity
             android:name=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.MapActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
 
     </application>
 
