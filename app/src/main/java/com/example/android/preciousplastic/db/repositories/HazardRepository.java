@@ -4,13 +4,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.android.preciousplastic.db.EventNotifier;
 import com.example.android.preciousplastic.db.entities.Hazard;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -65,6 +68,24 @@ public class HazardRepository {
             } else {
                 Log.e(TAG, "insertHazard: " + error.getMessage());
             }
+            }
+        });
+    }
+
+    /**
+     * Read data from hazards table.
+     * @param eventNotifier object to notify of query results.
+     */
+    public void getHazards(final EventNotifier eventNotifier){
+        DatabaseReference hazardsTable = PPSession.getHazardsTable();
+        hazardsTable.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                eventNotifier.onDataChange(dataSnapshot);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                eventNotifier.onCancelled(databaseError);
             }
         });
     }

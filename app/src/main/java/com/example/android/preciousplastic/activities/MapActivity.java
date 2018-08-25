@@ -8,12 +8,8 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,8 +37,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.EventNotifier;
 import com.example.android.preciousplastic.db.repositories.HazardRepository;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -61,6 +59,7 @@ import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -84,7 +83,7 @@ public class MapActivity extends AppCompatActivity {
     private Map<MapConstants.PinFilter, List<OverlayItem>> allPoints;
 
     // list of pins as will be pulled from web.
-    private ArrayList pinsArrayList;
+    private ArrayList webPinsArrayList;
 
     // pop up window when clicking on a map pin
     private PopupWindow popupWindow;
@@ -107,6 +106,7 @@ public class MapActivity extends AppCompatActivity {
     private Map<Integer, Boolean> filtersActivated;
 
     private HazardRepository hazardRepository;
+    private HazardsQueryAllEventNotifier queryHazardsNotifier;
 
     private boolean initialized = false;
 
@@ -120,6 +120,7 @@ public class MapActivity extends AppCompatActivity {
         context = PPSession.getContainerContext();
         resources = PPSession.getHomeActivity().getResources();
         hazardRepository = new HazardRepository(context);
+        queryHazardsNotifier = new HazardsQueryAllEventNotifier();
 
         // TODO: handle OSMDROID dangerous permissions
 
@@ -146,7 +147,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     // ===========================================================
-    // Public Methods
+    // Public Methods & Classes
     // ===========================================================
 
     public void buildMap(MapView mapView){
@@ -288,6 +289,29 @@ public class MapActivity extends AppCompatActivity {
     }
 
     // ===========================================================
+    // Private Classes
+    // ===========================================================
+
+    /**
+     * Wait for query results from hazards db, and create map pin for each hazard.
+     */
+    private class HazardsQueryAllEventNotifier extends EventNotifier{
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot){
+            for (DataSnapshot singleHazard: dataSnapshot.getChildren()){
+                Object hazardObject = singleHazard.getValue();
+                HashMap<String, Object> hazardMap = (HashMap<String, Object>) hazardObject;
+                String desc = (String) hazardMap.get("description");
+                HashMap<String, Object> location = (HashMap<String, Object>) hazardMap.get("location");
+                double lat = (double) location.get("latitude");
+                double lng = (double) location.get("longitude");
+                OverlayItem overlayItem = new OverlayItem("Hazard Treasure", desc, new GeoPoint(lat, lng));
+                allPoints.get(MapConstants.PinFilter.HAZARDS).add(overlayItem);
+            }
+        }
+    }
+
+    // ===========================================================
     // Private Methods
     // ===========================================================
 
@@ -392,9 +416,16 @@ public class MapActivity extends AppCompatActivity {
 
     /**
      * Request from web API all pins from PreciousPlastic Map.
+     * Request from firebase db the hazard pins.
      * Set each pin in its overlay.
      */
     private void initOverlays() {
+
+        // initialize allPoints container
+        allPoints = new TreeMap<>();
+        for (MapConstants.PinFilter pinFilter: MapConstants.PinFilter.values()){
+            allPoints.put(pinFilter, new ArrayList<OverlayItem>());
+        }
 
         String pinsUrl = MapConstants.BASE_URL + MapConstants.MAP_PINS_SUFFIX;
         StringRequest pinKeyRequest = new StringRequest(Request.Method.GET, pinsUrl, new Response.Listener<String>() {
@@ -402,7 +433,7 @@ public class MapActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Gson gson = new Gson();
                 try {
-                    pinsArrayList = gson.fromJson(response, ArrayList.class);
+                    webPinsArrayList = gson.fromJson(response, ArrayList.class);
                     handlePinKeys();
                 } catch (Exception e) {
                     Log.e("exception", e.toString());
@@ -416,6 +447,9 @@ public class MapActivity extends AppCompatActivity {
         });
         // Add the request to requestQueue
         requestQueue.add(pinKeyRequest);
+
+        // get also hazard items from DB
+        hazardRepository.getHazards(queryHazardsNotifier);
     }
 
     /**
@@ -440,19 +474,14 @@ public class MapActivity extends AppCompatActivity {
      */
     private void handlePinKeys() {
 
-        // initialize allPoints container
-        allPoints = new TreeMap<>();
-        for (MapConstants.PinFilter pinFilter: MapConstants.PinFilter.values()){
-            allPoints.put(pinFilter, new ArrayList<OverlayItem>());
-        }
-
         // create OverlayItem per each Pin Key, and set to allPoints container
-        for (Object entry : pinsArrayList) {
+        for (Object entry : webPinsArrayList) {
             LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
             String name = (String) linkedTreeMap.get(MapConstants.MapPinKeys.NAME);
+            String desc = (String) linkedTreeMap.get(MapConstants.MapPinKeys.DESC);
             double lat = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LAT);
             double lng = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LNG);
-            OverlayItem tmpOverlayItem = new OverlayItem(name, "desc!", new GeoPoint(lat, lng));
+            OverlayItem tmpOverlayItem = new OverlayItem(name, desc, new GeoPoint(lat, lng));
 
             // separate between WORKSPACES / MACHINE / STARTED
             // give precedence in this order, as some items may match several features
@@ -526,7 +555,7 @@ public class MapActivity extends AppCompatActivity {
             default:
                 return;
         }
-        ItemizedIconOverlay<OverlayItem> mOverlay = getOverlay(points, drawable, pinType);
+        ItemizedIconOverlay<OverlayItem> mOverlay = getOverlay(points, drawable, pinType, overlayType);
         overlayList.add(mOverlay);
     }
 
@@ -542,18 +571,20 @@ public class MapActivity extends AppCompatActivity {
         TextView descTxt = popupView.findViewById(R.id.workspaceDescription);
         descTxt.setText(desc);
         Button websiteBtn = popupView.findViewById(R.id.websiteBtn);
-        websiteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Log.i("Website OnClick", website);
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
-                    context.startActivity(browserIntent);
-                }catch (Exception e){
-                    Log.e("Website OnClick error", e.toString());
+        if (!website.equals("")) {
+            websiteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Log.i("Website OnClick", website);
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                        context.startActivity(browserIntent);
+                    } catch (Exception e) {
+                        Log.e("Website OnClick error", e.toString());
+                    }
                 }
-            }
-        });
+            });
+        }
 
         // dismiss popup window if there is already one open
         if (popupWindow != null) {
@@ -578,16 +609,19 @@ public class MapActivity extends AppCompatActivity {
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
     }
 
-    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon, final MapConstants.PinType pinType){
+    private ItemizedIconOverlay<OverlayItem> getOverlay(List<OverlayItem> points, Drawable icon, final MapConstants.PinType pinType, final MapConstants.PinFilter pinFilter){
         ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(points, icon,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                         if (pinType == MapConstants.PinType.SINGLE) {
-                            LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) pinsArrayList.get(index);
-                            // TODO: store description in overlayItem instead of having to query pointListArray (if possible)
-                            String desc = (String) chosenPointInfo.get(MapConstants.MapPinKeys.DESC);
-                            showPinPopUp(item.getTitle(), desc, (String) chosenPointInfo.get(MapConstants.MapPinKeys.SITE));
+                            LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) webPinsArrayList.get(index);
+                            String website = "";
+                            if (pinFilter == MapConstants.PinFilter.WORKSPACE) {
+                                // TODO: store website in overlayItem instead of having to query pointListArray (if possible)
+                                website = (String) chosenPointInfo.get(MapConstants.MapPinKeys.SITE);
+                            }
+                            showPinPopUp(item.getTitle(), item.getSnippet(), website);
                         }
                         return true;
                     }
@@ -631,7 +665,7 @@ public class MapActivity extends AppCompatActivity {
                     hazardWindow = null;
                 }
             });
-            // show soft keyboard
+            // show soft keyboard TODO fix, keyboard in MapActivity is not working
             if (desc.requestFocus()) {
                 Log.i("requestfocus", "yes");
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
