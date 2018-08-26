@@ -584,6 +584,8 @@ public class MapActivity extends AppCompatActivity {
                     }
                 }
             });
+        } else {
+            websiteBtn.setVisibility(View.GONE);
         }
 
         // dismiss popup window if there is already one open
