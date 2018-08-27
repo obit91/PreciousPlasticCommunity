@@ -12,9 +12,12 @@
         android:layout_height="fill_parent" />
 
     <ImageButton
-        android:layout_gravity="right"
+        android:id="@+id/filter_btn"
+        android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/filter_icon"/>
+        android:src="@mipmap/filter_icon" />
+
+    <include layout="@layout/lo_hazard_report" />
 
 </FrameLayout>

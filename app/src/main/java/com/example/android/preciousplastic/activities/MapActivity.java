@@ -339,7 +339,7 @@ public class MapActivity extends AppCompatActivity {
      */
     private void setFilterListeners(){
         FrameLayout mapLayout = (FrameLayout) PPSession.getHomeActivity().findViewById(R.id.fragment_map);
-        ImageButton imageButton = (ImageButton) mapLayout.getChildAt(1);
+        ImageButton imageButton = mapLayout.findViewById(R.id.filter_btn);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -637,11 +637,9 @@ public class MapActivity extends AppCompatActivity {
 
     private void reportHazard(final GeoPoint p){
 
-        if (hazardWindow == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-            final View hazardView = inflater.inflate(R.layout.lo_hazard_report, null);
-            hazardWindow = new PopupWindow(hazardView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            hazardWindow.showAtLocation(hazardView, Gravity.CENTER, 0, 0);
+        final FrameLayout hazardView = (FrameLayout) PPSession.getHomeActivity().findViewById(R.id.lo_report_hazard);
+        if (hazardView.getVisibility() != View.VISIBLE) {
+            hazardView.setVisibility(View.VISIBLE);
 
             // connect all buttons
             final EditText desc = hazardView.findViewById(R.id.hazard_desc);
@@ -654,8 +652,7 @@ public class MapActivity extends AppCompatActivity {
                     } else {
                         hazardRepository.insertHazard(PPSession.getFirebaseAuth().getCurrentUser(), p, "serious hazard");
                         Toast.makeText(context, "Hazard reported", Toast.LENGTH_SHORT).show();
-                        hazardWindow.dismiss();
-                        hazardWindow = null;
+                        hazardView.setVisibility(View.GONE);
                     }
                 }
             });
@@ -663,18 +660,9 @@ public class MapActivity extends AppCompatActivity {
             closeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    hazardWindow.dismiss();
-                    hazardWindow = null;
+                    hazardView.setVisibility(View.GONE);
                 }
             });
-            // show soft keyboard TODO fix, keyboard in MapActivity is not working
-            if (desc.requestFocus()) {
-                Log.i("requestfocus", "yes");
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                boolean res = imm.showSoftInput(desc, InputMethodManager.SHOW_IMPLICIT);
-                Log.i("requestfocus1", String.valueOf(res));
-            }
         }
     }
 }
