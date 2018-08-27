@@ -322,11 +322,10 @@ public class MapActivity extends AppCompatActivity {
         public void onResponse(Object response){
             try {
                 webPinsArrayList = (ArrayList) response;
+                handlePinKeys();
             } catch (ClassCastException e){
                 onError(e.toString());
-                return;
             }
-            handlePinKeys();
         }
     }
 

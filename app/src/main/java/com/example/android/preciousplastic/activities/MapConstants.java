@@ -12,21 +12,21 @@ public class MapConstants {
 
     // keys of pins on map
     public final class MapPinKeys {
-        final static String ID = "ID";
-        final static String NAME = "name";
-        final static String LAT = "lat";
-        final static String LNG = "lng";
-        final static String DESC = "description";
-        final static String SITE = "website";
-        final static String IMGS = "imgs";
-        final static String STATUS = "status";
-        final static String CREATED = "created_date";
-        final static String MODIFIED = "modified_date";
-        final static String USERNAME = "username";
-        final static String FILTERS = "filters";
-        final static String FILTERS_STARTED = "STARTED";    // Want to get started
-        final static String FILTERS_WORKSPACE = "WORKSPACE";  // Workspace
-        final static String FILTERS_MACHINE = "MACHINE";    // Machine Builder
+        final public static String ID = "ID";
+        final public static String NAME = "name";
+        final public static String LAT = "lat";
+        final public static String LNG = "lng";
+        final public static String DESC = "description";
+        final public static String SITE = "website";
+        final public static String IMGS = "imgs";
+        final public static String STATUS = "status";
+        final public static String CREATED = "created_date";
+        final public static String MODIFIED = "modified_date";
+        final public static String USERNAME = "username";
+        final public static String FILTERS = "filters";
+        final public static String FILTERS_STARTED = "STARTED";    // Want to get started
+        final public static String FILTERS_WORKSPACE = "WORKSHOP";  // Workspace
+        final public static String FILTERS_MACHINE = "MACHINE";    // Machine Builder
     }
 
     // grid density binning

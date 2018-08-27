@@ -1,9 +1,12 @@
 package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +20,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.activities.MapConstants;
 import com.example.android.preciousplastic.db.EventNotifier;
+import com.example.android.preciousplastic.utils.InternetQuery;
+import com.example.android.preciousplastic.utils.PPSession;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,10 +51,16 @@ public class FragmentWorkspaces extends Fragment
 
     private OnFragmentInteractionListener mListener;
 
+    private int radius = 4000;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    private LayoutInflater mInflater;
+
     public FragmentWorkspaces()
-    {
-        // Required empty public constructor
-    }
+    { }
 
     /**
      * Use this factory method to create a new instance of
@@ -82,7 +97,19 @@ public class FragmentWorkspaces extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_workspaces, container, false);
+        mInflater = inflater;
+        View v = inflater.inflate(R.layout.fragment_workspaces, container, false);
+
+        // get workspaces
+        InternetQuery.queryPins(new WorkspacesQueryEventNotifier());
+
+        // setup RecyclerView and Adaptor
+        mRecyclerView = v.findViewById(R.id.workspaces_recycleview);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(PPSession.getContainerContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -133,6 +160,52 @@ public class FragmentWorkspaces extends Fragment
     }
 
     /**
+     * Extract all workspaces and set them in view.
+     * @param pinsList list of all pins on map (workspaces need to be filtered)
+     */
+    private void initWorkspaces(ArrayList pinsList){
+        ArrayList<LinkedTreeMap<String, Object>> workspacesWithinRadius = new ArrayList<>();
+        Log.i("initWorkspaces", String.valueOf(pinsList.size()));
+        for (Object entry : pinsList) {
+            LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
+            ArrayList<String> filters = (ArrayList<String>) linkedTreeMap.get(MapConstants.MapPinKeys.FILTERS);
+            Log.i("filterWorkspace", String.valueOf(filters.contains(MapConstants.MapPinKeys.FILTERS_WORKSPACE)));
+            Log.i("filterWorkspace", String.valueOf(filters.get(0)));
+            if (filters.contains(MapConstants.MapPinKeys.FILTERS_WORKSPACE)){
+                double lat = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LAT);
+                double lng = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LNG);
+                if (withinUserRadius(lat, lng)){
+                    workspacesWithinRadius.add(linkedTreeMap);
+                }
+            }
+        }
+        setWorkspacesOnView(workspacesWithinRadius);
+    }
+
+    /**
+     * Setup workspaces on view
+     * @param pinsList list of workspaces which are within correct radius
+     */
+    private void setWorkspacesOnView(ArrayList pinsList){
+        Log.i("WorkspaceAdaptor ", "fragment setAdaptor "+ String.valueOf(pinsList.size()));
+        mAdapter = new WorkspaceAdaptor(mInflater, pinsList);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    private boolean withinUserRadius(double lat, double lng){
+        // TODO get user's location
+        double centerLng = 43;
+        double centerLat = 43;
+        float[] results = new float[1];
+        Location.distanceBetween(centerLat, centerLng, lat, lng, results);
+        float distanceInKiloMeters = results[0] / 1000;
+        Log.i("withinUserRadius", String.valueOf(distanceInKiloMeters));
+        return distanceInKiloMeters < radius;
+    }
+
+    /**
      * Wait on map pins query result from internet.
      * Filter only WORKSPACE pins and those within set RADIUS from user.
      */
@@ -141,11 +214,10 @@ public class FragmentWorkspaces extends Fragment
         public void onResponse(Object response){
             try {
                 ArrayList pinsArrayList = (ArrayList) response;
+                initWorkspaces(pinsArrayList);
             } catch (ClassCastException e){
                 onError(e.toString());
-                return;
             }
-            // todo handle pins
         }
     }
 
