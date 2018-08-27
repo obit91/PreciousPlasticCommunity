@@ -4,11 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.activities.MapConstants;
+import com.example.android.preciousplastic.db.EventNotifier;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -120,4 +131,22 @@ public class FragmentWorkspaces extends Fragment
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    /**
+     * Wait on map pins query result from internet.
+     * Filter only WORKSPACE pins and those within set RADIUS from user.
+     */
+    private class WorkspacesQueryEventNotifier extends EventNotifier {
+        @Override
+        public void onResponse(Object response){
+            try {
+                ArrayList pinsArrayList = (ArrayList) response;
+            } catch (ClassCastException e){
+                onError(e.toString());
+                return;
+            }
+            // todo handle pins
+        }
+    }
+
 }

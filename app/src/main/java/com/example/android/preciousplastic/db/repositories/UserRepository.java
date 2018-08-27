@@ -82,7 +82,7 @@ public class UserRepository {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting User failed, log a message
-                Log.e(TAG, "updateUserPoints:onCancelled", databaseError.toException());
+                Log.e(TAG, "updateUserPoints:onFirebaseCancelled", databaseError.toException());
             }
         };
         PPSession.getUsersTable().child(nickname).addListenerForSingleValueEvent(userListener);
@@ -119,7 +119,7 @@ public class UserRepository {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting User failed, log a message
-                Log.e(TAG, "becomeOwner:onCancelled", databaseError.toException());
+                Log.e(TAG, "becomeOwner:onFirebaseCancelled", databaseError.toException());
             }
         };
         PPSession.getUsersTable().child(nickname).addListenerForSingleValueEvent(userListener);

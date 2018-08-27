@@ -7,10 +7,6 @@ import java.util.TreeMap;
 
 public class MapConstants {
 
-    // url addresses
-    public final static String BASE_URL = "https://davehakkens.nl";
-    public final static String MAP_PINS_SUFFIX = "/wp-json/map/v1/pins";
-
     // logging tag
     public static final String TAG = "MAP_ACTIVITY";
 
@@ -39,7 +35,7 @@ public class MapConstants {
 
     // pin can be drawn as single, or as a group icon
     enum PinType {SINGLE, GROUP}
-    enum PinFilter {STARTED, WORKSPACE, MACHINE, HAZARDS}
+    public enum PinFilter {STARTED, WORKSPACE, MACHINE, HAZARDS}
 
     // map between pinFilter values and filters layout (resources) consts
     public static Map<PinFilter, Integer> filterConstsMap = createFiltersMap();

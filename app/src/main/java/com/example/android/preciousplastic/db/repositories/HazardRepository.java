@@ -81,11 +81,11 @@ public class HazardRepository {
         hazardsTable.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                eventNotifier.onDataChange(dataSnapshot);
+                eventNotifier.onResponse(dataSnapshot);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                eventNotifier.onCancelled(databaseError);
+                eventNotifier.onError(databaseError.toString());
             }
         });
     }

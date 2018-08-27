@@ -39,6 +39,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.EventNotifier;
 import com.example.android.preciousplastic.db.repositories.HazardRepository;
+import com.example.android.preciousplastic.utils.InternetQuery;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
@@ -106,7 +107,6 @@ public class MapActivity extends AppCompatActivity {
     private Map<Integer, Boolean> filtersActivated;
 
     private HazardRepository hazardRepository;
-    private HazardsQueryAllEventNotifier queryHazardsNotifier;
 
     private boolean initialized = false;
 
@@ -120,15 +120,11 @@ public class MapActivity extends AppCompatActivity {
         context = PPSession.getContainerContext();
         resources = PPSession.getHomeActivity().getResources();
         hazardRepository = new HazardRepository(context);
-        queryHazardsNotifier = new HazardsQueryAllEventNotifier();
 
         // TODO: handle OSMDROID dangerous permissions
 
         // ensure map has a writable location for the map cache
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
-
-        // Instantiate the RequestQueue (for internet requests)
-        requestQueue = Volley.newRequestQueue(context);
 
         // initialize filters mapping
         filtersActivated = new TreeMap<>();
@@ -297,7 +293,14 @@ public class MapActivity extends AppCompatActivity {
      */
     private class HazardsQueryAllEventNotifier extends EventNotifier{
         @Override
-        public void onDataChange(DataSnapshot dataSnapshot){
+        public void onResponse(Object dataSnapshotObj){
+            DataSnapshot dataSnapshot;
+            try {
+                dataSnapshot = (DataSnapshot) dataSnapshotObj;
+            } catch (ClassCastException e){
+                onError(e.toString());
+                return;
+            }
             for (DataSnapshot singleHazard: dataSnapshot.getChildren()){
                 Object hazardObject = singleHazard.getValue();
                 HashMap<String, Object> hazardMap = (HashMap<String, Object>) hazardObject;
@@ -308,6 +311,22 @@ public class MapActivity extends AppCompatActivity {
                 OverlayItem overlayItem = new OverlayItem("Hazard Treasure", desc, new GeoPoint(lat, lng));
                 allPoints.get(MapConstants.PinFilter.HAZARDS).add(overlayItem);
             }
+        }
+    }
+
+    /**
+     * Wait on map pins query result from internet, and distribute map pins to containers when received.
+     */
+    private class MapPinsQueryEventNotifier extends EventNotifier{
+        @Override
+        public void onResponse(Object response){
+            try {
+                webPinsArrayList = (ArrayList) response;
+            } catch (ClassCastException e){
+                onError(e.toString());
+                return;
+            }
+            handlePinKeys();
         }
     }
 
@@ -426,30 +445,11 @@ public class MapActivity extends AppCompatActivity {
         for (MapConstants.PinFilter pinFilter: MapConstants.PinFilter.values()){
             allPoints.put(pinFilter, new ArrayList<OverlayItem>());
         }
-
-        String pinsUrl = MapConstants.BASE_URL + MapConstants.MAP_PINS_SUFFIX;
-        StringRequest pinKeyRequest = new StringRequest(Request.Method.GET, pinsUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                try {
-                    webPinsArrayList = gson.fromJson(response, ArrayList.class);
-                    handlePinKeys();
-                } catch (Exception e) {
-                    Log.e("exception", e.toString());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Error response", String.valueOf(error));
-            }
-        });
-        // Add the request to requestQueue
-        requestQueue.add(pinKeyRequest);
+        // request and handle pins from map
+        InternetQuery.queryPins(new MapPinsQueryEventNotifier());
 
         // get also hazard items from DB
-        hazardRepository.getHazards(queryHazardsNotifier);
+        hazardRepository.getHazards(new HazardsQueryAllEventNotifier());
     }
 
     /**

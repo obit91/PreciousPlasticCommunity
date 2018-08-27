@@ -5,14 +5,14 @@ import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import java.util.List;
+
 public class EventNotifier {
 
-    public void onDataChange(DataSnapshot dataSnapshot){
-        Log.i("EventNotifier data", "Received");
+    public void onResponse(Object response){
+        Log.i("EventNotifier Parent", "Received");
     }
-
-    public void onCancelled(DatabaseError databaseError){
-        Log.e("EventNotifier error", databaseError.toString());
+    public void onError(String response){
+        Log.i("EventNotifier Error", response);
     }
-
 }
