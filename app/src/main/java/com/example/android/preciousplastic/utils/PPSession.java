@@ -6,6 +6,7 @@ import com.example.android.preciousplastic.activities.HomeActivity;
 import com.example.android.preciousplastic.activities.MapActivity;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.entities.User;
+import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,6 +25,8 @@ public class PPSession {
 
     private static MapActivity mapActivity;
 
+    private static WorkspaceAdaptor workspaceAdaptor;
+
     /**
      * Resets all of the session variables (except for DB objects).
      */
@@ -33,6 +36,7 @@ public class PPSession {
         containerContext = null;
         homeActivity = null;
         mapActivity = null;
+        workspaceAdaptor = null;
     }
 
     public static void setCurrentUser(User user) {
@@ -88,6 +92,12 @@ public class PPSession {
     }
 
     public static MapActivity getMapActivity() { return mapActivity; }
+
+    public static void setWorkspaceAdaptor(WorkspaceAdaptor workspaceAdaptor){
+        PPSession.workspaceAdaptor = workspaceAdaptor;
+    }
+
+    public static WorkspaceAdaptor getWorkspaceAdaptor(){ return workspaceAdaptor; }
 
     public static String getEmail() {
         return mAuth.getCurrentUser().getEmail();

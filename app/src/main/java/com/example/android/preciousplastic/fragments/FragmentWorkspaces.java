@@ -1,8 +1,12 @@
 package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.activities.MapConstants;
 import com.example.android.preciousplastic.db.EventNotifier;
@@ -28,6 +33,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.zip.Inflater;
 
 /**
@@ -54,10 +60,13 @@ public class FragmentWorkspaces extends Fragment
     private int radius = 4000;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private WorkspaceAdaptor mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private LayoutInflater mInflater;
+
+    boolean haveSetData = false;
+    boolean haveSetImgs = false;
 
     public FragmentWorkspaces()
     { }
@@ -165,20 +174,27 @@ public class FragmentWorkspaces extends Fragment
      */
     private void initWorkspaces(ArrayList pinsList){
         ArrayList<LinkedTreeMap<String, Object>> workspacesWithinRadius = new ArrayList<>();
+        ArrayList<String> img_urls = new ArrayList<>();
         Log.i("initWorkspaces", String.valueOf(pinsList.size()));
+
         for (Object entry : pinsList) {
             LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
             ArrayList<String> filters = (ArrayList<String>) linkedTreeMap.get(MapConstants.MapPinKeys.FILTERS);
-            Log.i("filterWorkspace", String.valueOf(filters.contains(MapConstants.MapPinKeys.FILTERS_WORKSPACE)));
-            Log.i("filterWorkspace", String.valueOf(filters.get(0)));
             if (filters.contains(MapConstants.MapPinKeys.FILTERS_WORKSPACE)){
                 double lat = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LAT);
                 double lng = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LNG);
                 if (withinUserRadius(lat, lng)){
                     workspacesWithinRadius.add(linkedTreeMap);
+                    ArrayList<String> urls = (ArrayList) linkedTreeMap.get(MapConstants.MapPinKeys.IMGS);
+                    String img_url = "";
+                    if (urls.size() > 0){
+                        img_url = urls.get(0);
+                    }
+                    img_urls.add(img_url);
                 }
             }
         }
+        new ImageAsyncTask().execute(img_urls);
         setWorkspacesOnView(workspacesWithinRadius);
     }
 
@@ -187,11 +203,15 @@ public class FragmentWorkspaces extends Fragment
      * @param pinsList list of workspaces which are within correct radius
      */
     private void setWorkspacesOnView(ArrayList pinsList){
-        Log.i("WorkspaceAdaptor ", "fragment setAdaptor "+ String.valueOf(pinsList.size()));
-        mAdapter = new WorkspaceAdaptor(mInflater, pinsList);
+        mAdapter = new WorkspaceAdaptor(mInflater);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.setData(pinsList);
+        haveSetData = true;
+        if (haveSetImgs){
+            mAdapter.notifyDataSetChanged();
+        }
     }
+
 
 
     private boolean withinUserRadius(double lat, double lng){
@@ -201,7 +221,6 @@ public class FragmentWorkspaces extends Fragment
         float[] results = new float[1];
         Location.distanceBetween(centerLat, centerLng, lat, lng, results);
         float distanceInKiloMeters = results[0] / 1000;
-        Log.i("withinUserRadius", String.valueOf(distanceInKiloMeters));
         return distanceInKiloMeters < radius;
     }
 
@@ -213,12 +232,51 @@ public class FragmentWorkspaces extends Fragment
         @Override
         public void onResponse(Object response){
             try {
+                Log.i("WorkspacesQuery", "response");
                 ArrayList pinsArrayList = (ArrayList) response;
                 initWorkspaces(pinsArrayList);
             } catch (ClassCastException e){
                 onError(e.toString());
             }
         }
+    }
+
+    private class ImageAsyncTask extends AsyncTask<ArrayList<String>, Void, Void> {
+
+        ArrayList<Drawable> imgs;
+
+        @Override
+        protected Void doInBackground(ArrayList<String>... urls){
+            ArrayList<String> single_urls = urls[0];
+            imgs = new ArrayList<>(single_urls.size());
+            for (String url: single_urls){
+                imgs.add(getImage(url));
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void nulls){
+            Log.i("AsyncTask", "onPostExecute");
+            mAdapter.setImagesData(imgs);
+            haveSetImgs = true;
+            if (haveSetData){
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
+        private Drawable getImage(String url) {
+            if (!url.equals("")) {
+                try {
+                    Bitmap bitmap = Glide.with(PPSession.getContainerContext()).load(url)
+                            .asBitmap().into(-1, -1).get();
+                    return new BitmapDrawable(PPSession.getContainerContext().getResources(), bitmap);
+                } catch (InterruptedException | ExecutionException e) {
+                    Log.e("getImage", e.toString());
+                }
+            }
+            return null;
+        }
+
     }
 
 }

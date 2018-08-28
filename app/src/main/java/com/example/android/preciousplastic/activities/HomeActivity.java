@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.example.android.preciousplastic.fragments.FragmentProfile;
 import com.example.android.preciousplastic.fragments.FragmentSettings;
 import com.example.android.preciousplastic.fragments.FragmentTest;
 import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
+import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -66,6 +68,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         PPSession.setMapActivity(new MapActivity());
+
+        LayoutInflater inflater = (LayoutInflater) PPSession.getContainerContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        PPSession.setWorkspaceAdaptor(new WorkspaceAdaptor(inflater));
     }
 
     @Override
