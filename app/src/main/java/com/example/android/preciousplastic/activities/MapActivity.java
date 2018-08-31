@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -116,7 +117,6 @@ public class MapActivity extends AppCompatActivity {
 
     public MapActivity() {
 
-        Log.i("map", "oncreate");
         context = PPSession.getContainerContext();
         resources = PPSession.getHomeActivity().getResources();
         hazardRepository = new HazardRepository(context);
@@ -134,12 +134,7 @@ public class MapActivity extends AppCompatActivity {
         filtersActivated.put(R.id.filter_hazard_checkbox, true);
 
         // prepare overlays for map
-        // TODO: put in async
-        initOverlaysGrid();
-        initOverlays();
-
-        // Do not add any more code after this point!
-        initialized = true;
+        new InitMapsDataAsyncTask().execute();
     }
 
     // ===========================================================
@@ -270,7 +265,6 @@ public class MapActivity extends AppCompatActivity {
 
             if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight()
                     || y < w.getTop() || y > w.getBottom()) ) {
-                Toast.makeText(context, "trying to hide keyboard", Toast.LENGTH_SHORT).show();
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
             }
@@ -280,13 +274,24 @@ public class MapActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i("onCreate", "map");
         super.onCreate(savedInstanceState);
     }
 
     // ===========================================================
     // Private Classes
     // ===========================================================
+
+    private class InitMapsDataAsyncTask extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... nulls){
+            initOverlays();
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void nulls){
+            initialized = true;
+        }
+    }
 
     /**
      * Wait for query results from hazards db, and create map pin for each hazard.
@@ -439,6 +444,8 @@ public class MapActivity extends AppCompatActivity {
      */
     private void initOverlays() {
 
+        initOverlaysGrid();
+
         // initialize allPoints container
         allPoints = new TreeMap<>();
         for (MapConstants.PinFilter pinFilter: MapConstants.PinFilter.values()){
@@ -575,7 +582,6 @@ public class MapActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        Log.i("Website OnClick", website);
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
                         context.startActivity(browserIntent);
                     } catch (Exception e) {

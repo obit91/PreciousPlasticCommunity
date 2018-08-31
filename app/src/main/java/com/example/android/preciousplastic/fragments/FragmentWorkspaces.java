@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.activities.MapConstants;
+import com.example.android.preciousplastic.activities.WorkspacesActivity;
 import com.example.android.preciousplastic.db.EventNotifier;
 import com.example.android.preciousplastic.utils.InternetQuery;
 import com.example.android.preciousplastic.utils.PPSession;
@@ -57,19 +58,14 @@ public class FragmentWorkspaces extends Fragment
 
     private OnFragmentInteractionListener mListener;
 
-    private int radius = 4000;
-
     private RecyclerView mRecyclerView;
     private WorkspaceAdaptor mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private LayoutInflater mInflater;
 
-    boolean haveSetData = false;
-    boolean haveSetImgs = false;
+    WorkspacesActivity workspacesActivity;
 
-    public FragmentWorkspaces()
-    { }
 
     /**
      * Use this factory method to create a new instance of
@@ -99,6 +95,8 @@ public class FragmentWorkspaces extends Fragment
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        workspacesActivity = PPSession.getWorkspacesActivity();
+        workspacesActivity.setEventNotifier(new WorkspacesInitEventNotifier());
     }
 
     @Override
@@ -109,17 +107,19 @@ public class FragmentWorkspaces extends Fragment
         mInflater = inflater;
         View v = inflater.inflate(R.layout.fragment_workspaces, container, false);
 
-        // get workspaces
-        InternetQuery.queryPins(new WorkspacesQueryEventNotifier());
-
         // setup RecyclerView and Adaptor
         mRecyclerView = v.findViewById(R.id.workspaces_recycleview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(PPSession.getContainerContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        if (workspacesActivity.initialized){
+            setDataAndStartAdaptor();
+        }
+
         return v;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri)
@@ -168,115 +168,25 @@ public class FragmentWorkspaces extends Fragment
         void onFragmentInteraction(Uri uri);
     }
 
-    /**
-     * Extract all workspaces and set them in view.
-     * @param pinsList list of all pins on map (workspaces need to be filtered)
-     */
-    private void initWorkspaces(ArrayList pinsList){
-        ArrayList<LinkedTreeMap<String, Object>> workspacesWithinRadius = new ArrayList<>();
-        ArrayList<String> img_urls = new ArrayList<>();
-        Log.i("initWorkspaces", String.valueOf(pinsList.size()));
-
-        for (Object entry : pinsList) {
-            LinkedTreeMap<String, Object> linkedTreeMap = (LinkedTreeMap<String, Object>) entry;
-            ArrayList<String> filters = (ArrayList<String>) linkedTreeMap.get(MapConstants.MapPinKeys.FILTERS);
-            if (filters.contains(MapConstants.MapPinKeys.FILTERS_WORKSPACE)){
-                double lat = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LAT);
-                double lng = (double) linkedTreeMap.get(MapConstants.MapPinKeys.LNG);
-                if (withinUserRadius(lat, lng)){
-                    workspacesWithinRadius.add(linkedTreeMap);
-                    ArrayList<String> urls = (ArrayList) linkedTreeMap.get(MapConstants.MapPinKeys.IMGS);
-                    String img_url = "";
-                    if (urls.size() > 0){
-                        img_url = urls.get(0);
-                    }
-                    img_urls.add(img_url);
-                }
-            }
-        }
-        new ImageAsyncTask().execute(img_urls);
-        setWorkspacesOnView(workspacesWithinRadius);
-    }
-
-    /**
-     * Setup workspaces on view
-     * @param pinsList list of workspaces which are within correct radius
-     */
-    private void setWorkspacesOnView(ArrayList pinsList){
+    private void setDataAndStartAdaptor(){
         mAdapter = new WorkspaceAdaptor(mInflater);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setData(pinsList);
-        haveSetData = true;
-        if (haveSetImgs){
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-
-
-
-    private boolean withinUserRadius(double lat, double lng){
-        // TODO get user's location
-        double centerLng = 43;
-        double centerLat = 43;
-        float[] results = new float[1];
-        Location.distanceBetween(centerLat, centerLng, lat, lng, results);
-        float distanceInKiloMeters = results[0] / 1000;
-        return distanceInKiloMeters < radius;
+        mAdapter.setData(workspacesActivity.getWorkspaces());
+        mAdapter.setImagesData(workspacesActivity.getImages());
+        mAdapter.notifyDataSetChanged();
     }
 
     /**
-     * Wait on map pins query result from internet.
-     * Filter only WORKSPACE pins and those within set RADIUS from user.
+     * Allow WorkspacesActivity to alert when it has finished initialization.
+     * Useful in case WorkspacesActivity has not finished before FragmentWorkspaces has been created.
      */
-    private class WorkspacesQueryEventNotifier extends EventNotifier {
+    private class WorkspacesInitEventNotifier extends EventNotifier {
         @Override
-        public void onResponse(Object response){
-            try {
-                Log.i("WorkspacesQuery", "response");
-                ArrayList pinsArrayList = (ArrayList) response;
-                initWorkspaces(pinsArrayList);
-            } catch (ClassCastException e){
-                onError(e.toString());
+        public void onResponse(Object response) {
+            if (mAdapter == null){
+                setDataAndStartAdaptor();
             }
         }
-    }
-
-    private class ImageAsyncTask extends AsyncTask<ArrayList<String>, Void, Void> {
-
-        ArrayList<Drawable> imgs;
-
-        @Override
-        protected Void doInBackground(ArrayList<String>... urls){
-            ArrayList<String> single_urls = urls[0];
-            imgs = new ArrayList<>(single_urls.size());
-            for (String url: single_urls){
-                imgs.add(getImage(url));
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void nulls){
-            Log.i("AsyncTask", "onPostExecute");
-            mAdapter.setImagesData(imgs);
-            haveSetImgs = true;
-            if (haveSetData){
-                mAdapter.notifyDataSetChanged();
-            }
-        }
-
-        private Drawable getImage(String url) {
-            if (!url.equals("")) {
-                try {
-                    Bitmap bitmap = Glide.with(PPSession.getContainerContext()).load(url)
-                            .asBitmap().into(-1, -1).get();
-                    return new BitmapDrawable(PPSession.getContainerContext().getResources(), bitmap);
-                } catch (InterruptedException | ExecutionException e) {
-                    Log.e("getImage", e.toString());
-                }
-            }
-            return null;
-        }
-
     }
 
 }

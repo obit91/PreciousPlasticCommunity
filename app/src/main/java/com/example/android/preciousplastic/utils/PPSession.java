@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.android.preciousplastic.activities.HomeActivity;
 import com.example.android.preciousplastic.activities.MapActivity;
+import com.example.android.preciousplastic.activities.WorkspacesActivity;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
@@ -26,6 +27,7 @@ public class PPSession {
     private static MapActivity mapActivity;
 
     private static WorkspaceAdaptor workspaceAdaptor;
+    private static WorkspacesActivity workspacesActivity;
 
     /**
      * Resets all of the session variables (except for DB objects).
@@ -92,6 +94,13 @@ public class PPSession {
     }
 
     public static MapActivity getMapActivity() { return mapActivity; }
+
+    public static void setWorkspacesActivity(WorkspacesActivity workspacesActivity){
+        PPSession.workspacesActivity = workspacesActivity;
+    }
+
+    public static WorkspacesActivity getWorkspacesActivity(){ return workspacesActivity; }
+
 
     public static void setWorkspaceAdaptor(WorkspaceAdaptor workspaceAdaptor){
         PPSession.workspaceAdaptor = workspaceAdaptor;

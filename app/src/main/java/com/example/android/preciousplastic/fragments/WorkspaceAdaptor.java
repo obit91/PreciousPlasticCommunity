@@ -82,25 +82,25 @@ public class WorkspaceAdaptor extends RecyclerView.Adapter<WorkspaceAdaptor.Work
         String desc = (String) currItem.get(MapConstants.MapPinKeys.DESC);
         descView.setText(desc);
 
-        // Image and link to website
+        // Image of workspace
         ImageButton imgBtn = holder.layout.findViewById(R.id.workspace_img);
-        final String website = (String) currItem.get(MapConstants.MapPinKeys.SITE);
         imgBtn.setImageDrawable(dataImgs.get(pos));
-//        imgBtn.setImageDrawable(null);
 
-//        imgBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!website.equals("")) {
-//                    try {
-//                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
-//                        PPSession.getContainerContext().startActivity(browserIntent);
-//                    } catch (Exception e) {
-//                        Log.e("Website OnClick error", e.toString());
-//                    }
-//                }
-//            }
-//        });
+        // Link to website
+        final String website = (String) currItem.get(MapConstants.MapPinKeys.SITE);
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!website.equals("")) {
+                    try {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                        PPSession.getContainerContext().startActivity(browserIntent);
+                    } catch (Exception e) {
+                        Log.e("Website OnClick error", e.toString());
+                    }
+                }
+            }
+        });
     }
 
 

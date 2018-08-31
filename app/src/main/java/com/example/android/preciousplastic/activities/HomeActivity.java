@@ -2,7 +2,9 @@ package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -35,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -68,6 +71,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         PPSession.setMapActivity(new MapActivity());
+        PPSession.setWorkspacesActivity(new WorkspacesActivity());
 
         LayoutInflater inflater = (LayoutInflater) PPSession.getContainerContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         PPSession.setWorkspaceAdaptor(new WorkspaceAdaptor(inflater));
@@ -246,5 +250,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void switchFragment(final Class<? extends Fragment> fragmentClass) {
         goToFragment(fragmentClass);
     }
+
 }
 
