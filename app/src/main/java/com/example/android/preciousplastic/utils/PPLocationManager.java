@@ -48,8 +48,7 @@ public class PPLocationManager extends Service implements LocationListener {
     //get co-ordinates
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
             // getting Network & GPS status
             boolean permissionAllowed = ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
@@ -110,7 +109,7 @@ public class PPLocationManager extends Service implements LocationListener {
             locationManager.removeUpdates(PPLocationManager.this);
         }
     }
-    
+
     /**
      * Function to get latitude
      * */

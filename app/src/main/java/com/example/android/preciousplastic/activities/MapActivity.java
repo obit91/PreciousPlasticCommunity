@@ -41,6 +41,7 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.EventNotifier;
 import com.example.android.preciousplastic.db.repositories.HazardRepository;
 import com.example.android.preciousplastic.utils.InternetQuery;
+import com.example.android.preciousplastic.utils.PPLocationManager;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
@@ -155,11 +156,23 @@ public class MapActivity extends AppCompatActivity {
         mapView.setMultiTouchControls(true);
         mapView.setHorizontalMapRepetitionEnabled(false);
 
-        // set the map to a default starting point
+        // set the map to user's location
+        double initLat = 42.0;
+        double initLong = 37.0;
+        PPLocationManager ppLocationManager = new PPLocationManager(context);
+        // ask user to allow location in settings
+        if (!ppLocationManager.canGetLocation()){
+            ppLocationManager.showSettingsAlert();
+        }
+        if (ppLocationManager.canGetLocation()){
+            initLat = ppLocationManager.getLatitude();
+            initLong = ppLocationManager.getLongitude();
+        }
+        ppLocationManager.stopUsingGPS();
+
         IMapController mapController = mapView.getController();
-        // TODO: set to user's own location
-        mapController.setZoom(9.0);
-        GeoPoint startPoint = new GeoPoint(30.0, 30.0);
+        mapController.setZoom(12.0);
+        GeoPoint startPoint = new GeoPoint(initLat, initLong);
         mapController.setCenter(startPoint);
 
         // add Image Button which opens a filter window
@@ -416,6 +429,7 @@ public class MapActivity extends AppCompatActivity {
                     binX = (int) (Math.floor(MapConstants.DENSITY_X * fractionX));
                     double fractionY = ((double) p.y / (double) mapView.getHeight());
                     binY = (int) (Math.floor(MapConstants.DENSITY_Y * fractionY));
+                    //todo: check if item at location already exists in bin, and if so, change its location by epsilon
                     grid.get(binX).get(binY).add(overlayItem); // just push the reference
                 }
             }
