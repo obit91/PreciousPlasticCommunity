@@ -19,11 +19,11 @@
             <item
                 android:id="@+id/drawer_workspaces"
                 android:icon="@drawable/ic_store_mall_directory_black_24dp"
-                android:title="workspaces" />
+                android:title="Workspaces" />
             <item
                 android:id="@+id/drawer_bazaar"
-                android:icon="@drawable/ic_shopping_basket_black_24dp"
-                android:title="Bazaar" />
+                android:icon="@drawable/plastic_points_24dp"
+                android:title="Use points"/>
             <item
                 android:id="@+id/drawer_map"
                 android:icon="@drawable/ic_map_black_24dp"
@@ -46,10 +46,10 @@
                 android:id="@+id/drawer_settings"
                 android:icon="@drawable/ic_settings_black_24dp"
                 android:title="Settings" />
-            <item
-                android:id="@+id/drawer_my_cart"
-                android:icon="@drawable/ic_shopping_cart_black_24dp"
-                android:title="My Cart" />
+            <!--<item-->
+                <!--android:id="@+id/drawer_my_cart"-->
+                <!--android:icon="@drawable/ic_shopping_cart_black_24dp"-->
+                <!--android:title="My Cart" />-->
         </menu>
     </item>
 
