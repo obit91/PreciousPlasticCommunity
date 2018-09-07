@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
+
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.fragments.FragmentAboutUs;
 import com.example.android.preciousplastic.fragments.FragmentHome;
@@ -30,6 +32,7 @@ import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
 import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
 import com.example.android.preciousplastic.fragments.optional.FragmentBazaar;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.utils.Transitions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -120,13 +123,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      * Signs out the current Firebase user.
      */
     private void signOut() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            String nickname = user.getDisplayName();
-            String msg = "SignOut: %s signed out.";
-            mAuth.signOut();
-            Log.i(TAG, String.format(msg, nickname));
-        }
+        TransitionTypes type = TransitionTypes.SIGN_OUT;
+        Intent i = new Intent(this, TransitionActivity.class);
+        i.putExtra(Transitions.TRANSITION_TYPE, type);
+        startActivity(i);
     }
 
     /**
@@ -176,9 +176,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_settings:
                 goToFragment(FragmentSettings.class);
                 break;
-//            case R.id.drawer_my_cart:
-//                goToFragment(FragmentCart.class);
-//                break;
             case R.id.drawer_to_website:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PRECIOUS_PLASTIC_URL));
                 startActivity(browserIntent);
