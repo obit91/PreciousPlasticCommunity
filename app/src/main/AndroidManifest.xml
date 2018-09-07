@@ -17,7 +17,6 @@
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--Todo: To display the drawer Hide these:-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,8 +29,12 @@
         <activity
             android:name=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.MapActivity"
+        <activity
+            android:name=".activities.MapActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".activities.LoadingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 
