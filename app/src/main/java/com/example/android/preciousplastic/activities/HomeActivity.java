@@ -2,9 +2,7 @@ package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -21,8 +19,6 @@ import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.fragments.FragmentAboutUs;
-import com.example.android.preciousplastic.fragments.FragmentBazaar;
-import com.example.android.preciousplastic.fragments.FragmentCart;
 import com.example.android.preciousplastic.fragments.FragmentHome;
 import com.example.android.preciousplastic.fragments.FragmentMap;
 import com.example.android.preciousplastic.fragments.FragmentMyWorkspaceNonOwner;
@@ -32,12 +28,12 @@ import com.example.android.preciousplastic.fragments.FragmentSettings;
 import com.example.android.preciousplastic.fragments.FragmentTest;
 import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
 import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
+import com.example.android.preciousplastic.fragments.optional.FragmentBazaar;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -179,9 +175,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.drawer_settings:
                 goToFragment(FragmentSettings.class);
-                break;
-            case R.id.drawer_my_cart:
-                goToFragment(FragmentCart.class);
                 break;
             case R.id.drawer_to_website:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PRECIOUS_PLASTIC_URL));

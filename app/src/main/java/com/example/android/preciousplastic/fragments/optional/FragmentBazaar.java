@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic.fragments;
+package com.example.android.preciousplastic.fragments.optional;
 
 import android.content.Context;
 import android.net.Uri;
