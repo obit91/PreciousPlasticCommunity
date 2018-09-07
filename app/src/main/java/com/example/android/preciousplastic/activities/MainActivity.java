@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.example.android.preciousplastic.utils.PPGUIManager.updateGUI;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 PPSession.setCurrentUser(dataSnapshot.getValue(User.class));
                 String msg = "currentUserListener: updating current user <%s>";
                 Log.i(TAG, String.format(msg, nickname));
+                updateGUI();
             }
 
             @Override

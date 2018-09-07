@@ -75,13 +75,13 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             invalidInput = true;
         }
         if (ViewTools.isTextViewNull(emailTextView)) {
-            msg.append("email");
+            msg.append("email").append("\n");
             emailTextView.setHintTextColor(Color.RED);
             invalidInput = true;
         }
 
         if (invalidInput) {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, msg.substring(0, msg.length() - 1), Toast.LENGTH_SHORT).show();
             return;
         }
 

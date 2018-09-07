@@ -17,8 +17,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
-
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.fragments.FragmentAboutUs;
 import com.example.android.preciousplastic.fragments.FragmentHome;
@@ -32,7 +30,6 @@ import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
 import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
 import com.example.android.preciousplastic.fragments.optional.FragmentBazaar;
 import com.example.android.preciousplastic.utils.PPSession;
-import com.example.android.preciousplastic.utils.Transitions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -123,10 +120,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      * Signs out the current Firebase user.
      */
     private void signOut() {
-        TransitionTypes type = TransitionTypes.SIGN_OUT;
-        Intent i = new Intent(this, LoadingActivity.class);
-        i.putExtra(Transitions.TRANSITION_TYPE, type);
-        startActivity(i);
+//        TransitionTypes type = TransitionTypes.SIGN_OUT;
+//        Intent i = new Intent(this, LoadingActivity.class);
+//        i.putExtra(Transitions.TRANSITION_TYPE, type);
+//        startActivity(i);
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            String nickname = user.getDisplayName();
+            String msg = "SignOut: %s signed out.";
+            mAuth.signOut();
+            Log.i(TAG, String.format(msg, nickname));
+        }
+        finish();
     }
 
     /**
@@ -207,9 +212,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return;
         }
 
-        // update current fragment.
-        currentFragment = fragmentClass;
-
         performFragmentSwitch(fragmentClass);
     }
 
@@ -222,6 +224,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             // retrieve details of given fragment class.
             Fragment fragment = fragmentClass.newInstance();
             String fragmentName = fragmentClass.getSimpleName();
+
+            // update current fragment.
+            PPSession.setCurrentFragment(fragment);
 
             // transfer control to the new fragment.
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

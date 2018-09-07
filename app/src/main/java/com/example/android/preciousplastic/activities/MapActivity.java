@@ -297,7 +297,8 @@ public class MapActivity extends AppCompatActivity {
     private class InitMapsDataAsyncTask extends AsyncTask<Void, Void, Void>{
         @Override
         protected Void doInBackground(Void... nulls){
-            initOverlays();
+            // todo restore
+//            initOverlays();
             return null;
         }
         @Override
@@ -465,6 +466,7 @@ public class MapActivity extends AppCompatActivity {
         for (MapConstants.PinFilter pinFilter: MapConstants.PinFilter.values()){
             allPoints.put(pinFilter, new ArrayList<OverlayItem>());
         }
+        // todo remove comment
         // request and handle pins from map
         InternetQuery.queryPins(new MapPinsQueryEventNotifier());
 

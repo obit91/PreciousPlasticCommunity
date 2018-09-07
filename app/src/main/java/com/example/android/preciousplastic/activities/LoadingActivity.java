@@ -36,7 +36,7 @@ public class LoadingActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private UserRepository userRepo;
 
-    private static final String TAG = "TRANSITION_ACTIVITY";
+    private static final String TAG = "LOADING_ACTIVITY";
 
     private ArrayList<Integer> loadingScreenImages;
     private Integer chosenImageIndex;
@@ -61,7 +61,7 @@ public class LoadingActivity extends AppCompatActivity {
         String[] authors;
         authors=getResources().getStringArray(R.array.authorsArray);
 
-        int randQuoteNum = random.nextInt(quotes.length + 1);
+        int randQuoteNum = random.nextInt(quotes.length);
 
         quote.setText(String.format("%s \n %s", quotes[randQuoteNum], authors[randQuoteNum]));
     }
@@ -215,6 +215,7 @@ public class LoadingActivity extends AppCompatActivity {
                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoadingActivity.this, "Authentication failed.\n" + task.getException(),
                                     Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                         // ...
                     }
@@ -225,14 +226,14 @@ public class LoadingActivity extends AppCompatActivity {
      * Signs out the current Firebase user.
      */
     private void signOut() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            String nickname = user.getDisplayName();
-            String msg = "SignOut: %s signed out.";
-            mAuth.signOut();
-            Log.i(TAG, String.format(msg, nickname));
-        }
-        finish();
+//        FirebaseUser user = mAuth.getCurrentUser();
+//        if (user != null) {
+//            String nickname = user.getDisplayName();
+//            String msg = "SignOut: %s signed out.";
+//            mAuth.signOut();
+//            Log.i(TAG, String.format(msg, nickname));
+//        }
+//        finish();
     }
 
 

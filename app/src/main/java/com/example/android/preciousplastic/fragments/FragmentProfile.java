@@ -94,10 +94,10 @@ public class FragmentProfile extends Fragment {
         binTotal = (TextView)view.findViewById(R.id.profile_tv_total);
     }
 
-    private void updateBins(View view) {
+    public void updateBins(View view) {
         User currentUser = PPSession.getCurrentUser();
         UserPoints points = currentUser.getPoints();
-            bin1.setText(points.getType1AsString());
+        bin1.setText(points.getType1AsString());
         bin2.setText(points.getType2AsString());
         bin3.setText(points.getType3AsString());
         bin4.setText(points.getType4AsString());

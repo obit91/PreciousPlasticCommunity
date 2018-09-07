@@ -1,6 +1,7 @@
 package com.example.android.preciousplastic.utils;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import com.example.android.preciousplastic.activities.HomeActivity;
 import com.example.android.preciousplastic.activities.MapActivity;
@@ -29,6 +30,9 @@ public class PPSession {
     private static WorkspaceAdaptor workspaceAdaptor;
     private static WorkspacesActivity workspacesActivity;
 
+    private static Fragment currentFragment;
+    private static Class<? extends Fragment> currentFragmentClass;
+
     /**
      * Resets all of the session variables (except for DB objects).
      */
@@ -39,6 +43,7 @@ public class PPSession {
         homeActivity = null;
         mapActivity = null;
         workspaceAdaptor = null;
+        currentFragmentClass = null;
     }
 
     public static void setCurrentUser(User user) {
@@ -66,6 +71,19 @@ public class PPSession {
         mUsersTable = mFirebaseDB.getReference(DBConstants.USERS_COLLECTION);
         mHazardsTable = mFirebaseDB.getReference(DBConstants.HAZARDS_COLLECTIONS);
 
+    }
+
+    public static Class<? extends Fragment> getCurrentFragmentClass() {
+        return currentFragmentClass;
+    }
+
+    public static Fragment getCurrentFragment() {
+        return currentFragment;
+    }
+
+    public static void setCurrentFragment(Fragment currentFragment) {
+        PPSession.currentFragment = currentFragment;
+        PPSession.currentFragmentClass = currentFragment.getClass();
     }
 
     public static DatabaseReference getUsersTable() {
