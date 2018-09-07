@@ -252,5 +252,15 @@
         app:layout_constraintStart_toEndOf="@+id/progressBar_plasticExp"
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
+    <TextView
+        android:id="@+id/profile_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Young Grasshopper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
