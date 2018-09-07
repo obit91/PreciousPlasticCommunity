@@ -148,6 +148,11 @@ public class LoadingActivity extends AppCompatActivity {
     private void loggedIn(String nickname) {
         userRepo.updateLastLogin(nickname);
         Intent homeIntent = new Intent(this, HomeActivity.class);
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("someone's in a hurry");
+        }
         startActivity(homeIntent);
     }
 
