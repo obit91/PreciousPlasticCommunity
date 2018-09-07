@@ -176,6 +176,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_settings:
                 goToFragment(FragmentSettings.class);
                 break;
+//            case R.id.drawer_my_cart:
+//                goToFragment(FragmentCart.class);
+//                break;
             case R.id.drawer_to_website:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PRECIOUS_PLASTIC_URL));
                 startActivity(browserIntent);
