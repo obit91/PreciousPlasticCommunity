@@ -64,6 +64,27 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void onSignInClick(View view) {
+
+        boolean invalidInput = false;
+        StringBuilder msg = new StringBuilder();
+        msg.append("The following fields are missing: ");
+
+        if ( ViewTools.isTextViewNull(passwordTextView)) {
+            msg.append("password").append("\n");
+            passwordTextView.setHintTextColor(Color.RED);
+            invalidInput = true;
+        }
+        if (ViewTools.isTextViewNull(emailTextView)) {
+            msg.append("email");
+            emailTextView.setHintTextColor(Color.RED);
+            invalidInput = true;
+        }
+
+        if (invalidInput) {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         TransitionTypes type = TransitionTypes.SIGN_IN;
         activateTransition(type);
     }
@@ -88,19 +109,22 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     public void onRegisterClick(View view) {
 
         boolean invalidInput = false;
+        StringBuilder msg = new StringBuilder();
+        msg.append("The following fields are missing: ");
 
         if ( ViewTools.isTextViewNull(passwordTextView)) {
-            Toast.makeText(this, "Password field missing.", Toast.LENGTH_SHORT).show();
-            passwordTextView.setHighlightColor(Color.red(1));
+            msg.append("password").append("\n");
+            passwordTextView.setHintTextColor(Color.RED);
             invalidInput = true;
         }
         if (ViewTools.isTextViewNull(emailTextView)) {
-            Toast.makeText(this, "Email field missing.", Toast.LENGTH_SHORT).show();
-            emailTextView.setHighlightColor(Color.red(1));
+            msg.append("email");
+            emailTextView.setHintTextColor(Color.RED);
             invalidInput = true;
         }
 
         if (invalidInput) {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
             return;
         }
         
