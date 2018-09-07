@@ -31,6 +31,8 @@ public class LoadingActivity extends AppCompatActivity {
     private final int MAX_NUM_OF_LOADING_IMAGES = 4;
     private final int MAX_NUM_OF_QUOTES = 5;
 
+    private static final int TRANSITION_TIME = 1500;
+
     private FirebaseAuth mAuth;
     private UserRepository userRepo;
 
@@ -149,9 +151,9 @@ public class LoadingActivity extends AppCompatActivity {
         userRepo.updateLastLogin(nickname);
         Intent homeIntent = new Intent(this, HomeActivity.class);
         try {
-            Thread.sleep(1500);
+            Thread.sleep(TRANSITION_TIME);
         } catch (InterruptedException e) {
-            System.out.println("someone's in a hurry");
+            Log.d(TAG, "LoggedIn: failed to sleep, someone's rushing.");
         }
         startActivity(homeIntent);
     }
