@@ -124,7 +124,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      */
     private void signOut() {
         TransitionTypes type = TransitionTypes.SIGN_OUT;
-        Intent i = new Intent(this, TransitionActivity.class);
+        Intent i = new Intent(this, LoadingActivity.class);
         i.putExtra(Transitions.TRANSITION_TYPE, type);
         startActivity(i);
     }

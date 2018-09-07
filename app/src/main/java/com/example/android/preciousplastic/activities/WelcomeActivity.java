@@ -75,7 +75,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         String password = passwordTextView.getText().toString();
         String nickname = email.substring(0, email.indexOf("@"));
 
-        Intent i = new Intent(this, TransitionActivity.class);
+        Intent i = new Intent(this, LoadingActivity.class);
         i.putExtra(Transitions.TRANSITION_TYPE, type);
         i.putExtra(Transitions.TRANSITION_EMAIL, email);
         i.putExtra(Transitions.TRANSITION_PASS, password);

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="quote1">The recycling in my house was imposed by my kids.</string>
-    <string name="author1">Antonio Banderas</string>
-    <string name="quote2">We were in recycling before recycling was cool.</string>
-    <string name="author2">Anthony Pratt</string>
-    <string name="quote3">We recycle everything in my house. I am not into any particular organizations, but I am doing my part and that makes me feel okay.</string>
-    <string name="author3">Mark-Paul Gosselaar</string>
-    <string name="quote4">So I am going to go on and work on preserving the ozone layer, encouraging everyone to recycle.</string>
-    <string name="author4">Dean Stockwell</string>
-    <string name="quote5">If you are not buying recycled products, you are not really recycling.</string>
-    <string name="author5">Ed Begley, Jr.</string>
+
+    <!--Quotes to display-->
+    <string-array name="quotesArray">
+        <item name="quote1">The recycling in my house was imposed by my kids.</item>
+        <item name="quote2">We were in recycling before recycling was cool.</item>
+        <item name="quote3">We recycle everything in my house. I am not into any particular organizations, but I am doing my part and that makes me feel okay.</item>
+        <item name="quote4">So I am going to go on and work on preserving the ozone layer, encouraging everyone to recycle.</item>
+        <item name="quote5">If you are not buying recycled products, you are not really recycling.</item>
+    </string-array>
+
+    <!--Matching authors-->
+    <string-array name="authorsArray">
+        <item name="author1">Antonio Banderas</item>
+        <item name="author2">Anthony Pratt</item>
+        <item name="author3">Mark-Paul Gosselaar</item>
+        <item name="author4">Dean Stockwell</item>
+        <item name="author5">Ed Begley, Jr.</item>
+    </string-array>
 </resources>
