@@ -2,6 +2,7 @@ package com.example.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.utils.Transitions;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
+import com.example.android.preciousplastic.utils.ViewTools;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -84,6 +86,24 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void onRegisterClick(View view) {
+
+        boolean invalidInput = false;
+
+        if ( ViewTools.isTextViewNull(passwordTextView)) {
+            Toast.makeText(this, "Password field missing.", Toast.LENGTH_SHORT).show();
+            passwordTextView.setHighlightColor(Color.red(1));
+            invalidInput = true;
+        }
+        if (ViewTools.isTextViewNull(emailTextView)) {
+            Toast.makeText(this, "Email field missing.", Toast.LENGTH_SHORT).show();
+            emailTextView.setHighlightColor(Color.red(1));
+            invalidInput = true;
+        }
+
+        if (invalidInput) {
+            return;
+        }
+        
         TransitionTypes type = TransitionTypes.REGISTER;
         activateTransition(type);
     }
