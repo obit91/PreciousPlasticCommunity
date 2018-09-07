@@ -29,7 +29,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
         // setting listeners
         Button registerButton = (Button) findViewById(R.id.welcome_btn_register);
-        Button signInButton = (Button) findViewById(R.id.welcome_btn_sign_in);
+        Button signInButton = (Button) findViewById(R.id.welcome_btn_log_in);
         registerButton.setOnClickListener(this);
         signInButton.setOnClickListener(this);
 
@@ -94,7 +94,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             case (R.id.welcome_btn_register):
                 onRegisterClick(view);
                 break;
-            case (R.id.welcome_btn_sign_in):
+            case (R.id.welcome_btn_log_in):
                 onSignInClick(view);
                 break;
         }
