@@ -1,12 +1,14 @@
 package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
@@ -31,6 +33,9 @@ public class FragmentProfile extends Fragment {
     private TextView bin7 = null;
     private TextView binTotal = null;
     private TextView rankTextView = null;
+    private TextView currentXP = null;
+    private TextView nextRankXP = null;
+    private ProgressBar progressBar = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -96,6 +101,9 @@ public class FragmentProfile extends Fragment {
         bin7 = (TextView)view.findViewById(R.id.profile_tv_bin7);
         binTotal = (TextView)view.findViewById(R.id.profile_tv_total);
         rankTextView = (TextView)view.findViewById(R.id.profile_tv_title);
+        currentXP = (TextView)view.findViewById(R.id.profile_tv_currentXP);
+        nextRankXP = (TextView)view.findViewById(R.id.profile_tv_expToNextLvl);
+        progressBar = (ProgressBar)view.findViewById(R.id.profile_progressBar_plasticExp);
     }
 
     public void updateGUI(View view) {
@@ -113,6 +121,27 @@ public class FragmentProfile extends Fragment {
         UserRank rank = currentUser.getRank();
         String title = rank.getTitle();
         rankTextView.setText(title);
+
+        currentXP.setText(points.getTotalPointsAsString());
+        nextRankXP.setText(String.valueOf(rank.getRequiredExp()));
+
+        int progress = getProgress(points, rank);
+        progressBar.getProgressDrawable().setColorFilter(
+                Color.BLUE, android.graphics.PorterDuff.Mode.SRC_IN);
+        progressBar.setProgress(progress);
+    }
+
+    private int getProgress(UserPoints points, UserRank rank) {
+        int from;
+        int to;
+        UserRank prevRank = rank.getPrevRank();
+        if (rank == prevRank) {
+            from = 0;
+        } else {
+            from = prevRank.getRequiredExp();
+        }
+        to = rank.getRequiredExp();
+        return (int)((points.getTotalPoints() - from) / (to - from) * 100);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

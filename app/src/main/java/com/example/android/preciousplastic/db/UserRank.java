@@ -39,12 +39,18 @@ public enum UserRank {
     }
 
     public UserRank getNextRank() {
-        UserRank rank = this;
-        return values[rank.ordinal() + 1];
+        return values[this.ordinal() + 1];
+    }
+
+    public UserRank getPrevRank() {
+        if (this.ordinal() == 0) {
+            return this;
+        } else {
+            return values[this.ordinal() - 1];
+        }
     }
 
     public boolean isMaxRank() {
-        UserRank rank = this;
-        return rank.ordinal() == values.length - 1;
+        return this.ordinal() == values.length - 1;
     }
 }

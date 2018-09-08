@@ -219,7 +219,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
-        android:id="@+id/progressBar_plasticExp"
+        android:id="@+id/profile_progressBar_plasticExp"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -234,22 +234,22 @@
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
-        android:id="@+id/tv_currentXP"
+        android:id="@+id/profile_tv_currentXP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:text="0"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_expToNextLvl"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar_plasticExp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/profile_tv_expToNextLvl"
+        app:layout_constraintEnd_toStartOf="@+id/profile_progressBar_plasticExp" />
 
     <TextView
-        android:id="@+id/tv_expToNextLvl"
+        android:id="@+id/profile_tv_expToNextLvl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="72dp"
         android:text="100"
-        app:layout_constraintStart_toEndOf="@+id/progressBar_plasticExp"
+        app:layout_constraintStart_toEndOf="@+id/profile_progressBar_plasticExp"
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
