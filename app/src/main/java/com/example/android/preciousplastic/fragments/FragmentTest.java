@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.utils.PPSession;
+import com.google.firebase.auth.FirebaseAuth;
 
 
-public class FragmentTest extends Fragment {
+public class FragmentTest extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -77,5 +79,18 @@ public class FragmentTest extends Fragment {
     public interface OnFragmentInteractionListener {
 //         TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case(R.id.testing_btn_REMOVE_ALL):
+                removeAllUsers();
+                break;
+        }
+    }
+
+    private void removeAllUsers() {
+        final FirebaseAuth firebaseAuth = PPSession.getFirebaseAuth();
     }
 }
