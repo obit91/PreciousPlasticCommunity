@@ -2,6 +2,7 @@ package com.example.android.preciousplastic.db.entities;
 
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
+import com.example.android.preciousplastic.db.UserRank;
 import com.example.android.preciousplastic.db.Workspace;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
@@ -21,6 +22,7 @@ public class User {
     private UserPoints points;
     private boolean owner;
     private Workspace workspace;
+    private UserRank rank;
 
     /**
      * Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -43,6 +45,7 @@ public class User {
         this.nickname = nickname;
         this.points = new UserPoints();
         this.owner = owner;
+        this.rank = UserRank.CARING_PERSON;
 
         if (owner) {
             this.workspace = new Workspace();
@@ -76,6 +79,7 @@ public class User {
         result.put("points", points);
         result.put("owner", owner);
         result.put("workspace", workspace);
+        result.put("rank", rank);
 
         return result;
     }
@@ -164,6 +168,14 @@ public class User {
         this.workspace = workspace;
     }
 
+    public UserRank getRank() {
+        return rank;
+    }
+
+    public void setRank(UserRank rank) {
+        this.rank = rank;
+    }
+
     /**
      * Promotes a user to an owner account.
      */
@@ -171,6 +183,14 @@ public class User {
         if (!owner) {
             owner = true;
             workspace = new Workspace();
+        }
+    }
+
+    public void checkPromotion() {
+        UserRank nextRank = rank;
+        while  (points.getTotalPoints() >= nextRank.getRequiredExp() && !rank.isMaxRank()) {
+            nextRank = rank.getNextRank();
+            rank = nextRank;
         }
     }
 }

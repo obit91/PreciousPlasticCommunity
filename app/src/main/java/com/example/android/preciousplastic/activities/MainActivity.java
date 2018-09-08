@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import static com.example.android.preciousplastic.utils.PPGUIManager.updateGUI;
+import static com.example.android.preciousplastic.utils.PPSession.setMainActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,12 +45,13 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "onStart: Starting a new flow.");
         PPSession.setFirebaseDB(FirebaseDatabase.getInstance());
         fireBaseAuthInit();
+        setMainActivity(this);
     }
 
     /**
      * Initiates firebase authentication.
      */
-    private void fireBaseAuthInit() {
+    public void fireBaseAuthInit() {
         FirebaseAuth.AuthStateListener authListener;
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {

@@ -42,7 +42,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final String PRECIOUS_PLASTIC_URL = "https://preciousplastic.com/";
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
-    private Class<? extends Fragment> currentFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +75,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putSerializable("activeFragment", currentFragment);
+        savedInstanceState.putSerializable("activeFragment", PPSession.getCurrentFragmentClass());
     }
 
     @Override
@@ -86,7 +85,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         /**
          * Restoring the previous opened fragment.
          */
-        if (currentFragment != FragmentHome.class && savedInstanceState != null) {
+        if (PPSession.getCurrentFragmentClass() != FragmentHome.class && savedInstanceState != null) {
             Serializable activeFragment = savedInstanceState.getSerializable("activeFragment");
             Fragment fragment = (Fragment)activeFragment;
             goToFragment(fragment.getClass());
@@ -97,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onStart() {
         super.onStart();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        if (currentFragment == null) {
+        if (PPSession.getCurrentFragmentClass() == null) {
             goToFragment(FragmentHome.class);
         }
     }
@@ -108,7 +107,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (currentFragment == FragmentHome.class) {
+            if (PPSession.getCurrentFragmentClass() == FragmentHome.class) {
                 Toast.makeText(this, "lol no turning back", Toast.LENGTH_SHORT).show();
             } else {
                 goToFragment(FragmentHome.class);
@@ -126,10 +125,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //        startActivity(i);
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            String nickname = user.getDisplayName();
-            String msg = "SignOut: %s signed out.";
-            mAuth.signOut();
-            Log.i(TAG, String.format(msg, nickname));
+            PPSession.disconnect();
         }
         finish();
     }
@@ -206,7 +202,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      */
     private void goToFragment(final Class<? extends Fragment> fragmentClass) {
 
-        if (fragmentClass == currentFragment) {
+        if (fragmentClass == PPSession.getCurrentFragmentClass()) {
             String msg = "Useless user is useless! <%s>";
             Toast.makeText(this, String.format(msg, fragmentClass.getSimpleName()), Toast.LENGTH_SHORT).show();
             return;

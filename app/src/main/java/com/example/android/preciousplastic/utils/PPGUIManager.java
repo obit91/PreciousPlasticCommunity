@@ -13,7 +13,7 @@ public class PPGUIManager {
 
         if (fragmentClass == FragmentProfile.class) {
             final FragmentProfile fragmentProfile = (FragmentProfile) fragment;
-            fragmentProfile.updateBins(null);
+            fragmentProfile.updateGUI(null);
         }
     }
 

@@ -2,8 +2,10 @@ package com.example.android.preciousplastic.utils;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.example.android.preciousplastic.activities.HomeActivity;
+import com.example.android.preciousplastic.activities.MainActivity;
 import com.example.android.preciousplastic.activities.MapActivity;
 import com.example.android.preciousplastic.activities.WorkspacesActivity;
 import com.example.android.preciousplastic.db.DBConstants;
@@ -14,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class PPSession {
+
+    private static final String TAG = "PPSession";
 
     private static User mUser;
     private static FirebaseAuth mAuth;
@@ -33,17 +37,37 @@ public class PPSession {
     private static Fragment currentFragment;
     private static Class<? extends Fragment> currentFragmentClass;
 
+    private static MainActivity mainActivity;
+
     /**
      * Resets all of the session variables (except for DB objects).
      */
-    public static void reset() {
+    public static void disconnect() {
+
+        String nickname = mUser.getNickname();
+        String msg = "SignOut: %s signed out.";
+
         mUser = null;
-        mAuth = null;
         containerContext = null;
         homeActivity = null;
         mapActivity = null;
         workspaceAdaptor = null;
+        currentFragment = null;
         currentFragmentClass = null;
+
+        Log.i(TAG, String.format(msg, nickname));
+        mAuth.signOut();
+        mAuth = null;
+
+        mainActivity.fireBaseAuthInit();
+    }
+
+    public static MainActivity getMainActivity() {
+        return mainActivity;
+    }
+
+    public static void setMainActivity(MainActivity mainActivity) {
+        PPSession.mainActivity = mainActivity;
     }
 
     public static void setCurrentUser(User user) {

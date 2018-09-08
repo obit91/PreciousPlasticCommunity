@@ -91,6 +91,7 @@ public class UserRepository {
     private void writeUserPoints(final User user, final PointsType type, final double score) {
         UserPoints userPoints = user.getPoints();
         userPoints.incrementType(type, score);
+        user.checkPromotion();
         updateUser(user);
         String message = "User %s: incremented %.2f points of %s";
         Toast.makeText(mContext,
@@ -111,6 +112,7 @@ public class UserRepository {
                 } else {
                     user.makeOwner();
                     updateUser(user);
+                    PPSession.setCurrentUser(user);
                     String msg = "becomeOwner: %s has become an owner.";
                     Log.i(TAG, String.format(msg, nickname));
                 }

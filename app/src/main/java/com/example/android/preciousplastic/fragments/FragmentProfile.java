@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.UserPoints;
+import com.example.android.preciousplastic.db.UserRank;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.utils.PPSession;
 
@@ -29,6 +30,7 @@ public class FragmentProfile extends Fragment {
     private TextView bin6 = null;
     private TextView bin7 = null;
     private TextView binTotal = null;
+    private TextView rankTextView = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,8 +75,9 @@ public class FragmentProfile extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        attachBins(view);
-        updateBins(view);
+        attachFields(view);
+
+        updateGUI(view);
 
         return view;
     }
@@ -83,7 +86,7 @@ public class FragmentProfile extends Fragment {
      * Attaches the score bins on the screen to the corresponding fields.
      * @param view fragment view.
      */
-    private void attachBins(View view) {
+    private void attachFields(View view) {
         bin1 = (TextView)view.findViewById(R.id.profile_tv_bin1);
         bin2 = (TextView)view.findViewById(R.id.profile_tv_bin2);
         bin3 = (TextView)view.findViewById(R.id.profile_tv_bin3);
@@ -92,9 +95,10 @@ public class FragmentProfile extends Fragment {
         bin6 = (TextView)view.findViewById(R.id.profile_tv_bin6);
         bin7 = (TextView)view.findViewById(R.id.profile_tv_bin7);
         binTotal = (TextView)view.findViewById(R.id.profile_tv_total);
+        rankTextView = (TextView)view.findViewById(R.id.profile_tv_title);
     }
 
-    public void updateBins(View view) {
+    public void updateGUI(View view) {
         User currentUser = PPSession.getCurrentUser();
         UserPoints points = currentUser.getPoints();
         bin1.setText(points.getType1AsString());
@@ -105,6 +109,10 @@ public class FragmentProfile extends Fragment {
         bin6.setText(points.getType6AsString());
         bin7.setText(points.getType7AsString());
         binTotal.setText(points.getTotalPointsAsString());
+
+        UserRank rank = currentUser.getRank();
+        String title = rank.getTitle();
+        rankTextView.setText(title);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
