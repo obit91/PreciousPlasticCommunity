@@ -101,6 +101,9 @@ public class LoadingActivity extends AppCompatActivity {
             case SIGN_IN:
                 initiateLogin(b);
                 break;
+            case AUTO_SIGN_IN:
+                skipProcedure();
+                break;
             case SIGN_OUT:
                 signOut();
                 break;
@@ -126,6 +129,7 @@ public class LoadingActivity extends AppCompatActivity {
      * @param password user password.
      */
     private void loginUser(String email, String password) {
+        PPSession.setLoggingIn(true);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -138,10 +142,18 @@ public class LoadingActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoadingActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
                         }
+                        PPSession.setLoggingIn(false);
                     }
                 });
+    }
+
+    /**
+     * Called when the user is already logged in.
+     */
+    private void skipProcedure() {
+        loggedIn(mAuth.getCurrentUser().getDisplayName());
     }
 
     /**
@@ -214,7 +226,7 @@ public class LoadingActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoadingActivity.this, "Authentication failed.\n" + task.getException(),
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
                             finish();
                         }
                         // ...

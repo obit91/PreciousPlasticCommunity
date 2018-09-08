@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
+
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.fragments.FragmentAboutUs;
 import com.example.android.preciousplastic.fragments.FragmentHome;
@@ -30,6 +32,7 @@ import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
 import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
 import com.example.android.preciousplastic.fragments.optional.FragmentBazaar;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.utils.Transitions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -82,10 +85,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        /**
+        final Class<? extends Fragment> currentFragmentClass = PPSession.getCurrentFragmentClass();
+
+        /*
          * Restoring the previous opened fragment.
          */
-        if (PPSession.getCurrentFragmentClass() != FragmentHome.class && savedInstanceState != null) {
+        if (currentFragmentClass != null && currentFragmentClass != FragmentHome.class
+                && savedInstanceState != null) {
             Serializable activeFragment = savedInstanceState.getSerializable("activeFragment");
             Fragment fragment = (Fragment)activeFragment;
             goToFragment(fragment.getClass());
@@ -125,7 +131,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //        startActivity(i);
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            PPSession.disconnect();
+            PPSession.initSession(TransitionTypes.SIGN_OUT);
         }
         finish();
     }

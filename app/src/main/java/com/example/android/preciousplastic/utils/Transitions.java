@@ -5,6 +5,7 @@ public class Transitions {
     public enum TransitionTypes {
         REGISTER,
         SIGN_IN,
+        AUTO_SIGN_IN,
         SIGN_OUT
     }
 

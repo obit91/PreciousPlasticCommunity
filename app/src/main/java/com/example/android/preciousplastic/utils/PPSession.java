@@ -2,7 +2,10 @@ package com.example.android.preciousplastic.utils;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 
 import com.example.android.preciousplastic.activities.HomeActivity;
 import com.example.android.preciousplastic.activities.MainActivity;
@@ -39,13 +42,12 @@ public class PPSession {
 
     private static MainActivity mainActivity;
 
+    private static boolean loggingIn;
+
     /**
      * Resets all of the session variables (except for DB objects).
      */
-    public static void disconnect() {
-
-        String nickname = mUser.getNickname();
-        String msg = "SignOut: %s signed out.";
+    public static void initSession(TransitionTypes type) {
 
         mUser = null;
         containerContext = null;
@@ -54,12 +56,17 @@ public class PPSession {
         workspaceAdaptor = null;
         currentFragment = null;
         currentFragmentClass = null;
+        loggingIn = false;
 
-        Log.i(TAG, String.format(msg, nickname));
-        mAuth.signOut();
+        if (mAuth != null && mAuth.getCurrentUser() != null) {
+            String nickname = mAuth.getCurrentUser().getDisplayName();
+            String msg = "SignOut: %s signed out.";
+            mAuth.signOut();
+            Log.i(TAG, String.format(msg, nickname));
+        }
         mAuth = null;
 
-        mainActivity.fireBaseAuthInit();
+        mainActivity.fireBaseAuthInit(type);
     }
 
     public static MainActivity getMainActivity() {
@@ -152,5 +159,13 @@ public class PPSession {
 
     public static String getEmail() {
         return mAuth.getCurrentUser().getEmail();
+    }
+
+    public static boolean isLoggingIn() {
+        return loggingIn;
+    }
+
+    public static void setLoggingIn(boolean loggingIn) {
+        PPSession.loggingIn = loggingIn;
     }
 }
