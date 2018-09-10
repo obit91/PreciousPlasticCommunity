@@ -13,6 +13,6 @@ public class EventNotifier {
         Log.i("EventNotifier Parent", "Received");
     }
     public void onError(String response){
-        Log.i("EventNotifier Error", response);
+        Log.e("EventNotifier Error", response);
     }
 }

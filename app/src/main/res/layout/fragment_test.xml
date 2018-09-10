@@ -9,10 +9,10 @@
     tools:context=".fragments.FragmentTest">
 
     <Button
-        android:id="@+id/testing_btn_REMOVE_ALL"
+        android:id="@+id/testing_btn_query_nicknames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REMOVE ALL USERS!"
+        android:text="QUERY NICKNAMES"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal" />

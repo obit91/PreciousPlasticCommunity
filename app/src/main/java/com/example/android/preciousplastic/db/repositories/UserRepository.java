@@ -2,19 +2,23 @@ package com.example.android.preciousplastic.db.repositories;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.db.DBConstants;
+import com.example.android.preciousplastic.db.EventNotifier;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -125,5 +129,47 @@ public class UserRepository {
             }
         };
         PPSession.getUsersTable().child(nickname).addListenerForSingleValueEvent(userListener);
+    }
+
+    /**
+     * Checks whether a nickname is already in use.
+     * @param eventNotifier object to notify of query results.
+     */
+    public boolean isNicknameAvailable(String nickname, final EventNotifier eventNotifier){
+        final DatabaseReference usersTable = PPSession.getUsersTable();
+        Query query = usersTable.orderByChild("nickname").equalTo(nickname).limitToFirst(1);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                eventNotifier.onResponse(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                eventNotifier.onError(databaseError.getMessage());
+            }
+        });
+        return true;
+    }
+
+    /**
+     * Checks whether an email is already in use.
+     * @param eventNotifier object to notify of query results.
+     */
+    public boolean isEmailAvailable(String email, final EventNotifier eventNotifier){
+        final DatabaseReference usersTable = PPSession.getUsersTable();
+        Query query = usersTable.orderByChild("email").equalTo(email).limitToFirst(1);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                eventNotifier.onResponse(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                eventNotifier.onError(databaseError.getMessage());
+            }
+        });
+        return true;
     }
 }

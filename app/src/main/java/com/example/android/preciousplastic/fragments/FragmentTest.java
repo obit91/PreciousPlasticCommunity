@@ -7,10 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.utils.PPSession;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.android.preciousplastic.db.EventNotifier;
+import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.google.firebase.database.DataSnapshot;
 
 
 public class FragmentTest extends Fragment implements View.OnClickListener {
@@ -18,10 +20,14 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
+    private static final String TAG = "TESTING";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
 
     private OnFragmentInteractionListener mListener;
+
+    private Button mQueryButton = null;
 
     public FragmentTest() {
         // Required empty public constructor
@@ -48,6 +54,10 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_test, container, false);
+
+        // set button listener
+        mQueryButton = (Button) view.findViewById(R.id.testing_btn_query_nicknames);
+        mQueryButton.setOnClickListener(this);
 
         return view;
     }
@@ -84,13 +94,37 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case(R.id.testing_btn_REMOVE_ALL):
-                removeAllUsers();
+            case(R.id.testing_btn_query_nicknames):
+                queryNicknames(v);
                 break;
         }
     }
 
-    private void removeAllUsers() {
-        final FirebaseAuth firebaseAuth = PPSession.getFirebaseAuth();
+    private void queryNicknames(View view) {
+        UserRepository userRepository = new UserRepository(getContext());
+        userRepository.isNicknameAvailable("a", new usersQueryNicknameEventNotifier());
+        userRepository.isNicknameAvailable("fff", new usersQueryNicknameEventNotifier());
+        int a = 5;
+    }
+
+    /**
+     * Notifies true when the nickname is available.
+     */
+    private class usersQueryNicknameEventNotifier extends EventNotifier {
+        @Override
+        public void onResponse(Object dataSnapshotObj){
+            DataSnapshot dataSnapshot;
+            try {
+                dataSnapshot = (DataSnapshot) dataSnapshotObj;
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    System.out.println("Username is available");
+                } else {
+                    System.out.println("Username exists.");
+                }
+            } catch (ClassCastException e){
+                onError(e.toString());
+                return;
+            }
+        }
     }
 }
