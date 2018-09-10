@@ -34,11 +34,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private TextView passwordTextView = null;
     private TextView nicknameTextView = null;
 
-    private SwitchCompat ownerSwitchButton = null;
-    private CheckBox shredderCheckBox = null;
-    private CheckBox injectionCheckBox = null;
-    private CheckBox extrusionCheckBox = null;
-    private CheckBox compressionCheckBox = null;
+    private SwitchCompat mOwnerSwitchButton = null;
+    private CheckBox mShredderCheckBox = null;
+    private CheckBox mInjectionCheckBox = null;
+    private CheckBox mExtrusionCheckBox = null;
+    private CheckBox mCompressionCheckBox = null;
+
+    private Button mRegisterButton = null;
 
     Set<CheckBox> machines = new HashSet<>();
 
@@ -52,19 +54,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.lo_register);
 
         // setting listeners
-        Button registerButton = (Button) findViewById(R.id.register_btn_register);
-        registerButton.setOnClickListener(this);
+        mRegisterButton = (Button) findViewById(R.id.register_btn_register);
+        mRegisterButton.setOnClickListener(this);
 
         // gui access
         emailTextView = (TextView) findViewById(R.id.register_text_email);
         passwordTextView = (TextView) findViewById(R.id.register_text_password);
         nicknameTextView = (TextView) findViewById(R.id.register_text_nickname);
 
-        ownerSwitchButton = (SwitchCompat) findViewById(R.id.register_switch_btn_owner);
-        shredderCheckBox = (CheckBox) findViewById(R.id.register_checkbox_shredder);
-        injectionCheckBox = (CheckBox) findViewById(R.id.register_checkbox_injection);
-        extrusionCheckBox = (CheckBox) findViewById(R.id.register_checkbox_extrusion);
-        compressionCheckBox = (CheckBox) findViewById(R.id.register_checkbox_compression);
+        mOwnerSwitchButton = (SwitchCompat) findViewById(R.id.register_switch_btn_owner);
+        mShredderCheckBox = (CheckBox) findViewById(R.id.register_checkbox_shredder);
+        mInjectionCheckBox = (CheckBox) findViewById(R.id.register_checkbox_injection);
+        mExtrusionCheckBox = (CheckBox) findViewById(R.id.register_checkbox_extrusion);
+        mCompressionCheckBox = (CheckBox) findViewById(R.id.register_checkbox_compression);
     }
 
     @Override
@@ -73,14 +75,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        machines.add(shredderCheckBox);
-        machines.add(injectionCheckBox);
-        machines.add(extrusionCheckBox);
-        machines.add(compressionCheckBox);
+        machines.add(mShredderCheckBox);
+        machines.add(mInjectionCheckBox);
+        machines.add(mExtrusionCheckBox);
+        machines.add(mCompressionCheckBox);
 
         disableMachines();
 
-        ownerSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mOwnerSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     enableMachines();
@@ -93,12 +95,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         availableUser = new HashMap<>();
     }
 
+    /**
+     * Updates whether the buttons are clickable or not.
+     */
+    private void setButtonsClickable(boolean isClickable) {
+        mRegisterButton.setClickable(isClickable);
+        mOwnerSwitchButton.setClickable(isClickable);
+        mShredderCheckBox.setClickable(isClickable);
+        mInjectionCheckBox.setClickable(isClickable);
+        mExtrusionCheckBox.setClickable(isClickable);
+        mCompressionCheckBox.setClickable(isClickable);
+    }
+
     @Override
     public void onStop() {
         super.onStop();
     }
 
     public void onRegisterClick(View view) {
+
+        setButtonsClickable(false);
 
         boolean invalidInput = false;
         StringBuilder msg = new StringBuilder();
@@ -124,13 +140,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         if (invalidInput) {
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            setButtonsClickable(true);
             return;
         }
 
         // flush stringBuilder object.
         msg.setLength(0);
 
-        if (ownerSwitchButton.isChecked()) {
+        if (mOwnerSwitchButton.isChecked()) {
             int checkedMachines = 0;
             for (CheckBox machine : machines) {
                 if (machine.isChecked()) {
@@ -140,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             msg.append("At least one machine must be selected when choosing to become an owner.");
             if (checkedMachines == 0) {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                setButtonsClickable(true);
                 return;
             }
         }
@@ -210,12 +228,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         args.put(Transitions.TRANSITION_PASS, password);
         args.put(Transitions.TRANSITION_NICKNAME, nickname);
 
-        if (ownerSwitchButton.isChecked()) {
+        if (mOwnerSwitchButton.isChecked()) {
             args.put(Transitions.TRANSITION_OWNER, true);
-            args.put(Transitions.TRANSITION_MACHINE_SHREDDER, shredderCheckBox.isChecked());
-            args.put(Transitions.TRANSITION_MACHINE_INJECTION, injectionCheckBox.isChecked());
-            args.put(Transitions.TRANSITION_MACHINE_EXTRUSION, extrusionCheckBox.isChecked());
-            args.put(Transitions.TRANSITION_MACHINE_COMPRESSION, compressionCheckBox.isChecked());
+            args.put(Transitions.TRANSITION_MACHINE_SHREDDER, mShredderCheckBox.isChecked());
+            args.put(Transitions.TRANSITION_MACHINE_INJECTION, mInjectionCheckBox.isChecked());
+            args.put(Transitions.TRANSITION_MACHINE_EXTRUSION, mExtrusionCheckBox.isChecked());
+            args.put(Transitions.TRANSITION_MACHINE_COMPRESSION, mCompressionCheckBox.isChecked());
         }
 
         finish();
@@ -233,10 +251,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 return;
             }
             // reset the hashmap since we don't have a valid pair.
+            setButtonsClickable(true);
             availableUser = new HashMap<>();
         }
-        // we've parsed one element.
-        return;
+        // we've parsed one element, awaiting next entry to the function.
     }
 
     /**
@@ -253,6 +271,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     availableUser.put(NICK_AVILABLE, true);
                     verifyUser();
                 } else {
+                    setButtonsClickable(true);
                     Toast.makeText(getBaseContext(), "Nickname already in use", Toast.LENGTH_SHORT).show();
                     availableUser.put(NICK_AVILABLE, false);
                 }
@@ -277,6 +296,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     availableUser.put(EMAIL_AVILABLE, true);
                     verifyUser();
                 } else {
+                    setButtonsClickable(true);
                     Toast.makeText(getBaseContext(), "Email already in use", Toast.LENGTH_SHORT).show();
                     availableUser.put(EMAIL_AVILABLE, false);
                 }
