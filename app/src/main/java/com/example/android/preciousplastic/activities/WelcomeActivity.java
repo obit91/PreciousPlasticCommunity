@@ -15,6 +15,10 @@ import com.example.android.preciousplastic.utils.Transitions;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 import com.example.android.preciousplastic.utils.ViewTools;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "WELCOME_ACTIVITY";
@@ -85,51 +89,27 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             return;
         }
 
+        Map<String, Serializable> args = new HashMap<>();
+
         TransitionTypes type = TransitionTypes.SIGN_IN;
-        activateTransition(type);
+
+        String email = emailTextView.getText().toString();
+        String password = passwordTextView.getText().toString();
+        args.put(Transitions.TRANSITION_TYPE, type);
+        args.put(Transitions.TRANSITION_EMAIL, email);
+        args.put(Transitions.TRANSITION_PASS, password);
+
+        finish();
+        Transitions.activateTransition(this, args);
     }
 
     /**
-     * Activates a fun splash screen for loading.
-     * @param type transition type.
+     * Go to registration screen.
+     * @param view
      */
-    private void activateTransition(TransitionTypes type) {
-        String email = emailTextView.getText().toString();
-        String password = passwordTextView.getText().toString();
-        String nickname = email.substring(0, email.indexOf("@"));
-
-        Intent i = new Intent(this, LoadingActivity.class);
-        i.putExtra(Transitions.TRANSITION_TYPE, type);
-        i.putExtra(Transitions.TRANSITION_EMAIL, email);
-        i.putExtra(Transitions.TRANSITION_PASS, password);
-        i.putExtra(Transitions.TRANSITION_NICKNAME, nickname);
-        startActivity(i);
-    }
-
     public void onRegisterClick(View view) {
-
-        boolean invalidInput = false;
-        StringBuilder msg = new StringBuilder();
-        msg.append("The following fields are missing: ");
-
-        if ( ViewTools.isTextViewNull(passwordTextView)) {
-            msg.append("password").append("\n");
-            passwordTextView.setHintTextColor(Color.RED);
-            invalidInput = true;
-        }
-        if (ViewTools.isTextViewNull(emailTextView)) {
-            msg.append("email");
-            emailTextView.setHintTextColor(Color.RED);
-            invalidInput = true;
-        }
-
-        if (invalidInput) {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        
-        TransitionTypes type = TransitionTypes.REGISTER;
-        activateTransition(type);
+        Intent i = new Intent(this, RegisterActivity.class);
+        startActivity(i);
     }
 
     @Override

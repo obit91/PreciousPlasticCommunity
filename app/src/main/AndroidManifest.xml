@@ -16,6 +16,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".activities.MainActivity"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +25,6 @@
         </activity>
         <activity
             android:name=".activities.WelcomeActivity"
-            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.HomeActivity"
@@ -34,6 +34,11 @@
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".activities.LoadingActivity"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>

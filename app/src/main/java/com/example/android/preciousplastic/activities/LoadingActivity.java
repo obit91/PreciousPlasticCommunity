@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.Workspace;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.PPSession;
@@ -24,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class LoadingActivity extends AppCompatActivity {
@@ -171,11 +174,41 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     /**
+     * Creates a new workspace based on the input of ownerMachines map.
+     * @param ownerMachines a map containing different machine types and indicators if exist.
+     * @return a workspace corresponding to the map.
+     */
+    private Workspace parseWorkspace(Map<String, Boolean> ownerMachines) {
+        boolean shredder = false;
+        boolean injection = false;
+        boolean extrusion = false;
+        boolean compression = false;
+        if (ownerMachines.get(Transitions.TRANSITION_MACHINE_SHREDDER)) {
+            shredder = true;
+        }
+        if (ownerMachines.get(Transitions.TRANSITION_MACHINE_INJECTION)) {
+            injection = true;
+        }
+        if (ownerMachines.get(Transitions.TRANSITION_MACHINE_EXTRUSION)) {
+            extrusion = true;
+        }
+        if (ownerMachines.get(Transitions.TRANSITION_MACHINE_COMPRESSION)) {
+            compression = true;
+        }
+        return new Workspace(shredder, injection, extrusion, compression);
+    }
+
+    /**
      * Create new document in 'users' collection in database.
      * Document will have unique identifier of param nickName.
      */
-    private void insertUser(FirebaseUser firebaseUser, final String nickname, boolean owner) {
-        final User user = new User(firebaseUser, nickname, owner);
+    private void insertUser(FirebaseUser firebaseUser, final String nickname, Map<String, Boolean> ownerMachines) {
+        boolean isOwner = ownerMachines != null;
+        final User user = new User(firebaseUser, nickname, isOwner);
+        if (isOwner) {
+            Workspace workspace = parseWorkspace(ownerMachines);
+            user.setWorkspace(workspace);
+        }
         DatabaseReference usersTable = PPSession.getUsersTable();
         usersTable.child(nickname).setValue(user, new DatabaseReference.CompletionListener() {
             public void onComplete(DatabaseError error, DatabaseReference ref) {
@@ -191,6 +224,28 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     /**
+     * Updates indicators if machines exist of a new owner.
+     * @param b Activity bundle.
+     * @return
+     */
+    private Map<String, Boolean> updateMachines(Bundle b) {
+        HashMap<String, Boolean> machines = new HashMap<>();
+        String temp;
+
+        // can be more elegant .. will take longer to design.
+        temp = Transitions.TRANSITION_MACHINE_SHREDDER;
+        machines.put(temp, b.getBoolean(temp));
+        temp = Transitions.TRANSITION_MACHINE_INJECTION;
+        machines.put(temp, b.getBoolean(temp));
+        temp = Transitions.TRANSITION_MACHINE_EXTRUSION;
+        machines.put(temp, b.getBoolean(temp));
+        temp = Transitions.TRANSITION_MACHINE_COMPRESSION;
+        machines.put(temp, b.getBoolean(temp));
+
+        return machines;
+    }
+
+    /**
      * Retrieves user data from the bundle and initiates a new user creation procedure.
      * @param b input bundle.
      */
@@ -198,7 +253,12 @@ public class LoadingActivity extends AppCompatActivity {
         String email = b.getString(Transitions.TRANSITION_EMAIL);
         String password = b.getString(Transitions.TRANSITION_PASS);
         String nickname = b.getString(Transitions.TRANSITION_NICKNAME);
-        createUser(email, password, nickname, false);
+        boolean owner = b.getBoolean(Transitions.TRANSITION_OWNER);
+        Map<String, Boolean> machines = null;
+        if (owner) {
+            machines = updateMachines(b);
+        }
+        createUser(email, password, nickname, machines);
     }
 
     /**
@@ -207,7 +267,7 @@ public class LoadingActivity extends AppCompatActivity {
      * @param email    desired user email.
      * @param password desired user password.
      */
-    private void createUser(String email, String password, final String nickname, final boolean owner) {
+    private void createUser(String email, String password, final String nickname, final Map<String, Boolean> ownerMachines) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -221,7 +281,7 @@ public class LoadingActivity extends AppCompatActivity {
                                     .setDisplayName(nickname)
                                     .build();
                             user.updateProfile(profileUpdates);
-                            insertUser(user, nickname, owner);
+                            insertUser(user, nickname, ownerMachines);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
