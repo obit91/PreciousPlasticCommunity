@@ -30,9 +30,8 @@ import com.example.android.preciousplastic.fragments.FragmentSettings;
 import com.example.android.preciousplastic.fragments.FragmentTest;
 import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
 import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
-import com.example.android.preciousplastic.fragments.optional.FragmentBazaar;
+import com.example.android.preciousplastic.fragments.FragmentBazaar;
 import com.example.android.preciousplastic.utils.PPSession;
-import com.example.android.preciousplastic.utils.Transitions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

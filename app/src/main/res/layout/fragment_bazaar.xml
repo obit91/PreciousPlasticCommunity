@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/blue_bg_light"
-    tools:context=".fragments.optional.FragmentBazaar">
+    tools:context=".fragments.FragmentBazaar">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/workspaces_recycleview"
+        android:id="@+id/bazar_recycleview"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
 

@@ -23,14 +23,18 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.imgur.ImgurAccessResponse;
+import com.example.android.preciousplastic.imgur.ImgurData;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.app.Activity.RESULT_OK;
 
-public class FragmentTest extends Fragment implements View.OnClickListener {
+
+public class FragmentTest extends Fragment implements View.OnClickListener, ImgurAccessResponse {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,10 +46,12 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-    private Button mGenericButton = null;
+    private Button mTakePhoto = null;
+    private Button mUploadButton = null;
 
-    static final int REQUEST_TAKE_PHOTO = 1;
-    private final int REQUEST_PERMISSION_CAMERA_STATE = 1;
+    private static final int REQUEST_CHOOSE_IMAGE = 1;
+    private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_PERMISSION_CAMERA_STATE = 1;
     private static String mCurrentPhotoPath = null;
 
 
@@ -76,8 +82,10 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
 
         // set button listener
-        mGenericButton = (Button) view.findViewById(R.id.testing_btn_test_button);
-        mGenericButton.setOnClickListener(this);
+        mTakePhoto = (Button) view.findViewById(R.id.testing_btn_capture_image);
+        mTakePhoto.setOnClickListener(this);
+        mUploadButton = (Button) view.findViewById(R.id.test_btn_upload_img);
+        mUploadButton.setOnClickListener(this);
 
         return view;
     }
@@ -106,6 +114,12 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
         mListener = null;
     }
 
+    @Override
+    public void getResult(ImgurData asyncResult) {
+        System.out.println("yoyoyo");
+        ImgurData data = asyncResult;
+    }
+
     public interface OnFragmentInteractionListener {
 //         TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -114,10 +128,28 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case(R.id.testing_btn_test_button):
+            case(R.id.testing_btn_capture_image):
                 genericTestMethod();
                 break;
+            case(R.id.test_btn_upload_img):
+                uploadImg();
+                break;
         }
+    }
+
+    private void uploadImg() {
+//
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CHOOSE_IMAGE);
+
+//        ImgurAsyncPostImage request = new ImgurAsyncPostImage();
+//        request.delegate = FragmentTest.this;
+//        request.title = "test";
+//        request.description = "test123";
+//        request.imageFile = new File(mCurrentPhotoPath);
+//        request.execute();
     }
 
 
@@ -125,9 +157,10 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
         dispatchTakePictureIntent();
     }
 
-    private void showCameraStatePermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(
-                getActivity(), Manifest.permission.CAMERA);
+    private void showStatePermissions() {
+        int permissionCheck = 0;
+
+        permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.CAMERA)) {
@@ -136,7 +169,7 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
                 requestPermission(Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA_STATE);
             }
         } else {
-            Toast.makeText(getActivity(), "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"CameraPermission: Permission (already) Granted!");
         }
     }
 
@@ -149,7 +182,7 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
             Log.e(TAG, "startCamera: no camera available.");
             return;
         } else {
-            showCameraStatePermission();
+            showStatePermissions();
         }
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -174,6 +207,13 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 galleryAddPic();
             }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FragmentTest.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            galleryAddPic();
         }
     }
 
