@@ -1,18 +1,33 @@
 package com.example.android.preciousplastic.fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.db.EventNotifier;
-import com.example.android.preciousplastic.db.repositories.UserRepository;
-import com.google.firebase.database.DataSnapshot;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class FragmentTest extends Fragment implements View.OnClickListener {
@@ -27,7 +42,12 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-    private Button mQueryButton = null;
+    private Button mGenericButton = null;
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private final int REQUEST_PERMISSION_CAMERA_STATE = 1;
+    private static String mCurrentPhotoPath = null;
+
 
     public FragmentTest() {
         // Required empty public constructor
@@ -56,8 +76,8 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
 
         // set button listener
-        mQueryButton = (Button) view.findViewById(R.id.testing_btn_query_nicknames);
-        mQueryButton.setOnClickListener(this);
+        mGenericButton = (Button) view.findViewById(R.id.testing_btn_test_button);
+        mGenericButton.setOnClickListener(this);
 
         return view;
     }
@@ -94,37 +114,126 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case(R.id.testing_btn_query_nicknames):
-                queryNicknames(v);
+            case(R.id.testing_btn_test_button):
+                genericTestMethod();
                 break;
         }
     }
 
-    private void queryNicknames(View view) {
-        UserRepository userRepository = new UserRepository(getContext());
-        userRepository.isNicknameAvailable("a", new usersQueryNicknameEventNotifier());
-        userRepository.isNicknameAvailable("fff", new usersQueryNicknameEventNotifier());
-        int a = 5;
+
+    private void genericTestMethod() {
+        dispatchTakePictureIntent();
     }
 
-    /**
-     * Notifies true when the nickname is available.
-     */
-    private class usersQueryNicknameEventNotifier extends EventNotifier {
-        @Override
-        public void onResponse(Object dataSnapshotObj){
-            DataSnapshot dataSnapshot;
+    private void showCameraStatePermission() {
+        int permissionCheck = ContextCompat.checkSelfPermission(
+                getActivity(), Manifest.permission.CAMERA);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.CAMERA)) {
+                showExplanation("Permission Needed", "Rationale", Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA_STATE);
+            } else {
+                requestPermission(Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA_STATE);
+            }
+        } else {
+            Toast.makeText(getActivity(), "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void dispatchTakePictureIntent() {
+
+        final PackageManager packageManager = getActivity().getPackageManager();
+
+        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            Toast.makeText(getActivity(), "No camera available.", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "startCamera: no camera available.");
+            return;
+        } else {
+            showCameraStatePermission();
+        }
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
             try {
-                dataSnapshot = (DataSnapshot) dataSnapshotObj;
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    System.out.println("Username is available");
-                } else {
-                    System.out.println("Username exists.");
-                }
-            } catch (ClassCastException e){
-                onError(e.toString());
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Toast.makeText(getActivity(), "Error occurred during image capture..", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "startCamera: " + ex.getMessage());
                 return;
             }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(
+                        getActivity(),
+                        "com.example.android.preciousplastic",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                galleryAddPic();
+            }
         }
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getActivity().sendBroadcast(mediaScanIntent);
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String permissions[],
+            @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSION_CAMERA_STATE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getActivity(), "Permission Granted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Permission Denied!", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
+    private void showExplanation(String title,
+                                 String message,
+                                 final String permission,
+                                 final int permissionRequestCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestPermission(permission, permissionRequestCode);
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void requestPermission(String permissionName, int permissionRequestCode) {
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{permissionName}, permissionRequestCode);
     }
 }
