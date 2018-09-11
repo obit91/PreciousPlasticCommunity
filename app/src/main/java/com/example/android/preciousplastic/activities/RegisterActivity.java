@@ -273,7 +273,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 } else {
                     setButtonsClickable(true);
                     Toast.makeText(getBaseContext(), "Nickname already in use", Toast.LENGTH_SHORT).show();
-                    availableUser.put(NICK_AVILABLE, false);
+                    availableUser = new HashMap<>();
                 }
             } catch (ClassCastException e){
                 onError(e.toString());
@@ -298,7 +298,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 } else {
                     setButtonsClickable(true);
                     Toast.makeText(getBaseContext(), "Email already in use", Toast.LENGTH_SHORT).show();
-                    availableUser.put(EMAIL_AVILABLE, false);
+                    availableUser = new HashMap<>();
                 }
             } catch (ClassCastException e){
                 onError(e.toString());
