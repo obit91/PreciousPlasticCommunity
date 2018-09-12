@@ -9,7 +9,7 @@
     tools:context=".fragments.FragmentTest">
 
     <Button
-        android:id="@+id/testing_btn_capture_image"
+        android:id="@+id/test_btn_capture_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TAKE PHOTO"
@@ -40,7 +40,17 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintHorizontal_bias="0.429"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/testing_btn_capture_image" />
+        app:layout_constraintTop_toBottomOf="@id/test_btn_capture_image" />
+
+    <ImageView
+        android:id="@+id/test_iv_upload_img"
+        android:layout_width="154dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintHorizontal_bias="0.429"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/test_btn_upload_img" />
 
 
 </android.support.constraint.ConstraintLayout>

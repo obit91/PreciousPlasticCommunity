@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,14 +23,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.imgur.ImgurAccessResponse;
+import com.example.android.preciousplastic.imgur.ImgurAsyncPostImage;
 import com.example.android.preciousplastic.imgur.ImgurData;
+import com.google.android.gms.common.util.IOUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -48,11 +56,16 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
 
     private Button mTakePhoto = null;
     private Button mUploadButton = null;
+    private ImageView mImageTest = null;
 
-    private static final int REQUEST_CHOOSE_IMAGE = 1;
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_PICK_IMAGE = 2;
+
     private static final int REQUEST_PERMISSION_CAMERA_STATE = 1;
     private static String mCurrentPhotoPath = null;
+
+    public static final String PREFIX = "stream2file";
+    public static final String SUFFIX = ".tmp";
 
 
     public FragmentTest() {
@@ -82,10 +95,12 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
         View view = inflater.inflate(R.layout.fragment_test, container, false);
 
         // set button listener
-        mTakePhoto = (Button) view.findViewById(R.id.testing_btn_capture_image);
+        mTakePhoto = (Button) view.findViewById(R.id.test_btn_capture_image);
         mTakePhoto.setOnClickListener(this);
         mUploadButton = (Button) view.findViewById(R.id.test_btn_upload_img);
         mUploadButton.setOnClickListener(this);
+
+        mImageTest = (ImageView) view.findViewById(R.id.test_iv_upload_img);
 
         return view;
     }
@@ -95,6 +110,15 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public static File stream2file (InputStream in) throws IOException {
+        final File tempFile = File.createTempFile(PREFIX, SUFFIX);
+        tempFile.deleteOnExit();
+        try (FileOutputStream out = new FileOutputStream(tempFile)) {
+            IOUtils.copyStream(in, out);
+        }
+        return tempFile;
     }
 
     @Override
@@ -128,32 +152,31 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case(R.id.testing_btn_capture_image):
-                genericTestMethod();
+            case(R.id.test_btn_capture_image):
+                captureImage();
                 break;
             case(R.id.test_btn_upload_img):
-                uploadImg();
+                chooseImage();
                 break;
         }
     }
 
-    private void uploadImg() {
-//
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CHOOSE_IMAGE);
+    private void chooseImage() {
 
-//        ImgurAsyncPostImage request = new ImgurAsyncPostImage();
-//        request.delegate = FragmentTest.this;
-//        request.title = "test";
-//        request.description = "test123";
-//        request.imageFile = new File(mCurrentPhotoPath);
-//        request.execute();
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, REQUEST_PICK_IMAGE);
     }
 
 
-    private void genericTestMethod() {
+    private void captureImage() {
         dispatchTakePictureIntent();
     }
 
@@ -205,15 +228,46 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                galleryAddPic();
             }
         }
     }
 
+    private void uploadImage(Intent data) {
+
+        if (data == null) {
+            Log.e(TAG, "uploadImage: no file specified.");
+            return;
+        }
+
+        File imageFile = new File(mCurrentPhotoPath);
+
+        ImgurAsyncPostImage request = new ImgurAsyncPostImage();
+        request.delegate = FragmentTest.this;
+        request.title = "test";
+        request.description = "test123";
+        request.imageFile = imageFile;
+        request.execute();
+
+        Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+
+        mImageTest.setImageBitmap(myBitmap);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FragmentTest.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            galleryAddPic();
+
+        if (resultCode != RESULT_OK) {
+            Log.e(TAG, String.format("onActivityResult: failure <id: %d>", resultCode));
+            return;
+        }
+
+        switch (requestCode) {
+            case(REQUEST_TAKE_PHOTO):
+                galleryAddPic();
+                break;
+            case(REQUEST_PICK_IMAGE):
+                uploadImage(data);
+                break;
         }
     }
 

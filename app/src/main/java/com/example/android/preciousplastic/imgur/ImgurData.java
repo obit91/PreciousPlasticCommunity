@@ -6,6 +6,12 @@ import java.util.Map;
 
 public class ImgurData {
 
+    // fields in case of failure
+    private String error;
+    private String request;
+    private String method;
+
+    // fields when getting an album
     private String id;
     private String title;
     private String description;
@@ -205,4 +211,39 @@ public class ImgurData {
         this.additionalProperties.put(name, value);
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getRequest() {
+        return request;
+    }
+
+    public void setRequest(String request) {
+        this.request = request;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public boolean isAd() {
+        return isAd;
+    }
+
+    public void setAd(boolean ad) {
+        isAd = ad;
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
 }

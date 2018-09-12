@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 
@@ -19,10 +20,14 @@ public interface ImgurService {
     @GET("album/" + ImgurConstants.ALBUM)
     Call<ImgurResponseData> getAlbum();
 
-    @Headers(ImgurConstants.AUTHORIZATION_CLIENT_ID_HEADER)
+
+    @Headers({
+            ImgurConstants.AUTHORIZATION_CLIENT_ID_HEADER,
+            ImgurConstants.CONTENT_TYPE_FORM_DATA
+            })
     @Multipart
     @POST("upload?album=" + ImgurConstants.ALBUM)
-    Call<ImgurResponseData> uploadImage(@Part MultipartBody.Part filePart,
+    Call<ImgurResponseData> uploadImage(@Part("image") RequestBody filePart,
                                         @Query("title") String title,
                                         @Query("description") String description);
 }
