@@ -1,53 +1,23 @@
 package com.example.android.preciousplastic.fragments;
 
-import android.Manifest;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.Workspace;
 import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.db.repositories.UserRepository;
-import com.example.android.preciousplastic.imgur.ImgurAccessResponse;
-import com.example.android.preciousplastic.imgur.ImgurAsyncGenericTask;
-import com.example.android.preciousplastic.imgur.ImgurAsyncPostImage;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
-import com.example.android.preciousplastic.imgur.ImgurData;
-import com.example.android.preciousplastic.imgur.ImgurRequestsGenerator;
 import com.example.android.preciousplastic.utils.PPSession;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-
-import static android.app.Activity.RESULT_OK;
+import java.util.Set;
 
 
 public class FragmentTest extends Fragment implements View.OnClickListener {
@@ -62,18 +32,10 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-    private Button mTakePhoto = null;
-    private Button mUploadButton = null;
-    private Button mDeleteButton = null;
-    private ImageView mImageTest = null;
-
-    private static final int REQUEST_TAKE_PHOTO = 1;
-    private static final int REQUEST_PICK_IMAGE = 2;
-
-    private static final int REQUEST_PERMISSION_CAMERA_STATE = 1;
-    private static final int REQUEST_PERMISSION_WRITE_EXTERNAL = 2;
-    private static String mCurrentPhotoPath = null;
-
+    private Button mTestButton1 = null;
+    private Button mTestButton2 = null;
+    private Button mTestButton3 = null;
+    private ImageView mTestImage = null;
 
     public FragmentTest() {
         // Required empty public constructor
@@ -102,14 +64,14 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
 
         // set button listener
-        mTakePhoto = (Button) view.findViewById(R.id.test_btn_capture_image);
-        mTakePhoto.setOnClickListener(this);
-        mUploadButton = (Button) view.findViewById(R.id.test_btn_upload_img);
-        mUploadButton.setOnClickListener(this);
-        mDeleteButton = (Button) view.findViewById(R.id.test_btn_delete_img);
-        mDeleteButton.setOnClickListener(this);
+        mTestButton1 = (Button) view.findViewById(R.id.test_btn_1);
+        mTestButton1.setOnClickListener(this);
+        mTestButton2 = (Button) view.findViewById(R.id.test_btn_2);
+        mTestButton2.setOnClickListener(this);
+        mTestButton3 = (Button) view.findViewById(R.id.test_btn_3);
+        mTestButton3.setOnClickListener(this);
 
-        mImageTest = (ImageView) view.findViewById(R.id.test_iv_upload_img);
+        mTestImage = (ImageView) view.findViewById(R.id.test_iv_upload_img);
 
         return view;
     }
@@ -146,12 +108,18 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case(R.id.test_btn_capture_image):
+            case(R.id.test_btn_1):
+                removeAllItems();
                 break;
-            case(R.id.test_btn_upload_img):
+            case(R.id.test_btn_2):
                 break;
-            case(R.id.test_btn_delete_img):
+            case(R.id.test_btn_3):
                 break;
         }
+    }
+
+    private void removeAllItems() {
+        final User currentUser = PPSession.getCurrentUser();
+        currentUser.removeAllItemsFromBazar();
     }
 }

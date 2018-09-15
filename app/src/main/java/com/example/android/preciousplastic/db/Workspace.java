@@ -1,20 +1,15 @@
 package com.example.android.preciousplastic.db;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.example.android.preciousplastic.db.repositories.UserRepository;
-import com.example.android.preciousplastic.fragments.FragmentTest;
 import com.example.android.preciousplastic.imgur.ImgurAccessResponse;
-import com.example.android.preciousplastic.imgur.ImgurAsyncDeleteImage;
 import com.example.android.preciousplastic.imgur.ImgurAsyncGenericTask;
-import com.example.android.preciousplastic.imgur.ImgurAsyncPostImage;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
-import com.example.android.preciousplastic.imgur.ImgurData;
 import com.example.android.preciousplastic.imgur.ImgurRequestsGenerator;
-import com.example.android.preciousplastic.utils.PPSession;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Workspace implements ImgurAccessResponse<Boolean> {
 
@@ -105,9 +100,21 @@ public class Workspace implements ImgurAccessResponse<Boolean> {
             case EDIT_ITEM:
                 break;
             case REMOVE_ITEM:
+                removeItemFromImgur(bazarItem);
                 removeItem(bazarItem);
                 break;
+            case REMOVE_ALL:
+                removeAllFromBazar();
         }
+    }
+
+    private void removeAllFromBazar() {
+        for(Iterator<Map.Entry<String, ImgurBazarItem>> it = itemsOnSale.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<String, ImgurBazarItem> entry = it.next();
+            removeItemFromImgur(entry.getValue());
+            it.remove();
+        }
+
     }
 
     /**
@@ -119,12 +126,11 @@ public class Workspace implements ImgurAccessResponse<Boolean> {
     }
 
     /**
-     * Addes an item to the bazar.
-     * @param bazarItem item we wish to sell.
+     * Removes an item from the bazar.
+     * @param bazarItem item we wish to remove.
      */
     private void removeItem(ImgurBazarItem bazarItem) {
         itemsOnSale.remove(String.valueOf(bazarItem.getDatetime()));
-        removeItemFromImgur(bazarItem);
     }
 
     /**

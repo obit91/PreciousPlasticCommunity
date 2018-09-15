@@ -16,6 +16,7 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 @IgnoreExtraProperties
@@ -233,6 +234,14 @@ public class User {
         }
 
         workspace.updateBazarItem(imgurBazarItem, BazarOperations.REMOVE_ITEM);
+        commitChanges();
+    }
+
+    /**
+     * Removes all items from the bazar.
+     */
+    public void removeAllItemsFromBazar() {
+        workspace.updateBazarItem(null, BazarOperations.REMOVE_ALL);
         commitChanges();
     }
 

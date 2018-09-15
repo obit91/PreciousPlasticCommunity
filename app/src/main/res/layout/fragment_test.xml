@@ -9,7 +9,7 @@
     tools:context=".fragments.FragmentTest">
 
     <Button
-        android:id="@+id/test_btn_capture_image"
+        android:id="@+id/test_btn_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TAKE PHOTO"
@@ -32,7 +32,7 @@
         app:layout_constraintGuide_begin="150dp" />
 
     <Button
-        android:id="@+id/test_btn_upload_img"
+        android:id="@+id/test_btn_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -40,10 +40,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintHorizontal_bias="0.429"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/test_btn_capture_image" />
+        app:layout_constraintTop_toBottomOf="@id/test_btn_1" />
 
     <Button
-        android:id="@+id/test_btn_delete_img"
+        android:id="@+id/test_btn_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintHorizontal_bias="0.429"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/test_btn_upload_img" />
+        app:layout_constraintTop_toBottomOf="@id/test_btn_2" />
 
     <ImageView
         android:id="@+id/test_iv_upload_img"
@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintHorizontal_bias="0.429"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/test_btn_delete_img" />
+        app:layout_constraintTop_toBottomOf="@id/test_btn_3" />
 
 
 </android.support.constraint.ConstraintLayout>

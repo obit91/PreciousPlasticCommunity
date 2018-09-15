@@ -132,7 +132,7 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
 
 
     /**
-     * If there is no image being uploaded, set progress status to be invisible.
+     * Updates the GUI with current image uploads.
      */
     private void updateProgressGUI() {
         int visibility;
@@ -181,6 +181,10 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         mListener = null;
     }
 
+    /**
+     * Upon completing a complete image upload the image is then saved to the bazar under the user.
+     * @param imgurData uploaded image.
+     */
     @Override
     public void getResult(ImgurData imgurData) {
         final User currentUser = PPSession.getCurrentUser();
@@ -192,28 +196,9 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         void onFragmentInteraction(Uri uri);
     }
 
-    private void removeImage() {
-        final User currentUser = PPSession.getCurrentUser();
-        final Workspace workspace = currentUser.getWorkspace();
-        final HashMap<String, ImgurBazarItem> itemsOnSale = workspace.getItemsOnSale();
-        for (String key : itemsOnSale.keySet()) {
-            currentUser.removeBazarItem(itemsOnSale.get(key));
-            break;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case(R.id.upload_btn_capture_image):
-                captureImage();
-                break;
-            case(R.id.upload_btn_upload_img):
-                chooseImage();
-                break;
-        }
-    }
-
+    /**
+     * Trasnfers control to the image gallery and awaits user input.
+     */
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -221,10 +206,16 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
     }
 
 
+    /**
+     * Initiates the camera.
+     */
     private void captureImage() {
         dispatchTakePictureIntent();
     }
 
+    /**
+     * Requests permissions for requirements for camera usage and gallery update.
+     */
     private void showStatePermissions() {
         int permissionCheck = 0;
 
@@ -253,6 +244,9 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         }
     }
 
+    /**
+     * Takes a picture using the camera.
+     */
     private void dispatchTakePictureIntent() {
 
         final PackageManager packageManager = getActivity().getPackageManager();
@@ -289,6 +283,11 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         }
     }
 
+    /**
+     * Creates a temp file for the upload.
+     * @param chosenImage image to write to file.
+     * @return the created temp file.
+     */
     private File generateTempFile(Bitmap chosenImage) {
         // create a new file
         File imageFile = new File(getContext().getCacheDir(), generateFileName());
@@ -314,6 +313,10 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         return imageFile;
     }
 
+    /**
+     * Uploads an image selected from the gallery.
+     * @param data result returned from the camera intent.
+     */
     private void uploadImage(Intent data) {
 
         if (data == null) {
@@ -340,6 +343,12 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         imgurAsyncGenericTask.execute();
     }
 
+    /**
+     * Handles intents output.
+     * @param requestCode result status.
+     * @param resultCode type of request we're receiving.
+     * @param data result output.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -358,6 +367,9 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         }
     }
 
+    /**
+     * Adds the captured image to the gallery.
+     */
     private void galleryAddPic() {
         ContentValues values = new ContentValues();
 
@@ -368,6 +380,11 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
+    /**
+     * Creates an image file based on the image captured by camera.
+     * @return returns a file containing the new image.
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String imageFileName = generateFileName();
@@ -383,12 +400,22 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         return image;
     }
 
+    /**
+     * Generates a time-stamp based file name.
+     * @return
+     */
     @NonNull
     private String generateFileName() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         return "JPEG_" + timeStamp + "_";
     }
 
+    /**
+     * Handles the results of a permission request from the user.
+     * @param requestCode what type of request we're catching.
+     * @param permissions permissions requested (we're only requesting one at a time).
+     * @param grantResults results returned.
+     */
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
@@ -408,6 +435,13 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         }
     }
 
+    /**
+     * Shows an explanation to the user, why are we asking for permissions?
+     * @param title title
+     * @param message message
+     * @param permission which permission we're requesting
+     * @param permissionRequestCode the unique permission request code.
+     */
     private void showExplanation(String title,
                                  String message,
                                  final String permission,
@@ -423,11 +457,20 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         builder.create().show();
     }
 
+    /**
+     * Initiates a permission request popup.
+     * @param permissionName name of the permission we desire.
+     * @param permissionRequestCode unique permission code.
+     */
     private void requestPermission(String permissionName, int permissionRequestCode) {
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{permissionName}, permissionRequestCode);
     }
 
+    /**
+     * Called during the upload process.
+     * @param percentage how much has been uploaded thus far.
+     */
     @Override
     public void onProgressUpdate(int percentage) {
         updateProgressGUI();
@@ -440,6 +483,9 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
     public void onError() {
     }
 
+    /**
+     * Updates the GUI upon completion.
+     */
     @Override
     public void onFinish() {
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -458,5 +504,21 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
 
     public TextView getmProgressText() {
         return mProgressText;
+    }
+
+    /**
+     * Handles button clicks.
+     * @param v chosen button.
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case(R.id.upload_btn_capture_image):
+                captureImage();
+                break;
+            case(R.id.upload_btn_upload_img):
+                chooseImage();
+                break;
+        }
     }
 }
