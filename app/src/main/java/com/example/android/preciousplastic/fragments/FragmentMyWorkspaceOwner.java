@@ -37,7 +37,7 @@ import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull
 public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickListener
 {
 
-    private final String TAG = "FragmentMyWorkspaceOwner";
+    private final String TAG = "FragmentMWOwner";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,6 +49,7 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
     private EditText mWeightEditView = null;
     private TextView mScoreTextView = null;
     private Button mConfirmButton = null;
+    private Button mUploadItem = null;
 
     private PointsType mType = null;
     private Double mWeight = null;
@@ -112,6 +113,7 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
         mTypeSpinner.setAdapter(pointsTypeArrayAdapter);
 
         mConfirmButton = (Button) view.findViewById(R.id.mw_btn_confirm);
+        mUploadItem = (Button) view.findViewById(R.id.mw_btn_upload);
 
         // set TextView fields
         mNicknameEditView = (EditText) view.findViewById(R.id.mw_et_nickname);
@@ -139,6 +141,7 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
 
         // button listener
         mConfirmButton.setOnClickListener(this);
+        mUploadItem.setOnClickListener(this);
 
         // weight listener
         mWeightEditView.addTextChangedListener(new TextWatcher() {
@@ -280,11 +283,22 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Switches fragment to the upload item fragment.
+     * @param view
+     */
+    private void onUploadClick(View view) {
+        PPSession.getHomeActivity().switchFragment(FragmentUploadItem.class);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case (R.id.mw_btn_confirm):
                 onConfirmClick(view);
+                break;
+            case (R.id.mw_btn_upload):
+                onUploadClick(view);
                 break;
             default:
                 break;

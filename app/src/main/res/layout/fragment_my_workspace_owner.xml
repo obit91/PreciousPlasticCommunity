@@ -63,11 +63,14 @@
         android:id="@+id/mw_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="252dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="92dp"
         android:text="CONFIRM"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mw_spinner_type" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.822"
+        app:layout_constraintStart_toEndOf="@+id/mw_spinner_type"
+        app:layout_constraintTop_toBottomOf="@+id/mw_tv_score" />
 
     <TextView
         android:id="@+id/mw_tv_score"
@@ -79,5 +82,21 @@
         android:text="Score"
         app:layout_constraintLeft_toRightOf="@+id/mw_et_nickname"
         app:layout_constraintTop_toBottomOf="@+id/mw_tv_title" />
+
+    <Button
+        android:id="@+id/mw_btn_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="8dp"
+        android:text="Upload Item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mw_btn_confirm"
+        app:layout_constraintVertical_bias="0.638" />
 
 </android.support.constraint.ConstraintLayout>

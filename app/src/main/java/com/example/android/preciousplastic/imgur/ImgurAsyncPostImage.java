@@ -2,7 +2,9 @@ package com.example.android.preciousplastic.imgur;
 
 import android.util.Log;
 
+import com.example.android.preciousplastic.fragments.FragmentUploadItem;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.utils.ProgressRequestBody;
 
 import java.io.File;
 
@@ -14,7 +16,7 @@ import retrofit2.Retrofit;
 
 public class ImgurAsyncPostImage extends ImgurAsyncGenericTask<ImgurData> {
 
-    ImgurAccessResponse<ImgurData> delegate = null;
+    UploadTask delegate = null;
     File imageFile;
     String title;
     String description;
@@ -23,7 +25,7 @@ public class ImgurAsyncPostImage extends ImgurAsyncGenericTask<ImgurData> {
     protected Call<ImgurResponseImage> generateMethod() {
         final Retrofit retrofit = PPSession.getRetrofit();
         ImgurService service = retrofit.create(ImgurService.class);
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+        ProgressRequestBody reqFile = new ProgressRequestBody(imageFile, delegate);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", null, reqFile);
         Call<ImgurResponseImage> method = service.uploadImage(body, title, description);
         return method;

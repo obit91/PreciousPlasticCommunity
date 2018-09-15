@@ -12,7 +12,7 @@ public class ImgurRequestsGenerator {
      * @param description image description.
      * @return an async post request.
      */
-    public static ImgurAsyncGenericTask generatePOST(ImgurAccessResponse delegate, File imageFile,
+    public static ImgurAsyncGenericTask generatePOST(UploadTask delegate, File imageFile,
                                                      String title, String description) {
         ImgurAsyncPostImage asyncPostImage = new ImgurAsyncPostImage();
         asyncPostImage.delegate = delegate;
