@@ -14,9 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.fragments.FragmentEditMyWorkspace;
+import com.example.android.preciousplastic.fragments.FragmentPerformTrade;
 import com.example.android.preciousplastic.imgur.ImgurConstants;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 
@@ -72,6 +75,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Set edit workspace item un-clickable
+        final Menu menu = navigationView.getMenu();
+        final MenuItem emwIcon = menu.findItem(R.id.drawer_edit_my_workspace);
+        emwIcon.setVisible(PPSession.getCurrentUser().isOwner());
+        final MenuItem tradeIcon = menu.findItem(R.id.drawer_trade);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -172,6 +181,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.drawer_workspaces:
                 goToFragment(FragmentWorkspaces.class);
+                break;
+            case R.id.drawer_edit_my_workspace:
+                goToFragment(FragmentEditMyWorkspace.class);
+                break;
+            case R.id.drawer_trade:
+                goToFragment(FragmentPerformTrade.class);
                 break;
             case R.id.drawer_bazaar:
                 goToFragment(FragmentBazaar.class);

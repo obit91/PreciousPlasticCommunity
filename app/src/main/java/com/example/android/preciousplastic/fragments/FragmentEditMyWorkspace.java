@@ -11,10 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,17 +24,20 @@ import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.example.android.preciousplastic.utils.ViewTools;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentMyWorkspaceOwner.OnFragmentInteractionListener} interface
+ * {@link FragmentEditMyWorkspace.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentMyWorkspaceOwner#newInstance} factory method to
+ * Use the {@link FragmentEditMyWorkspace#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickListener
+public class FragmentEditMyWorkspace extends Fragment implements View.OnClickListener
 {
 
     private final String TAG = "FragmentMWOwner";
@@ -46,10 +47,15 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private Button mEdit = null;
-    private Button mUploadItem = null;
     private TextView mTitle = null;
     private TextView mDescription = null;
+    private CheckBox mShredderCheckBox = null;
+    private CheckBox mInjectionCheckBox = null;
+    private CheckBox mExtrusionCheckBox = null;
+    private CheckBox mCompressionCheckBox = null;
+    private Button mUpdateWorkspace = null;
+    private Button mGotoWorkspace = null;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -57,7 +63,7 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentMyWorkspaceOwner()
+    public FragmentEditMyWorkspace()
     {
         // Required empty public constructor
     }
@@ -71,9 +77,9 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
      * @return A new instance of fragment FragmentMyWorkspaceOwner.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentMyWorkspaceOwner newInstance(String param1, String param2)
+    public static FragmentEditMyWorkspace newInstance(String param1, String param2)
     {
-        FragmentMyWorkspaceOwner fragment = new FragmentMyWorkspaceOwner();
+        FragmentEditMyWorkspace fragment = new FragmentEditMyWorkspace();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -97,15 +103,22 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_workspace_owner, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_my_workspace, container, false);
 
-        mEdit = (Button) view.findViewById(R.id.mw_btn_edit);
-        mUploadItem = (Button) view.findViewById(R.id.mw_btn_upload);
-        mTitle = (TextView) view.findViewById(R.id.mw_tv_workspace_title);
-        mDescription = (TextView) view.findViewById(R.id.mw_tv_workspace_description);
+        // setting listeners
+        mUpdateWorkspace = (Button) view.findViewById(R.id.emw_btn_apply);
+        mUpdateWorkspace.setOnClickListener(this);
+        mGotoWorkspace = (Button) view.findViewById(R.id.emw_btn_goto_workspace);
+        mGotoWorkspace.setOnClickListener(this);
 
-        mUploadItem.setOnClickListener(this);
-        mEdit.setOnClickListener(this);
+        // gui access
+        mTitle = (TextView) view.findViewById(R.id.emw_et_title);
+        mDescription = (TextView) view.findViewById(R.id.emw_et_description);
+
+        mShredderCheckBox = (CheckBox) view.findViewById(R.id.emw_checkbox_shredder);
+        mInjectionCheckBox = (CheckBox) view.findViewById(R.id.emw_checkbox_injection);
+        mExtrusionCheckBox = (CheckBox) view.findViewById(R.id.emw_checkbox_extrusion);
+        mCompressionCheckBox = (CheckBox) view.findViewById(R.id.emw_checkbox_compression);
 
         return view;
     }
@@ -113,11 +126,13 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
     public void onStart() {
         super.onStart();
 
-        final User currentUser = PPSession.getCurrentUser();
-        final Workspace workspace = currentUser.getWorkspace();
-
+        final Workspace workspace = PPSession.getCurrentUser().getWorkspace();
         mTitle.setText(workspace.getTitle());
         mDescription.setText(workspace.getDescription());
+        mShredderCheckBox.setChecked(workspace.isShredderMachine());
+        mInjectionCheckBox.setChecked(workspace.isCompressionMachine());
+        mExtrusionCheckBox.setChecked(workspace.isExtrusionMachine());
+        mCompressionCheckBox.setChecked(workspace.isCompressionMachine());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -176,29 +191,40 @@ public class FragmentMyWorkspaceOwner extends Fragment implements View.OnClickLi
     }
 
     /**
-     * Switches fragment to the upload item fragment.
+     * Updates the workspace and switches to workspace view.
      * @param view
      */
-    private void onUploadClick(View view) {
-        PPSession.getHomeActivity().switchFragment(FragmentUploadItem.class);
-    }
+    private void onUpdateWorkspace(View view) {
 
-    /**
-     * Switches fragment to the edit workspace fragment.
-     * @param view
-     */
-    private void onEditClick(View view) {
-        PPSession.getHomeActivity().switchFragment(FragmentEditMyWorkspace.class);
+        final User currentUser = PPSession.getCurrentUser();
+        final Workspace workspace = currentUser.getWorkspace();
+
+        if (!ViewTools.isTextViewNull(mTitle)) {
+            workspace.setTitle(mTitle.getText().toString());
+        }
+
+        if (!ViewTools.isTextViewNull(mDescription)) {
+            workspace.setDescription(mDescription.getText().toString());
+        }
+
+        workspace.setShredderMachine(mShredderCheckBox.isChecked());
+        workspace.setInjectionMachine(mInjectionCheckBox.isChecked());
+        workspace.setExtrusionMachine(mExtrusionCheckBox.isChecked());
+        workspace.setCompressionMachine(mCompressionCheckBox.isChecked());
+
+        currentUser.commitChanges();
+
+        showToast("Workspace updated!");
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case (R.id.mw_btn_upload):
-                onUploadClick(view);
+            case (R.id.emw_btn_apply):
+                onUpdateWorkspace(view);
                 break;
-            case (R.id.mw_btn_edit):
-                onEditClick(view);
+            case (R.id.emw_btn_goto_workspace):
+                PPSession.getHomeActivity().switchFragment(FragmentMyWorkspaceOwner.class);
                 break;
             default:
                 break;

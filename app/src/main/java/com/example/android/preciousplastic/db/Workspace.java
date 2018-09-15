@@ -20,12 +20,18 @@ public class Workspace implements ImgurAccessResponse<Boolean> {
     private boolean extrusionMachine;
     private boolean compressionMachine;
     private HashMap<String, ImgurBazarItem> itemsOnSale;
+    private String title;
+    private String description;
+    private String URL;
 
     /**
      * Default empty constructor for firebase.
      */
     public Workspace() {
         itemsOnSale = new HashMap<>();
+        title = null;
+        description = null;
+        URL = null;
     }
 
     /**
@@ -44,6 +50,10 @@ public class Workspace implements ImgurAccessResponse<Boolean> {
         this.injectionMachine = injectionMachine;
         this.extrusionMachine = extrusionMachine;
         this.compressionMachine = compressionMachine;
+
+        title = null;
+        description = null;
+        URL = null;
     }
 
     public boolean isShredderMachine() {
@@ -147,5 +157,29 @@ public class Workspace implements ImgurAccessResponse<Boolean> {
         if (asyncResult != null) {
             Log.d(TAG, "getResult: item successfully removed from imgur.");
         }
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 }

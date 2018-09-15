@@ -248,7 +248,7 @@ public class User {
     /**
      * Updates current user in the fire-base db.
      */
-    private void commitChanges() {
+    public void commitChanges() {
         UserRepository userRepository = new UserRepository(PPSession.getContainerContext());
         userRepository.updateUser(this);
     }

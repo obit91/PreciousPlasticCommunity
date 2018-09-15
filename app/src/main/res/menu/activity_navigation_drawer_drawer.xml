@@ -32,7 +32,7 @@
         </menu>
     </item>
 
-    <item android:title="My garage">
+    <item android:title="My Garage">
         <menu>
             <item
                 android:id="@+id/drawer_profile"
@@ -41,7 +41,15 @@
             <item
                 android:id="@+id/drawer_my_workspace"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="My workspace" />
+                android:title="My Workspace" />
+            <item
+                android:id="@+id/drawer_edit_my_workspace"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Edit My Workspace" />
+            <item
+                android:id="@+id/drawer_trade"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Trade" />
             <item
                 android:id="@+id/drawer_settings"
                 android:icon="@drawable/ic_settings_black_24dp"

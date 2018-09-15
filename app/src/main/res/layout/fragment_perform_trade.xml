@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_bg_light"
+    tools:context=".fragments.FragmentPerformTrade">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/mw_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="70dp"
+        android:text="Trade"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- TODO: switch text type to alphanumeric below (mw_et_nickname) -->
+
+    <EditText
+        android:id="@+id/mw_et_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="Nickname"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mw_tv_title" />
+
+    <EditText
+        android:id="@+id/mw_et_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Plastic Weight"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.078"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
+
+    <Spinner
+        android:id="@+id/mw_spinner_type"
+        android:layout_width="219dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mw_et_weight" />
+
+    <Button
+        android:id="@+id/mw_btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="92dp"
+        android:text="CONFIRM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.822"
+        app:layout_constraintStart_toEndOf="@+id/mw_spinner_type"
+        app:layout_constraintTop_toBottomOf="@+id/mw_tv_score" />
+
+    <TextView
+        android:id="@+id/mw_tv_score"
+        android:layout_width="113dp"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="60dp"
+        android:text="Score"
+        app:layout_constraintLeft_toRightOf="@+id/mw_et_nickname"
+        app:layout_constraintTop_toBottomOf="@+id/mw_tv_title" />
+
+</android.support.constraint.ConstraintLayout>
