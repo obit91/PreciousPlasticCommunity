@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.imgur.ImgurAccessResponse;
 import com.example.android.preciousplastic.imgur.ImgurAsyncGetAlbum;
+import com.example.android.preciousplastic.imgur.ImgurDataOld;
 import com.example.android.preciousplastic.imgur.ImgurData;
-import com.example.android.preciousplastic.imgur.ImgurImage;
 import com.example.android.preciousplastic.imgur.ImgurRecyclerAdaptor;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.List;
  * Use the {@link FragmentBazaar#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentBazaar extends Fragment implements ImgurAccessResponse
+public class FragmentBazaar extends Fragment implements ImgurAccessResponse<ImgurData>
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +45,7 @@ public class FragmentBazaar extends Fragment implements ImgurAccessResponse
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private View mButton;
-    private List<ImgurImage> mImages = new ArrayList<>();
+    private List<ImgurData> mImages = new ArrayList<>();
 
     public FragmentBazaar()
     {
@@ -144,7 +144,7 @@ public class FragmentBazaar extends Fragment implements ImgurAccessResponse
     @Override
     public void getResult(ImgurData data) {
         mImages.removeAll(mImages);
-        mImages.addAll(data.getImages());
+//        mImages.addAll(data.getImages());
         mAdapter.notifyDataSetChanged();
     }
 

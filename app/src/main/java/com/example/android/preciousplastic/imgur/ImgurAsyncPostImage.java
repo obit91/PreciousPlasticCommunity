@@ -1,59 +1,32 @@
 package com.example.android.preciousplastic.imgur;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.android.preciousplastic.utils.PPSession;
+
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ImgurAsyncPostImage extends AsyncTask<Void, Void, ImgurData> {
+public class ImgurAsyncPostImage extends ImgurAsyncGenericTask<ImgurData> {
 
-    private static final String TAG = "ASYNC_POST_IMGUR";
-
-    public ImgurAccessResponse delegate = null;
-    public File imageFile;
-    public String title;
-    public String description;
+    ImgurAccessResponse<ImgurData> delegate = null;
+    File imageFile;
+    String title;
+    String description;
 
     @Override
-    protected ImgurData doInBackground(Void... voids) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.imgur.com/3/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
+    protected Call<ImgurResponseUpload> generateMethod() {
+        final Retrofit retrofit = PPSession.getRetrofit();
         ImgurService service = retrofit.create(ImgurService.class);
-//        MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", imageFile.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), imageFile));
-//        RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
-//        MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", null, reqFile);
-//        Call<ImgurResponseData> method = service.uploadImage(filePart, title, description);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile.getAbsolutePath());
-        Call<ImgurResponseData> method = service.uploadImage(requestBody, title, description);
-        Response<ImgurResponseData> resp;
-        ImgurResponseData respData = null;
-        try {
-            resp = method.execute();
-            if (resp.isSuccessful())
-                respData = resp.body();
-            else {
-                Log.e(TAG, "AsyncPost: " + resp.code());
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return respData.getData();
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", null, reqFile);
+        Call<ImgurResponseUpload> method = service.uploadImage(body, title, description);
+        return method;
     }
 
     @Override
@@ -61,6 +34,12 @@ public class ImgurAsyncPostImage extends AsyncTask<Void, Void, ImgurData> {
         if(delegate != null)
         {
             delegate.getResult(result);
+        }
+        final boolean delete = imageFile.delete();
+        if (delete) {
+            Log.d(TAG, "PostBackground: deleted temp image file.");
+        } else {
+            Log.e(TAG, "PostBackground: failed to delete temp image file.");
         }
     }
 }

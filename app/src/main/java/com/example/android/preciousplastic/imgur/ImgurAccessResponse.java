@@ -1,5 +1,5 @@
 package com.example.android.preciousplastic.imgur;
 
-public interface ImgurAccessResponse {
-    void getResult(ImgurData asyncResult);
+public interface ImgurAccessResponse<T> {
+    void getResult(T asyncResult);
 }

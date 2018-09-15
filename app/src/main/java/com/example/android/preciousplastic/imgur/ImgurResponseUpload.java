@@ -1,18 +1,9 @@
 package com.example.android.preciousplastic.imgur;
 
-public class ImgurResponseData {
+public class ImgurResponseUpload extends ImgurResponseBasic {
 
     private ImgurData data = null;
-    private boolean success = false;
-    private String method = null;
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+    protected String method = null;
 
     public String getMethod() {
         return method;

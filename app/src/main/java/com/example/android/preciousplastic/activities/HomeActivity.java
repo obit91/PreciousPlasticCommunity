@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.imgur.ImgurConstants;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 
 import com.example.android.preciousplastic.R;
@@ -37,6 +38,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "HOME_ACTIVITY";
@@ -52,6 +56,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // updating container context
         PPSession.setContainerContext(this);
+
+        // setting Retrofit.
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ImgurConstants.IMGUR_URL_API)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        PPSession.setRetrofit(retrofit);
 
         //Drawer Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

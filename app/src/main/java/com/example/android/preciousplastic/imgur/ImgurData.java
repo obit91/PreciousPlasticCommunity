@@ -1,101 +1,120 @@
 package com.example.android.preciousplastic.imgur;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class ImgurData extends ImgurBazarItem {
 
-public class ImgurData {
-
-    // fields in case of failure
-    private String error;
-    private String request;
-    private String method;
-
-    // fields when getting an album
-    private String id;
-    private String title;
-    private String description;
-    private int datetime;
-    private String cover;
-    private int coverWidth;
-    private int coverHeight;
-    private String accountUrl;
-    private int accountId;
-    private String privacy;
-    private String layout;
+    private String type;
+    private boolean animated;
+    private int width;
+    private int height;
+    private int size;
     private int views;
-    private String link;
+    private int bandwidth;
+    private Object vote;
     private boolean favorite;
-    private boolean nsfw;
-    private String section;
-    private int imagesCount;
-    private boolean inGallery;
+    private Object nsfw;
+    private Object section;
+    private Object accountUrl;
+    private int accountId;
     private boolean isAd;
-    private boolean includeAlbumAds;
-    private List<ImgurImage> images = null;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private boolean inMostViral;
+    private boolean hasSound;
+    private int adType;
+    private String adUrl;
+    private boolean inGallery;
 
-    public String getId() {
-        return id;
+    public String getType() {
+        return type;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Object getTitle() {
-        return title;
+    public boolean isAnimated() {
+        return animated;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setAnimated(boolean animated) {
+        this.animated = animated;
     }
 
-    public Object getDescription() {
-        return description;
+    public int getWidth() {
+        return width;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public int getDatetime() {
-        return datetime;
+    public int getHeight() {
+        return height;
     }
 
-    public void setDatetime(int datetime) {
-        this.datetime = datetime;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
-    public String getCover() {
-        return cover;
+    public int getSize() {
+        return size;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setSize(int size) {
+        this.size = size;
     }
 
-    public int getCoverWidth() {
-        return coverWidth;
+    public int getViews() {
+        return views;
     }
 
-    public void setCoverWidth(int coverWidth) {
-        this.coverWidth = coverWidth;
+    public void setViews(int views) {
+        this.views = views;
     }
 
-    public int getCoverHeight() {
-        return coverHeight;
+    public int getBandwidth() {
+        return bandwidth;
     }
 
-    public void setCoverHeight(int coverHeight) {
-        this.coverHeight = coverHeight;
+    public void setBandwidth(int bandwidth) {
+        this.bandwidth = bandwidth;
     }
 
-    public String getAccountUrl() {
+    public Object getVote() {
+        return vote;
+    }
+
+    public void setVote(Object vote) {
+        this.vote = vote;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public Object getNsfw() {
+        return nsfw;
+    }
+
+    public void setNsfw(Object nsfw) {
+        this.nsfw = nsfw;
+    }
+
+    public Object getSection() {
+        return section;
+    }
+
+    public void setSection(Object section) {
+        this.section = section;
+    }
+
+    public Object getAccountUrl() {
         return accountUrl;
     }
 
-    public void setAccountUrl(String accountUrl) {
+    public void setAccountUrl(Object accountUrl) {
         this.accountUrl = accountUrl;
     }
 
@@ -107,68 +126,44 @@ public class ImgurData {
         this.accountId = accountId;
     }
 
-    public String getPrivacy() {
-        return privacy;
+    public boolean isAd() {
+        return isAd;
     }
 
-    public void setPrivacy(String privacy) {
-        this.privacy = privacy;
+    public void setAd(boolean ad) {
+        isAd = ad;
     }
 
-    public String getLayout() {
-        return layout;
+    public boolean isInMostViral() {
+        return inMostViral;
     }
 
-    public void setLayout(String layout) {
-        this.layout = layout;
+    public void setInMostViral(boolean inMostViral) {
+        this.inMostViral = inMostViral;
     }
 
-    public int getViews() {
-        return views;
+    public boolean isHasSound() {
+        return hasSound;
     }
 
-    public void setViews(int views) {
-        this.views = views;
+    public void setHasSound(boolean hasSound) {
+        this.hasSound = hasSound;
     }
 
-    public String getLink() {
-        return link;
+    public int getAdType() {
+        return adType;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setAdType(int adType) {
+        this.adType = adType;
     }
 
-    public boolean isFavorite() {
-        return favorite;
+    public String getAdUrl() {
+        return adUrl;
     }
 
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
-
-    public boolean isNsfw() {
-        return nsfw;
-    }
-
-    public void setNsfw(boolean nsfw) {
-        this.nsfw = nsfw;
-    }
-
-    public String getSection() {
-        return section;
-    }
-
-    public void setSection(String section) {
-        this.section = section;
-    }
-
-    public int getImagesCount() {
-        return imagesCount;
-    }
-
-    public void setImagesCount(int imagesCount) {
-        this.imagesCount = imagesCount;
+    public void setAdUrl(String adUrl) {
+        this.adUrl = adUrl;
     }
 
     public boolean isInGallery() {
@@ -179,71 +174,19 @@ public class ImgurData {
         this.inGallery = inGallery;
     }
 
-    public boolean isIsAd() {
-        return isAd;
+    public String getName() {
+        return name;
     }
 
-    public void setIsAd(boolean isAd) {
-        this.isAd = isAd;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public boolean isIncludeAlbumAds() {
-        return includeAlbumAds;
+    public String getLink() {
+        return link;
     }
 
-    public void setIncludeAlbumAds(boolean includeAlbumAds) {
-        this.includeAlbumAds = includeAlbumAds;
-    }
-
-    public List<ImgurImage> getImages() {
-        return images;
-    }
-
-    public void setImages(List<ImgurImage> images) {
-        this.images = images;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getRequest() {
-        return request;
-    }
-
-    public void setRequest(String request) {
-        this.request = request;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public boolean isAd() {
-        return isAd;
-    }
-
-    public void setAd(boolean ad) {
-        isAd = ad;
-    }
-
-    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
+    public void setLink(String link) {
+        this.link = link;
     }
 }

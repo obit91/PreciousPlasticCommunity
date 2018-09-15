@@ -1,9 +1,16 @@
 package com.example.android.preciousplastic.db.entities;
 
+import android.content.Context;
+
+import com.example.android.preciousplastic.db.BazarOperations;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
 import com.example.android.preciousplastic.db.UserRank;
 import com.example.android.preciousplastic.db.Workspace;
+import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.example.android.preciousplastic.imgur.ImgurBazarItem;
+import com.example.android.preciousplastic.imgur.ImgurData;
+import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -186,11 +193,54 @@ public class User {
         }
     }
 
+    /**
+     * Checks whether the user is eligible for a promotion.
+     */
     public void checkPromotion() {
         UserRank nextRank = rank;
         while  (points.getTotalPoints() >= nextRank.getRequiredExp() && !rank.isMaxRank()) {
             nextRank = rank.getNextRank();
             rank = nextRank;
         }
+    }
+
+    /**
+     * Adds an item to the bazar.
+     * @param bazarItem item we wish to sell.
+     * @return true if the item was added, else - false.
+     */
+    public boolean addBazarItem(ImgurBazarItem bazarItem) {
+
+        // naughty user
+        if (!isOwner()) {
+            return false;
+        }
+
+        workspace.updateBazarItem(bazarItem, BazarOperations.ADD_ITEM);
+        commitChanges();
+        return true;
+    }
+
+    /**
+     * Removes an item the user uploaded from the bazar.
+     * @param imgurBazarItem item to remove.
+     */
+    public void removeBazarItem(ImgurBazarItem imgurBazarItem) {
+
+        // naughty user
+        if (!isOwner()) {
+            return;
+        }
+
+        workspace.updateBazarItem(imgurBazarItem, BazarOperations.REMOVE_ITEM);
+        commitChanges();
+    }
+
+    /**
+     * Updates current user in the fire-base db.
+     */
+    private void commitChanges() {
+        UserRepository userRepository = new UserRepository(PPSession.getContainerContext());
+        userRepository.updateUser(this);
     }
 }

@@ -62,7 +62,7 @@ public class UserRepository {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "updateUser: incremented score");
+                        Log.i(TAG, "updateUser: user updated.");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

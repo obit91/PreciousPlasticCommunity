@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import retrofit2.Retrofit;
+
 public class PPSession {
 
     private static final String TAG = "PPSession";
@@ -28,6 +30,8 @@ public class PPSession {
     private static FirebaseDatabase mFirebaseDB;
     private static DatabaseReference mUsersTable;
     private static DatabaseReference mHazardsTable;
+
+    private static Retrofit mRetrofit;
 
     private static Context containerContext;
     private static HomeActivity homeActivity;
@@ -57,6 +61,7 @@ public class PPSession {
         currentFragment = null;
         currentFragmentClass = null;
         loggingIn = false;
+        mRetrofit = null;
 
         if (mAuth != null && mAuth.getCurrentUser() != null) {
             String nickname = mAuth.getCurrentUser().getDisplayName();
@@ -167,5 +172,13 @@ public class PPSession {
 
     public static void setLoggingIn(boolean loggingIn) {
         PPSession.loggingIn = loggingIn;
+    }
+
+    public static Retrofit getRetrofit() {
+        return mRetrofit;
+    }
+
+    public static void setRetrofit(Retrofit mRetrofit) {
+        PPSession.mRetrofit = mRetrofit;
     }
 }

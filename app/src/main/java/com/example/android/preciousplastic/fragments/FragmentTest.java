@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,22 +25,31 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.Workspace;
+import com.example.android.preciousplastic.db.entities.User;
+import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.imgur.ImgurAccessResponse;
+import com.example.android.preciousplastic.imgur.ImgurAsyncGenericTask;
 import com.example.android.preciousplastic.imgur.ImgurAsyncPostImage;
+import com.example.android.preciousplastic.imgur.ImgurBazarItem;
 import com.example.android.preciousplastic.imgur.ImgurData;
-import com.google.android.gms.common.util.IOUtils;
+import com.example.android.preciousplastic.imgur.ImgurRequestsGenerator;
+import com.example.android.preciousplastic.utils.PPSession;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
 
-public class FragmentTest extends Fragment implements View.OnClickListener, ImgurAccessResponse {
+public class FragmentTest extends Fragment implements View.OnClickListener, ImgurAccessResponse<ImgurData> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,6 +63,7 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
 
     private Button mTakePhoto = null;
     private Button mUploadButton = null;
+    private Button mDeleteButton = null;
     private ImageView mImageTest = null;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
@@ -63,9 +71,6 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
 
     private static final int REQUEST_PERMISSION_CAMERA_STATE = 1;
     private static String mCurrentPhotoPath = null;
-
-    public static final String PREFIX = "stream2file";
-    public static final String SUFFIX = ".tmp";
 
 
     public FragmentTest() {
@@ -99,6 +104,8 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
         mTakePhoto.setOnClickListener(this);
         mUploadButton = (Button) view.findViewById(R.id.test_btn_upload_img);
         mUploadButton.setOnClickListener(this);
+        mDeleteButton = (Button) view.findViewById(R.id.test_btn_delete_img);
+        mDeleteButton.setOnClickListener(this);
 
         mImageTest = (ImageView) view.findViewById(R.id.test_iv_upload_img);
 
@@ -110,15 +117,6 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
-
-    public static File stream2file (InputStream in) throws IOException {
-        final File tempFile = File.createTempFile(PREFIX, SUFFIX);
-        tempFile.deleteOnExit();
-        try (FileOutputStream out = new FileOutputStream(tempFile)) {
-            IOUtils.copyStream(in, out);
-        }
-        return tempFile;
     }
 
     @Override
@@ -139,14 +137,24 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
     }
 
     @Override
-    public void getResult(ImgurData asyncResult) {
-        System.out.println("yoyoyo");
-        ImgurData data = asyncResult;
+    public void getResult(ImgurData imgurData) {
+        final User currentUser = PPSession.getCurrentUser();
+        currentUser.addBazarItem(imgurData);
     }
 
     public interface OnFragmentInteractionListener {
 //         TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void removeImage() {
+        final User currentUser = PPSession.getCurrentUser();
+        final Workspace workspace = currentUser.getWorkspace();
+        final HashMap<String, ImgurBazarItem> itemsOnSale = workspace.getItemsOnSale();
+        for (String key : itemsOnSale.keySet()) {
+            currentUser.removeBazarItem(itemsOnSale.get(key));
+            break;
+        }
     }
 
     @Override
@@ -158,21 +166,25 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
             case(R.id.test_btn_upload_img):
                 chooseImage();
                 break;
+            case(R.id.test_btn_delete_img):
+                removeImage();
+                break;
         }
     }
 
     private void chooseImage() {
 
-        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        getIntent.setType("image/*");
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_PICK_IMAGE);
 
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
+//        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        pickIntent.setType("image/*");
+//
+//        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
 
-        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
-
-        startActivityForResult(chooserIntent, REQUEST_PICK_IMAGE);
+//        startActivityForResult(chooserIntent, REQUEST_PICK_IMAGE);
     }
 
 
@@ -232,6 +244,31 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
         }
     }
 
+    private File generateTempFile(Bitmap chosenImage) {
+        // create a new file
+        File imageFile = new File(getContext().getCacheDir(), generateFileName());
+
+        //convert bitmap to byte array
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        chosenImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        //write the bytes in file
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(imageFile);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "generateTempFile: failed to create a temp file for gallery image.");
+            return null;
+        } catch (IOException e) {
+            Log.e(TAG, "generateTempFile: failed to write image to temp file.");
+            return null;
+        }
+        return imageFile;
+    }
+
     private void uploadImage(Intent data) {
 
         if (data == null) {
@@ -239,18 +276,22 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
             return;
         }
 
-        File imageFile = new File(mCurrentPhotoPath);
+        Uri uri = data.getData();
 
-        ImgurAsyncPostImage request = new ImgurAsyncPostImage();
-        request.delegate = FragmentTest.this;
-        request.title = "test";
-        request.description = "test123";
-        request.imageFile = imageFile;
-        request.execute();
+//        File imageFile = new File(mCurrentPhotoPath);
+        Bitmap chosenImage = null;
+        try {
+            chosenImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+        } catch (IOException e) {
+            Log.e(TAG, "uploadImage: couldn't resolve chosen image URI to bitmap.");
+            return;
+        }
 
-        Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+        mImageTest.setImageBitmap(chosenImage);
 
-        mImageTest.setImageBitmap(myBitmap);
+        final ImgurAsyncGenericTask imgurAsyncGenericTask = ImgurRequestsGenerator.generatePOST(this,
+                generateTempFile(chosenImage), "test", "test123");
+        imgurAsyncGenericTask.execute();
     }
 
     @Override
@@ -281,8 +322,7 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = generateFileName();
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -293,6 +333,12 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    @NonNull
+    private String generateFileName() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return "JPEG_" + timeStamp + "_";
     }
 
     @Override
@@ -330,4 +376,5 @@ public class FragmentTest extends Fragment implements View.OnClickListener, Imgu
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{permissionName}, permissionRequestCode);
     }
+
 }

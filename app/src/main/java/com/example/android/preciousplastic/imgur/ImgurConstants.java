@@ -2,8 +2,7 @@ package com.example.android.preciousplastic.imgur;
 
 public class ImgurConstants {
 
-    static final String AUTHORIZATION_CLIENT_ID_HEADER = "Authorization: Client-ID 606cdd1023bcfe8";
-    static final String CONTENT_TYPE_FORM_DATA = "Content-Type: multipart/form-data";
-    static final String ALBUM = "eQpLLU5";
+    public static final String IMGUR_URL_API = "https://api.imgur.com/3/";
+    static final String AUTHORIZATION_CLIENT_ID_HEADER = "Authorization: Client-ID 90984c8e37729be";
 
 }

@@ -13,6 +13,7 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.Workspace;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.example.android.preciousplastic.imgur.ImgurBazarItem;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.example.android.preciousplastic.utils.Transitions;
 import com.google.android.gms.tasks.OnCompleteListener;
