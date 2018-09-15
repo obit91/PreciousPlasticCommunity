@@ -23,20 +23,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.db.Workspace;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.imgur.ImgurAsyncGenericTask;
-import com.example.android.preciousplastic.imgur.ImgurBazarItem;
 import com.example.android.preciousplastic.imgur.ImgurData;
 import com.example.android.preciousplastic.imgur.ImgurRequestsGenerator;
 import com.example.android.preciousplastic.imgur.UploadTask;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.utils.ViewTools;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,8 +45,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static android.app.Activity.RESULT_OK;
@@ -64,11 +65,16 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
 
     private OnFragmentInteractionListener mListener;
 
-    private Button mTakePhoto = null;
-    private Button mUploadButton = null;
+    private Button mCaptureButton = null;
+    private Button mChooseButton = null;
     private ImageView mUploadImage = null;
     private ProgressBar mProgressBar = null;
     private TextView mProgressText = null;
+    private EditText mTitle = null;
+    private EditText mDescription = null;
+    private Button mUploadButton = null;
+
+    private Intent mChosenResult = null;
 
     // concurrentQueue to manage multi-threaded async uploads.
     private static Queue<Bitmap> mUploadQueue = new ConcurrentLinkedQueue<>();
@@ -79,6 +85,8 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
     private static final int REQUEST_PERMISSION_CAMERA_STATE = 1;
     private static final int REQUEST_PERMISSION_WRITE_EXTERNAL = 2;
     private static String mCurrentPhotoPath = null;
+
+    private Set<View> uploadViews;
 
     public FragmentUploadItem() {
         // Required empty public constructor
@@ -107,11 +115,28 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_upload_item, container, false);
 
         // set button listener
-        mTakePhoto = (Button) view.findViewById(R.id.upload_btn_capture_image);
-        mTakePhoto.setOnClickListener(this);
-        mUploadButton = (Button) view.findViewById(R.id.upload_btn_upload_img);
-        mUploadButton.setOnClickListener(this);
+        mCaptureButton = (Button) view.findViewById(R.id.upload_btn_capture_image);
+        mCaptureButton.setOnClickListener(this);
+        mChooseButton = (Button) view.findViewById(R.id.upload_btn_choose_img);
+        mChooseButton.setOnClickListener(this);
 
+
+        // Upload fields will become visible only after choosing an image.
+        uploadViews = new HashSet<>();
+        mUploadButton = (Button) view.findViewById(R.id.upload_btn_upload);
+        mUploadButton.setOnClickListener(this);
+        mUploadButton.setClickable(false);
+        mUploadButton.setVisibility(View.INVISIBLE);
+        uploadViews.add(mUploadButton);
+        mTitle = (EditText) view.findViewById(R.id.upload_et_title);
+        mTitle.setVisibility(View.INVISIBLE);
+        mTitle.setClickable(false);
+        uploadViews.add(mTitle);
+        mDescription = (EditText) view.findViewById(R.id.upload_et_description);
+        mDescription.setVisibility(View.INVISIBLE);
+        uploadViews.add(mDescription);
+
+        // progress
         mUploadImage = (ImageView) view.findViewById(R.id.upload_iv_upload_img);
         mProgressBar = (ProgressBar) view.findViewById(R.id.upload_progress_bar);
         mProgressBar.getProgressDrawable().setColorFilter(
@@ -339,7 +364,7 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
         mUploadQueue.add(chosenImage);
 
         final ImgurAsyncGenericTask imgurAsyncGenericTask = ImgurRequestsGenerator.generatePOST(this,
-                generateTempFile(chosenImage), "test", "test123");
+                generateTempFile(chosenImage), mTitle.getText().toString(), mDescription.getText().toString());
         imgurAsyncGenericTask.execute();
     }
 
@@ -362,7 +387,8 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
                 galleryAddPic();
                 break;
             case(REQUEST_PICK_IMAGE):
-                uploadImage(data);
+                mChosenResult = data;
+                enableUploadGUI(true);
                 break;
         }
     }
@@ -507,6 +533,50 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
     }
 
     /**
+     * Assures that all upload fields have been filled with data and starts the upload.
+     */
+    private boolean initiateUpload() {
+        boolean invalidInput = false;
+        StringBuilder msg = new StringBuilder();
+        msg.append("Please fill the following fields: ").append("\n");
+
+        if (ViewTools.isTextViewNull(mTitle)) {
+            msg.append("title").append("\n");
+            mTitle.setHintTextColor(Color.RED);
+            invalidInput = true;
+        } else {
+            mTitle.setHintTextColor(Color.BLACK);
+        }
+
+        if ( ViewTools.isTextViewNull(mDescription)) {
+            msg.append("description").append("\n");
+            mDescription.setHintTextColor(Color.RED);
+            invalidInput = true;
+        } else {
+            mDescription.setHintTextColor(Color.BLACK);
+        }
+
+        if (invalidInput) {
+            Toast.makeText(getActivity(), msg.toString().trim(), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        uploadImage(mChosenResult);
+        return true;
+    }
+
+    /**
+     * Enables the upload fields.
+     */
+    private void enableUploadGUI(boolean enable) {
+        int visibility = enable ? View.VISIBLE : View.INVISIBLE;
+        for (View uploadView : uploadViews) {
+            uploadView.setClickable(enable);
+            uploadView.setVisibility(visibility);
+        }
+    }
+
+    /**
      * Handles button clicks.
      * @param v chosen button.
      */
@@ -516,8 +586,14 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
             case(R.id.upload_btn_capture_image):
                 captureImage();
                 break;
-            case(R.id.upload_btn_upload_img):
+            case(R.id.upload_btn_choose_img):
                 chooseImage();
+                break;
+            case (R.id.upload_btn_upload):
+                if (initiateUpload()) {
+                    mTitle.setText(null);
+                    mDescription.setText(null);
+                }
                 break;
         }
     }
