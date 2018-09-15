@@ -15,16 +15,16 @@ public interface ImgurService {
 
     @Headers(ImgurConstants.AUTHORIZATION_CLIENT_ID_HEADER)
     @GET("image/{id}")
-    Call<ImgurResponseUpload> getImage(@Path("id") String id);
+    Call<ImgurResponseImage> getImage(@Path("id") String id);
 
     @Headers({
             ImgurConstants.AUTHORIZATION_CLIENT_ID_HEADER,
     })
     @Multipart
     @POST("upload")
-    Call<ImgurResponseUpload> uploadImage(@Part MultipartBody.Part file,
-                                          @Query("title") String title,
-                                          @Query("description") String description);
+    Call<ImgurResponseImage> uploadImage(@Part MultipartBody.Part file,
+                                         @Query("title") String title,
+                                         @Query("description") String description);
 
     @Headers(ImgurConstants.AUTHORIZATION_CLIENT_ID_HEADER)
     @DELETE("image/{deleteHash}")

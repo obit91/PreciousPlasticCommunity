@@ -20,12 +20,12 @@ public class ImgurAsyncPostImage extends ImgurAsyncGenericTask<ImgurData> {
     String description;
 
     @Override
-    protected Call<ImgurResponseUpload> generateMethod() {
+    protected Call<ImgurResponseImage> generateMethod() {
         final Retrofit retrofit = PPSession.getRetrofit();
         ImgurService service = retrofit.create(ImgurService.class);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", null, reqFile);
-        Call<ImgurResponseUpload> method = service.uploadImage(body, title, description);
+        Call<ImgurResponseImage> method = service.uploadImage(body, title, description);
         return method;
     }
 

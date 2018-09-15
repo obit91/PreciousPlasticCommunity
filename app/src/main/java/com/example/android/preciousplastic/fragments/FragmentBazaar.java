@@ -6,16 +6,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.imgur.ImgurAccessResponse;
-import com.example.android.preciousplastic.imgur.ImgurAsyncGetAlbum;
-import com.example.android.preciousplastic.imgur.ImgurDataOld;
-import com.example.android.preciousplastic.imgur.ImgurData;
+import com.example.android.preciousplastic.imgur.ImgurBazarItem;
 import com.example.android.preciousplastic.imgur.ImgurRecyclerAdaptor;
+import com.example.android.preciousplastic.utils.PPSession;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +31,10 @@ import java.util.List;
  * Use the {@link FragmentBazaar#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentBazaar extends Fragment implements ImgurAccessResponse<ImgurData>
+public class FragmentBazaar extends Fragment
 {
+    private static final String TAG = "FRAGMENT_BAZAR";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,7 +50,7 @@ public class FragmentBazaar extends Fragment implements ImgurAccessResponse<Imgu
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private View mButton;
-    private List<ImgurData> mImages = new ArrayList<>();
+    private List<ImgurBazarItem> mImages = new ArrayList<>();
 
     public FragmentBazaar()
     {
@@ -93,9 +98,11 @@ public class FragmentBazaar extends Fragment implements ImgurAccessResponse<Imgu
         // Inflate the layout for this fragment
         initRecyclerView(inflate);
 
-        ImgurAsyncGetAlbum request = new ImgurAsyncGetAlbum();
-        request.delegate = FragmentBazaar.this;
-        request.execute();
+//        ImgurAsyncGetAlbum request = new ImgurAsyncGetAlbum();
+//        request.delegate = FragmentBazaar.this;
+//        request.execute();
+
+        retrieveMyItems();
 
         return inflate;
     }
@@ -141,13 +148,6 @@ public class FragmentBazaar extends Fragment implements ImgurAccessResponse<Imgu
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    public void getResult(ImgurData data) {
-        mImages.removeAll(mImages);
-//        mImages.addAll(data.getImages());
-        mAdapter.notifyDataSetChanged();
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -162,5 +162,45 @@ public class FragmentBazaar extends Fragment implements ImgurAccessResponse<Imgu
     {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    /**
+     * Retrieves all of the connected user's items from the bazar.
+     */
+    public void retrieveMyItems(){
+        final List<ImgurBazarItem> items = new ArrayList<>();
+        ValueEventListener itemsListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ImgurBazarItem imgurBazarItem;
+                for (DataSnapshot itemBazarSnapShot : dataSnapshot.getChildren()) {
+                    imgurBazarItem = itemBazarSnapShot.getValue(ImgurBazarItem.class);
+                    String msg = "retrieveMyItems: <title, date> = <%s><%s>";
+                    Log.i(TAG, String.format(msg, imgurBazarItem.getTitle(), imgurBazarItem.getDatetime()));
+                    items.add(imgurBazarItem);
+                    updateItems(items);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting User failed, log a message
+                Log.e(TAG, "retrieveMyItems:onFirebaseCancelled", databaseError.toException());
+            }
+        };
+        final String nickname = PPSession.getCurrentUser().getNickname();
+        final DatabaseReference child = PPSession.getUsersTable().child(nickname).child("workspace").child("itemsOnSale");
+        child.addListenerForSingleValueEvent(itemsListener);
+    }
+
+    private void updateItems(List<ImgurBazarItem> items) {
+//        String msg;
+//        for (ImgurBazarItem imgurBazarItem : items) {
+//            msg = "Retrieved: " + imgurBazarItem.getDatetime();
+//            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+//        }
+        mImages.removeAll(mImages);
+        mImages.addAll(items);
+        mAdapter.notifyDataSetChanged();
     }
 }

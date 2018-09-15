@@ -1,6 +1,6 @@
 package com.example.android.preciousplastic.imgur;
 
-public class ImgurResponseUpload extends ImgurResponseBasic {
+public class ImgurResponseImage extends ImgurResponseBasic {
 
     private ImgurData data = null;
     protected String method = null;

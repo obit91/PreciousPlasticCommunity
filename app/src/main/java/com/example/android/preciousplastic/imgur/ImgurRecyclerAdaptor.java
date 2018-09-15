@@ -18,10 +18,10 @@ import com.squareup.picasso.Picasso;
  */
 
 public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdaptor.ViewHolder>{
-    private List<ImgurData> mDataSource;
+    private List<ImgurBazarItem> mDataSource;
     private Context mContext;
 
-    public ImgurRecyclerAdaptor(Context context, List<ImgurData> dataSources) {
+    public ImgurRecyclerAdaptor(Context context, List<ImgurBazarItem> dataSources) {
         mDataSource = dataSources;
         mContext = context;
     }

@@ -35,7 +35,7 @@
         android:id="@+id/test_btn_upload_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:text="UPLOAD IMG"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintHorizontal_bias="0.429"
@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintHorizontal_bias="0.429"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/test_btn_upload_img" />
+        app:layout_constraintTop_toBottomOf="@id/test_btn_delete_img" />
 
 
 </android.support.constraint.ConstraintLayout>
