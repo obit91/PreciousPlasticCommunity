@@ -55,7 +55,7 @@ public class UserRepository {
      *
      * @param user user to update.
      */
-    public void updateUser(User user) {
+    public void updateUser(User user, final String msg) {
         Map<String, Object> tablesToUpdate = new HashMap<>();
         tablesToUpdate.put(user.getNickname(), user.toMap());
         PPSession.getUsersTable().updateChildren(tablesToUpdate)
@@ -63,6 +63,9 @@ public class UserRepository {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i(TAG, "updateUser: user updated.");
+                        if (msg != null) {
+                            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -96,11 +99,7 @@ public class UserRepository {
         UserPoints userPoints = user.getPoints();
         userPoints.incrementType(type, score);
         user.checkPromotion();
-        updateUser(user);
-        String message = "User %s: incremented %.2f points of %s";
-        Toast.makeText(mContext,
-                String.format(message, user.getNickname(), score, type),
-                Toast.LENGTH_SHORT).show();
+        updateUser(user, "User %s: incremented %.2f points of %s");
     }
 
     public void becomeOwner() {
@@ -115,9 +114,9 @@ public class UserRepository {
                     Log.e(TAG, "becomeOwner: failed to retrieve current user.");
                 } else {
                     user.makeOwner();
-                    updateUser(user);
+                    updateUser(user, null);
                     PPSession.setCurrentUser(user);
-                    String msg = "becomeOwner: %s has become an owner.";
+                    String msg = String.format("becomeOwner: %s has become an owner.", user.getNickname());
                     Log.i(TAG, String.format(msg, nickname));
                 }
             }

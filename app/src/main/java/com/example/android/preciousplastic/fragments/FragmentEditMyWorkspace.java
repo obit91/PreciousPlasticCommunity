@@ -130,7 +130,7 @@ public class FragmentEditMyWorkspace extends Fragment implements View.OnClickLis
         mTitle.setText(workspace.getTitle());
         mDescription.setText(workspace.getDescription());
         mShredderCheckBox.setChecked(workspace.isShredderMachine());
-        mInjectionCheckBox.setChecked(workspace.isCompressionMachine());
+        mInjectionCheckBox.setChecked(workspace.isInjectionMachine());
         mExtrusionCheckBox.setChecked(workspace.isExtrusionMachine());
         mCompressionCheckBox.setChecked(workspace.isCompressionMachine());
     }
@@ -212,9 +212,7 @@ public class FragmentEditMyWorkspace extends Fragment implements View.OnClickLis
         workspace.setExtrusionMachine(mExtrusionCheckBox.isChecked());
         workspace.setCompressionMachine(mCompressionCheckBox.isChecked());
 
-        currentUser.commitChanges();
-
-        showToast("Workspace updated!");
+        currentUser.commitChanges("Workspace updated!");
     }
 
     @Override

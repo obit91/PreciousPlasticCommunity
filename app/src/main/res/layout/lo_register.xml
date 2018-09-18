@@ -85,7 +85,7 @@
 
     <CheckBox
         android:id="@+id/register_checkbox_shredder"
-        android:theme="@style/checkBoxStyle"
+        android:theme="@style/checkBoxStyleGreenLO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"
@@ -97,7 +97,7 @@
 
     <CheckBox
         android:id="@+id/register_checkbox_injection"
-        android:theme="@style/checkBoxStyle"
+        android:theme="@style/checkBoxStyleGreenLO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="52dp"
@@ -109,7 +109,7 @@
 
     <CheckBox
         android:id="@+id/register_checkbox_extrusion"
-        android:theme="@style/checkBoxStyle"
+        android:theme="@style/checkBoxStyleGreenLO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -121,12 +121,12 @@
 
     <CheckBox
         android:id="@+id/register_checkbox_compression"
-        android:theme="@style/checkBoxStyle"
+        android:theme="@style/checkBoxStyleGreenLO"
+        android:textColor="@color/colorStylishBlackText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/colorStylishBlackText"
         android:text="Compression"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/register_checkbox_extrusion" />

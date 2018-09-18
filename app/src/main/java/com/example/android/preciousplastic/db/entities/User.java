@@ -218,7 +218,7 @@ public class User {
         }
 
         workspace.updateBazarItem(bazarItem, BazarOperations.ADD_ITEM);
-        commitChanges();
+        commitChanges(null);
         return true;
     }
 
@@ -234,7 +234,7 @@ public class User {
         }
 
         workspace.updateBazarItem(imgurBazarItem, BazarOperations.REMOVE_ITEM);
-        commitChanges();
+        commitChanges(null);
     }
 
     /**
@@ -242,14 +242,14 @@ public class User {
      */
     public void removeAllItemsFromBazar() {
         workspace.updateBazarItem(null, BazarOperations.REMOVE_ALL);
-        commitChanges();
+        commitChanges(null);
     }
 
     /**
      * Updates current user in the fire-base db.
      */
-    public void commitChanges() {
+    public void commitChanges(String commitToastMsg) {
         UserRepository userRepository = new UserRepository(PPSession.getContainerContext());
-        userRepository.updateUser(this);
+        userRepository.updateUser(this, commitToastMsg);
     }
 }

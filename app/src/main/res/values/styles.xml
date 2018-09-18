@@ -17,9 +17,16 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
+    <style name="checkBoxStyleGreenLO" parent="Base.Theme.AppCompat">
         <!-- CHECKED COLOR -->
         <item name="colorAccent">@color/colorSeaGlass</item>
+        <!-- UNCHECKED COLOR -->
+        <item name="android:textColorSecondary">@color/colorStylishBlackBox</item>
+    </style>
+
+    <style name="checkBoxStyleBlueLO" parent="Base.Theme.AppCompat">
+        <!-- CHECKED COLOR -->
+        <item name="colorAccent">@color/colorGreyishBlue</item>
         <!-- UNCHECKED COLOR -->
         <item name="android:textColorSecondary">@color/colorStylishBlackBox</item>
     </style>
