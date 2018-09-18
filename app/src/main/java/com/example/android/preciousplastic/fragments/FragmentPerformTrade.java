@@ -220,7 +220,7 @@ public class FragmentPerformTrade extends Fragment implements View.OnClickListen
         String nickname = mNicknameEditView.getText().toString();
 
         userRepository.updateUserPoints(nickname, mType, mScore);
-        PPSession.getHomeActivity().onBackPressed();
+        PPSession.getHomeActivity().switchFragment(FragmentCompleteTrade.class);
     }
 
     /**

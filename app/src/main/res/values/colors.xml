@@ -5,4 +5,9 @@
     <color name="legendItemBackground">#E2FFF6</color>
     <color name="colorAccent">#FF4081</color>
     <color name="mapPrimary">#f58d8e</color>
+    <color name="colorSeaGlass">#C0F9D6</color>
+    <color name="colorDarkGrey">#6E6E6E</color>
+    <color name="colorStylishBlackBox">#3A3A3A</color>
+    <color name="colorStylishBlackText">#242424</color>
+
 </resources>

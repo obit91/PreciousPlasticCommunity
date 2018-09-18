@@ -85,40 +85,48 @@
 
     <CheckBox
         android:id="@+id/register_checkbox_shredder"
+        android:theme="@style/checkBoxStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"
         android:layout_marginTop="20dp"
+        android:textColor="@color/colorStylishBlackText"
         android:text="Shredder"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/register_switch_btn_owner" />
 
     <CheckBox
         android:id="@+id/register_checkbox_injection"
+        android:theme="@style/checkBoxStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="52dp"
         android:layout_marginTop="20dp"
+        android:textColor="@color/colorStylishBlackText"
         android:text="Injection"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/register_checkbox_shredder" />
 
     <CheckBox
         android:id="@+id/register_checkbox_extrusion"
+        android:theme="@style/checkBoxStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="20dp"
+        android:textColor="@color/colorStylishBlackText"
         android:text="Extrusion"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/register_switch_btn_owner" />
 
     <CheckBox
         android:id="@+id/register_checkbox_compression"
+        android:theme="@style/checkBoxStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="20dp"
+        android:textColor="@color/colorStylishBlackText"
         android:text="Compression"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/register_checkbox_extrusion" />

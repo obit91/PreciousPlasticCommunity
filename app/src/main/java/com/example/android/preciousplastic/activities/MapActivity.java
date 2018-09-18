@@ -297,8 +297,8 @@ public class MapActivity extends AppCompatActivity {
     private class InitMapsDataAsyncTask extends AsyncTask<Void, Void, Void>{
         @Override
         protected Void doInBackground(Void... nulls){
-            // todo restore
-//            initOverlays();
+            // TODO: restore
+            initOverlays();
             return null;
         }
         @Override
