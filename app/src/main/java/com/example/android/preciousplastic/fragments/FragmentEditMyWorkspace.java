@@ -212,7 +212,7 @@ public class FragmentEditMyWorkspace extends Fragment implements View.OnClickLis
         workspace.setExtrusionMachine(mExtrusionCheckBox.isChecked());
         workspace.setCompressionMachine(mCompressionCheckBox.isChecked());
 
-        currentUser.commitChanges("Workspace updated!");
+        currentUser.commitChanges();
     }
 
     @Override

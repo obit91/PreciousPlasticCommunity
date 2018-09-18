@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.db.EventNotifier;
+import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.Transitions;
 import com.example.android.preciousplastic.utils.ViewTools;

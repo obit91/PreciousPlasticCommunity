@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic.db;
+package com.example.android.preciousplastic.utils;
 
 import android.util.Log;
 

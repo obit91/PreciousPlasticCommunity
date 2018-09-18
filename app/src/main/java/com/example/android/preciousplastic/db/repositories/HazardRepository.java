@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.android.preciousplastic.db.EventNotifier;
+import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.db.entities.Hazard;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.android.gms.tasks.OnFailureListener;

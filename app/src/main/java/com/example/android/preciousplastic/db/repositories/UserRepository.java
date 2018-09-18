@@ -2,19 +2,15 @@ package com.example.android.preciousplastic.db.repositories;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.android.preciousplastic.db.DBConstants;
-import com.example.android.preciousplastic.db.EventNotifier;
+import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,8 +50,9 @@ public class UserRepository {
      * Commits the user fields to the db.
      *
      * @param user user to update.
+     * @param notifier
      */
-    public void updateUser(User user, final String msg) {
+    public void updateUser(User user, final EventNotifier notifier) {
         Map<String, Object> tablesToUpdate = new HashMap<>();
         tablesToUpdate.put(user.getNickname(), user.toMap());
         PPSession.getUsersTable().updateChildren(tablesToUpdate)
@@ -63,8 +60,8 @@ public class UserRepository {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i(TAG, "updateUser: user updated.");
-                        if (msg != null) {
-                            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                        if (notifier != null) {
+                            notifier.onResponse(true);
                         }
                     }
                 })
@@ -72,16 +69,23 @@ public class UserRepository {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, "updateUser: " + e.getMessage());
+                        if (notifier != null) {
+                            notifier.onResponse(false);
+                        }
                     }
                 });
     }
 
-    public void updateUserPoints(final String nickname, final PointsType type, final double score) {
+    public void updateUserPoints(final String nickname, final PointsType type, final double score, final EventNotifier notifier) {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                writeUserPoints(user, type, score);
+                if (user == null) {
+                    notifier.onResponse(false);
+                    return;
+                }
+                writeUserPoints(user, type, score, notifier);
                 String msg = "updateUserPoints: <nick, type, score> = <%s><%s><%.2f>";
                 Log.i(TAG, String.format(msg, nickname, type, score));
             }
@@ -95,11 +99,11 @@ public class UserRepository {
         PPSession.getUsersTable().child(nickname).addListenerForSingleValueEvent(userListener);
     }
 
-    private void writeUserPoints(final User user, final PointsType type, final double score) {
+    private void writeUserPoints(final User user, final PointsType type, final double score, EventNotifier notifier) {
         UserPoints userPoints = user.getPoints();
         userPoints.incrementType(type, score);
         user.checkPromotion();
-        updateUser(user, "User %s: incremented %.2f points of %s");
+        updateUser(user, notifier);
     }
 
     public void becomeOwner() {

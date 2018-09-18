@@ -1,41 +1,19 @@
 package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.activities.MapConstants;
 import com.example.android.preciousplastic.activities.WorkspacesActivity;
-import com.example.android.preciousplastic.db.EventNotifier;
-import com.example.android.preciousplastic.utils.InternetQuery;
+import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.utils.PPSession;
-import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.

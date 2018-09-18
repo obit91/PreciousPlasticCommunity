@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.entities.User;
+import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.PPSession;
@@ -211,16 +213,36 @@ public class FragmentPerformTrade extends Fragment implements View.OnClickListen
      */
     private void onConfirmClick(View view) {
         UserRepository userRepository = new UserRepository(getContext());
+        User currentUser = PPSession.getCurrentUser();
 
         if (isTextViewNull(mNicknameEditView) || isTextViewNull(mWeightEditView)) {
             showToast("Please enter all required fields");
             return;
         }
 
-        String nickname = mNicknameEditView.getText().toString();
+        if (mNicknameEditView.getText().toString().equals(currentUser.getNickname())) {
+            showToast("You can not give points to yourself.");
+            return;
+        }
 
-        userRepository.updateUserPoints(nickname, mType, mScore);
-        PPSession.getHomeActivity().switchFragment(FragmentCompleteTrade.class);
+        String nickname = mNicknameEditView.getText().toString();
+        WriteUserPoints eventNotifier = new WriteUserPoints();
+        userRepository.updateUserPoints(nickname, mType, mScore, eventNotifier);
+    }
+
+    /**
+     * On successful trade switch to success screen, else show a failure message.
+     */
+    private class WriteUserPoints extends EventNotifier {
+        @Override
+        public void onResponse(Object dataSnapshotObj){
+            boolean success = (boolean)dataSnapshotObj;
+            if (success) {
+                PPSession.getHomeActivity().switchFragment(FragmentCompleteTrade.class);
+            } else {
+                Toast.makeText(getActivity(), "Nickname does not exist.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     /**

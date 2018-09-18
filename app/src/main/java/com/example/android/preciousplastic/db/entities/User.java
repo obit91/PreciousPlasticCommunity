@@ -1,7 +1,5 @@
 package com.example.android.preciousplastic.db.entities;
 
-import android.content.Context;
-
 import com.example.android.preciousplastic.db.BazarOperations;
 import com.example.android.preciousplastic.db.PointsType;
 import com.example.android.preciousplastic.db.UserPoints;
@@ -9,14 +7,12 @@ import com.example.android.preciousplastic.db.UserRank;
 import com.example.android.preciousplastic.db.Workspace;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
-import com.example.android.preciousplastic.imgur.ImgurData;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 @IgnoreExtraProperties
@@ -218,7 +214,7 @@ public class User {
         }
 
         workspace.updateBazarItem(bazarItem, BazarOperations.ADD_ITEM);
-        commitChanges(null);
+        commitChanges();
         return true;
     }
 
@@ -234,7 +230,7 @@ public class User {
         }
 
         workspace.updateBazarItem(imgurBazarItem, BazarOperations.REMOVE_ITEM);
-        commitChanges(null);
+        commitChanges();
     }
 
     /**
@@ -242,14 +238,14 @@ public class User {
      */
     public void removeAllItemsFromBazar() {
         workspace.updateBazarItem(null, BazarOperations.REMOVE_ALL);
-        commitChanges(null);
+        commitChanges();
     }
 
     /**
      * Updates current user in the fire-base db.
      */
-    public void commitChanges(String commitToastMsg) {
+    public void commitChanges() {
         UserRepository userRepository = new UserRepository(PPSession.getContainerContext());
-        userRepository.updateUser(this, commitToastMsg);
+        userRepository.updateUser(this, null);
     }
 }

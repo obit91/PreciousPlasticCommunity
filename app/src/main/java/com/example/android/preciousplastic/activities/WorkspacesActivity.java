@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
-import com.example.android.preciousplastic.db.EventNotifier;
+import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.utils.InternetQuery;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.gson.internal.LinkedTreeMap;
