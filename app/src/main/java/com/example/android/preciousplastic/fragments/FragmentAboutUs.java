@@ -18,7 +18,7 @@ import com.example.android.preciousplastic.R;
  * Use the {@link FragmentAboutUs#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentAboutUs extends Fragment
+public class FragmentAboutUs extends BaseFragment
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -103,6 +103,11 @@ public class FragmentAboutUs extends Fragment
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**

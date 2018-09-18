@@ -19,7 +19,7 @@ import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.utils.PPSession;
 
 
-public class FragmentProfile extends Fragment implements View.OnClickListener {
+public class FragmentProfile extends BaseFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -174,6 +174,11 @@ public class FragmentProfile extends Fragment implements View.OnClickListener {
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**

@@ -14,6 +14,7 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.activities.WorkspacesActivity;
 import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.adaptors.WorkspaceAdaptor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +24,7 @@ import com.example.android.preciousplastic.utils.PPSession;
  * Use the {@link FragmentWorkspaces#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentWorkspaces extends Fragment
+public class FragmentWorkspaces extends BaseFragment
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -128,6 +129,11 @@ public class FragmentWorkspaces extends Fragment
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**

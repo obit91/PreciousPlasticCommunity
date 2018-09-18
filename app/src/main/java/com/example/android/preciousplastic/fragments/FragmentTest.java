@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 
-public class FragmentTest extends Fragment implements View.OnClickListener {
+public class FragmentTest extends BaseFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -98,6 +98,11 @@ public class FragmentTest extends Fragment implements View.OnClickListener {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     public interface OnFragmentInteractionListener {

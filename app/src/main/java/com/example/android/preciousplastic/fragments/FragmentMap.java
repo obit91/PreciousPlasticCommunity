@@ -13,7 +13,7 @@ import com.example.android.preciousplastic.utils.PPSession;
 
 import org.osmdroid.views.MapView;
 
-public class FragmentMap extends Fragment {
+public class FragmentMap extends BaseFragment {
     private MapActivity mapActivity = null;
 
     @Nullable
@@ -28,5 +28,10 @@ public class FragmentMap extends Fragment {
         mapActivity = PPSession.getMapActivity();
         MapView mapView = getView().findViewById(R.id.map_view);
         mapActivity.buildMap(mapView);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 }

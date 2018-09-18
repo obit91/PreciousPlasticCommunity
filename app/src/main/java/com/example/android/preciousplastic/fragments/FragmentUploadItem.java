@@ -53,7 +53,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static android.app.Activity.RESULT_OK;
 
 
-public class FragmentUploadItem extends Fragment implements View.OnClickListener, UploadTask {
+public class FragmentUploadItem extends BaseFragment implements View.OnClickListener, UploadTask {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -214,6 +214,11 @@ public class FragmentUploadItem extends Fragment implements View.OnClickListener
     public void getResult(ImgurData imgurData) {
         final User currentUser = PPSession.getCurrentUser();
         currentUser.addBazarItem(imgurData);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     public interface OnFragmentInteractionListener {

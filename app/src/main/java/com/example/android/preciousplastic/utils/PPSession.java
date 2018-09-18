@@ -1,10 +1,10 @@
 package com.example.android.preciousplastic.utils;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.android.preciousplastic.adaptors.WorkspaceAdaptor;
+import com.example.android.preciousplastic.fragments.BaseFragment;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 
 import com.example.android.preciousplastic.activities.HomeActivity;
@@ -13,7 +13,6 @@ import com.example.android.preciousplastic.activities.MapActivity;
 import com.example.android.preciousplastic.activities.WorkspacesActivity;
 import com.example.android.preciousplastic.db.DBConstants;
 import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,8 +40,8 @@ public class PPSession {
     private static WorkspaceAdaptor workspaceAdaptor;
     private static WorkspacesActivity workspacesActivity;
 
-    private static Fragment currentFragment;
-    private static Class<? extends Fragment> currentFragmentClass;
+    private static BaseFragment currentFragment;
+    private static Class<? extends BaseFragment> currentFragmentClass;
 
     private static MainActivity mainActivity;
 
@@ -109,15 +108,15 @@ public class PPSession {
 
     }
 
-    public static Class<? extends Fragment> getCurrentFragmentClass() {
+    public static Class<? extends BaseFragment> getCurrentFragmentClass() {
         return currentFragmentClass;
     }
 
-    public static Fragment getCurrentFragment() {
+    public static BaseFragment getCurrentFragment() {
         return currentFragment;
     }
 
-    public static void setCurrentFragment(Fragment currentFragment) {
+    public static void setCurrentFragment(BaseFragment currentFragment) {
         PPSession.currentFragment = currentFragment;
         PPSession.currentFragmentClass = currentFragment.getClass();
     }

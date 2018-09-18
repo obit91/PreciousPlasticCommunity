@@ -37,7 +37,7 @@ import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull
  * Use the {@link FragmentEditMyWorkspace#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentEditMyWorkspace extends Fragment implements View.OnClickListener
+public class FragmentEditMyWorkspace extends BaseFragment implements View.OnClickListener
 {
 
     private final String TAG = "FragmentMWOwner";
@@ -164,6 +164,11 @@ public class FragmentEditMyWorkspace extends Fragment implements View.OnClickLis
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**

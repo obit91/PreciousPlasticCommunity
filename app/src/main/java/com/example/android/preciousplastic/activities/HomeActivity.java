@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.fragments.BaseFragment;
 import com.example.android.preciousplastic.fragments.FragmentEditMyWorkspace;
 import com.example.android.preciousplastic.fragments.FragmentPerformTrade;
 import com.example.android.preciousplastic.imgur.ImgurConstants;
@@ -33,7 +34,7 @@ import com.example.android.preciousplastic.fragments.FragmentProfile;
 import com.example.android.preciousplastic.fragments.FragmentSettings;
 import com.example.android.preciousplastic.fragments.FragmentTest;
 import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
-import com.example.android.preciousplastic.fragments.WorkspaceAdaptor;
+import com.example.android.preciousplastic.adaptors.WorkspaceAdaptor;
 import com.example.android.preciousplastic.fragments.FragmentBazaar;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.auth.FirebaseAuth;
@@ -112,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (currentFragmentClass != null && currentFragmentClass != FragmentHome.class
                 && savedInstanceState != null) {
             Serializable activeFragment = savedInstanceState.getSerializable("activeFragment");
-            Fragment fragment = (Fragment)activeFragment;
+            BaseFragment fragment = (BaseFragment) activeFragment;
             goToFragment(fragment.getClass());
         }
     }
@@ -126,8 +127,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * Handles a specific fragment's back press.
+     */
+    private boolean checkFragmentBackPressed() {
+        final BaseFragment currentFragment = PPSession.getCurrentFragment();
+        return currentFragment.onBackPressed();
+    }
+
     @Override
     public void onBackPressed() {
+
+        boolean backPressHandled = checkFragmentBackPressed();
+        if (backPressHandled) {
+            return;
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -231,7 +246,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      *
      * @param fragmentClass type of fragment to use.
      */
-    private void goToFragment(final Class<? extends Fragment> fragmentClass) {
+    private void goToFragment(final Class<? extends BaseFragment> fragmentClass) {
 
         if (fragmentClass == PPSession.getCurrentFragmentClass()) {
             String msg = "Useless user is useless! <%s>";
@@ -246,10 +261,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      * Implements a fragment switch.
      * @param fragmentClass fragment to switch to.
      */
-    private void performFragmentSwitch(Class<? extends Fragment> fragmentClass) {
+    private void performFragmentSwitch(Class<? extends BaseFragment> fragmentClass) {
         try {
             // retrieve details of given fragment class.
-            Fragment fragment = fragmentClass.newInstance();
+            BaseFragment fragment = fragmentClass.newInstance();
             String fragmentName = fragmentClass.getSimpleName();
 
             // update current fragment.
@@ -272,7 +287,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      * External method to switch fragments from fragments.
      * @param fragmentClass fragment to switch to.
      */
-    public void switchFragment(final Class<? extends Fragment> fragmentClass) {
+    public void switchFragment(final Class<? extends BaseFragment> fragmentClass) {
         goToFragment(fragmentClass);
     }
 

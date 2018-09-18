@@ -41,7 +41,7 @@ public class ImgurAsyncPostImage extends ImgurAsyncGenericTask<ImgurData> {
         if (delete) {
             Log.d(TAG, "PostBackground: deleted temp image file.");
         } else {
-            Log.e(TAG, "PostBackground: failed to delete temp image file.");
+            Log.e(TAG, "PostBackground: failed to deleteButton temp image file.");
         }
     }
 }

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.utils.PPSession;
 
-public class FragmentHome extends Fragment
+public class FragmentHome extends BaseFragment
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -103,6 +103,11 @@ public class FragmentHome extends Fragment
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**

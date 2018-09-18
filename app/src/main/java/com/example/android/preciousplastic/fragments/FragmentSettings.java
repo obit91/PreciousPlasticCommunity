@@ -12,7 +12,7 @@ import android.widget.Switch;
 
 import com.example.android.preciousplastic.R;
 
-public class FragmentSettings extends Fragment {
+public class FragmentSettings extends BaseFragment {
     private Switch themeSwitch = null;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -101,6 +101,11 @@ public class FragmentSettings extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**

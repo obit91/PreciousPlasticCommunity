@@ -21,7 +21,7 @@ import com.example.android.preciousplastic.utils.PPSession;
  * Use the {@link FragmentMyWorkspaceNonOwner#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMyWorkspaceNonOwner extends Fragment implements View.OnClickListener
+public class FragmentMyWorkspaceNonOwner extends BaseFragment implements View.OnClickListener
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -114,6 +114,11 @@ public class FragmentMyWorkspaceNonOwner extends Fragment implements View.OnClic
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**

@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
-import com.example.android.preciousplastic.imgur.ImgurRecyclerAdaptor;
+import com.example.android.preciousplastic.adaptors.ImgurRecyclerAdaptor;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
+import com.example.android.preciousplastic.adaptors.ImgurRecyclerAdaptor.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.List;
  * Use the {@link FragmentBazaar#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentBazaar extends Fragment
+public class FragmentBazaar extends BaseFragment
 {
     private static final String TAG = "FRAGMENT_BAZAR";
 
@@ -47,10 +49,12 @@ public class FragmentBazaar extends Fragment
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private ImgurRecyclerAdaptor mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private View mButton;
     private List<ImgurBazarItem> mImages = new ArrayList<>();
+
+    private List<ViewHolder> mLongClickedItems = new ArrayList<>();
 
     public FragmentBazaar()
     {
@@ -146,6 +150,29 @@ public class FragmentBazaar extends Fragment
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new ImgurRecyclerAdaptor(getContext(), mImages);
         mRecyclerView.setAdapter(mAdapter);
+
+        initAdapterListeners();
+    }
+
+    private void initAdapterListeners() {
+        mAdapter.setOnItemClickListener(new ImgurRecyclerAdaptor.ClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Log.d("short click", "onItemClick position: " + position);
+            }
+
+            @Override
+            public void onItemLongClick(int position, View v) {
+                Log.d("long click", "onItemLongClick pos = " + position);
+                final ViewHolder itemViewHolder = (ViewHolder)mRecyclerView.findViewHolderForAdapterPosition(position);
+                mLongClickedItems.add(itemViewHolder);
+            }
+
+            @Override
+            public void removedItem(ViewHolder viewHolderRemoved) {
+                mLongClickedItems.remove(viewHolderRemoved);
+            }
+        });
     }
 
     /**
@@ -193,14 +220,30 @@ public class FragmentBazaar extends Fragment
         child.addListenerForSingleValueEvent(itemsListener);
     }
 
+    /**
+     * Builds the recycler view from scratch.
+     * @param items a list of imgur items.
+     */
     private void updateItems(List<ImgurBazarItem> items) {
-//        String msg;
-//        for (ImgurBazarItem imgurBazarItem : items) {
-//            msg = "Retrieved: " + imgurBazarItem.getDatetime();
-//            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-//        }
         mImages.removeAll(mImages);
         mImages.addAll(items);
         mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Pressing the back button when an item has been long-clicked will result in returning it to it's natural state.
+     * Otherwise - we return to the home screen.
+     * @return true if we have overridden the back press.
+     */
+    @Override
+    public boolean onBackPressed() {
+        if (mLongClickedItems.size() == 0) {
+            return false;
+        }
+        for (ViewHolder itemViewHolder : mLongClickedItems) {
+            itemViewHolder.setOptionsVisible(false);
+        }
+        mLongClickedItems.clear();
+        return true;
     }
 }

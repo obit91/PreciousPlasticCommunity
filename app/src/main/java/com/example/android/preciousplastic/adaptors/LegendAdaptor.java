@@ -1,4 +1,4 @@
-package com.example.android.preciousplastic.fragments;
+package com.example.android.preciousplastic.adaptors;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

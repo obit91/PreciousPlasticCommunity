@@ -26,7 +26,7 @@ public class ImgurRequestsGenerator {
      *
      * @param delegate caller context.
      * @param imgurBazarItem item we wish to remove.
-     * @return an async delete request.
+     * @return an async deleteButton request.
      */
     public static ImgurAsyncGenericTask generateDEL(ImgurAccessResponse delegate,
                                                     ImgurBazarItem imgurBazarItem) {

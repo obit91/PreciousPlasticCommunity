@@ -36,7 +36,7 @@ import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull
  * Use the {@link FragmentPerformTrade#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentPerformTrade extends Fragment implements View.OnClickListener
+public class FragmentPerformTrade extends BaseFragment implements View.OnClickListener
 {
     private final String TAG = "FragmentMWOwner";
 
@@ -189,6 +189,11 @@ public class FragmentPerformTrade extends Fragment implements View.OnClickListen
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**

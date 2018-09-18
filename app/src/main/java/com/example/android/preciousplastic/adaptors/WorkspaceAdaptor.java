@@ -1,12 +1,8 @@
-package com.example.android.preciousplastic.fragments;
+package com.example.android.preciousplastic.adaptors;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,13 +18,7 @@ import com.example.android.preciousplastic.utils.PPSession;
 import com.google.gson.internal.LinkedTreeMap;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class WorkspaceAdaptor extends RecyclerView.Adapter<WorkspaceAdaptor.WorkspaceViewHolder> {
 

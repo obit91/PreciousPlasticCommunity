@@ -17,7 +17,7 @@ import com.example.android.preciousplastic.utils.PPSession;
 
 import org.w3c.dom.Text;
 
-public class FragmentCompleteTrade extends Fragment implements View.OnClickListener {
+public class FragmentCompleteTrade extends BaseFragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -137,6 +137,11 @@ public class FragmentCompleteTrade extends Fragment implements View.OnClickListe
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     /**
