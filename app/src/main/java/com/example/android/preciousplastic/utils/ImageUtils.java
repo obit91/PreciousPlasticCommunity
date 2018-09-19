@@ -88,9 +88,10 @@ public class ImageUtils {
     }
 
     public static File bitmapToFile(Bitmap bitmap, File outputFile) {
+        int compressRatio = 25;
         //convert bitmap to byte array
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compressRatio, baos);
 
         //write the bytes in file
         FileOutputStream fos;
