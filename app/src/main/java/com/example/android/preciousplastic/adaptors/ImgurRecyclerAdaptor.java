@@ -79,6 +79,8 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
 
         private static final String TAG = "RECYCLER_VIEW_HOLDER";
 
+        boolean optionsVisible;
+
         TextView text;
         ImageView image;
         Button deleteButton;
@@ -120,6 +122,8 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
 
             shareButton.setClickable(visible);
             shareButton.setVisibility(visibility);
+
+            optionsVisible = visible;
         }
 
         /**
@@ -159,8 +163,13 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             alert.show();
         }
 
+        /**
+         * Shares an item from bazar to whatsapp.
+         * @param position item to share.
+         */
         private void shareItem(final int position) {
             clickListener.longClickComplete(this);
+            setOptionsVisible(false);
 
             final ImgurBazarItem imgurBazarItem = mDataSource.get(position);
             final String whatsAppPackage = "com.whatsapp";
@@ -227,6 +236,12 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
                 case R.id.bazar_ri_share:
                     shareItem(getAdapterPosition());
                     break;
+                default:
+                    if (optionsVisible) {
+                        setOptionsVisible(false);
+                    }
+                    break;
+
             }
         }
 
@@ -234,7 +249,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
         public boolean onLongClick(View v) {
             clickListener.onItemLongClick(getAdapterPosition(), v);
             setOptionsVisible(true);
-            return false;
+            return true;
         }
     }
 
