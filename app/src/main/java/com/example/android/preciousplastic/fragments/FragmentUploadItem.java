@@ -35,6 +35,7 @@ import com.example.android.preciousplastic.imgur.ImgurAsyncGenericTask;
 import com.example.android.preciousplastic.imgur.ImgurData;
 import com.example.android.preciousplastic.imgur.ImgurRequestsGenerator;
 import com.example.android.preciousplastic.imgur.UploadTask;
+import com.example.android.preciousplastic.utils.ImageUtils;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.example.android.preciousplastic.utils.ViewTools;
 
@@ -314,36 +315,6 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
     }
 
     /**
-     * Creates a temp file for the upload.
-     * @param chosenImage image to write to file.
-     * @return the created temp file.
-     */
-    private File generateTempFile(Bitmap chosenImage) {
-        // create a new file
-        File imageFile = new File(getContext().getCacheDir(), generateFileName());
-
-        //convert bitmap to byte array
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        chosenImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
-        //write the bytes in file
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(imageFile);
-            fos.write(baos.toByteArray());
-            fos.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "generateTempFile: failed to create a temp file for gallery image.");
-            return null;
-        } catch (IOException e) {
-            Log.e(TAG, "generateTempFile: failed to write image to temp file.");
-            return null;
-        }
-        return imageFile;
-    }
-
-    /**
      * Uploads an image selected from the gallery.
      * @param data result returned from the camera intent.
      */
@@ -369,7 +340,7 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
         mUploadQueue.add(chosenImage);
 
         final ImgurAsyncGenericTask imgurAsyncGenericTask = ImgurRequestsGenerator.generatePOST(this,
-                generateTempFile(chosenImage), mTitle.getText().toString(), mDescription.getText().toString());
+                ImageUtils.generateTempFile(getContext(), chosenImage), mTitle.getText().toString(), mDescription.getText().toString());
         imgurAsyncGenericTask.execute();
     }
 
@@ -418,7 +389,7 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
      */
     private File createImageFile() throws IOException {
         // Create an image file name
-        String imageFileName = generateFileName();
+        String imageFileName = ImageUtils.generateFileName();
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -429,16 +400,6 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
-    }
-
-    /**
-     * Generates a time-stamp based file name.
-     * @return
-     */
-    @NonNull
-    private String generateFileName() {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return "JPEG_" + timeStamp + "_";
     }
 
     /**

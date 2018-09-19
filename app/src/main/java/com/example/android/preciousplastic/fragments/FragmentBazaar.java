@@ -169,7 +169,7 @@ public class FragmentBazaar extends BaseFragment
             }
 
             @Override
-            public void removedItem(ViewHolder viewHolderRemoved) {
+            public void longClickComplete(ViewHolder viewHolderRemoved) {
                 mLongClickedItems.remove(viewHolderRemoved);
             }
         });

@@ -16,7 +16,7 @@
 
         <ImageView
             android:id="@+id/bazar_ri_img"
-            android:layout_width="229dp"
+            android:layout_width="172dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"

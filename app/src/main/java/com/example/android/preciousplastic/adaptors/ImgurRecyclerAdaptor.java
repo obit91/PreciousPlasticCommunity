@@ -2,9 +2,16 @@ package com.example.android.preciousplastic.adaptors;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-        import android.view.LayoutInflater;
+import android.util.Log;
+import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,16 +20,18 @@ import android.widget.ImageView;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.fragments.BaseFragment;
-import com.example.android.preciousplastic.imgur.ImgurAccessResponse;
-import com.example.android.preciousplastic.imgur.ImgurAsyncGenericTask;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
-import com.example.android.preciousplastic.imgur.ImgurRequestsGenerator;
+import com.example.android.preciousplastic.utils.External;
+import com.example.android.preciousplastic.utils.ImageUtils;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.squareup.picasso.Picasso;
 
-        import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import static com.example.android.preciousplastic.utils.ImageUtils.bitmapToFile;
+import static com.example.android.preciousplastic.utils.ImageUtils.generateFileName;
 
 /**
  * Created by obit91 on 5/22/2018.
@@ -57,11 +66,19 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.text.setText(mDataSource.get(position).getTitle());
-        Picasso.with(mContext).load(mDataSource.get(position).getLink()).resize(120, 60).into(holder.image);
+        Picasso
+            .with(mContext)
+            .load(mDataSource.get(position).getLink())
+            .fit()
+            .centerCrop()
+            .into(holder.image);
 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+
+        private static final String TAG = "RECYCLER_VIEW_HOLDER";
+
         TextView text;
         ImageView image;
         Button deleteButton;
@@ -110,7 +127,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
          * @param position item to remove.
          */
         private void performItemRemoval(int position) {
-            clickListener.removedItem(this);
+            clickListener.longClickComplete(this);
             ImgurBazarItem bazarItem = mDataSource.get(position);
             mDataSource.remove(position);
             ImgurRecyclerAdaptor.this.notifyDataSetChanged();
@@ -142,8 +159,62 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             alert.show();
         }
 
-        private void shareItem(View v) {
+        private void shareItem(final int position) {
+            clickListener.longClickComplete(this);
 
+            final ImgurBazarItem imgurBazarItem = mDataSource.get(position);
+            final String whatsAppPackage = "com.whatsapp";
+
+            External.isPackageInstalled(whatsAppPackage, mContext.getPackageManager());
+
+            Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+            whatsappIntent.setType("text/plain");
+            whatsappIntent.setPackage(whatsAppPackage);
+
+            StringBuilder whatsAppShareData = new StringBuilder();
+            whatsAppShareData.append("Hey, I'm selling a recycled item via Precious-Plastic! come check it out @ https://preciousplastic.com/").append("\n\n");
+            whatsAppShareData.append("Title: ").append(imgurBazarItem.getTitle()).append("\n");
+            whatsAppShareData.append("Description: ").append(imgurBazarItem.getDescription()).append("\n");
+            whatsAppShareData.append("Seller: ").append(PPSession.getCurrentUser().getNickname());
+
+            // generate URI for the imageView.
+            Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+            File storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File tempImageFile = null;
+            try {
+                tempImageFile = File.createTempFile(
+                        generateFileName(),  /* prefix */
+                        ".jpg",         /* suffix */
+                        storageDir      /* directory */
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            tempImageFile.deleteOnExit();
+            bitmapToFile(bitmap, tempImageFile);
+            Uri photoURI = FileProvider.getUriForFile(
+                    mContext,
+                    "com.example.android.preciousplastic",
+                    tempImageFile);
+
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+
+            //Target whatsapp:
+            shareIntent.setPackage(whatsAppPackage);
+
+            //Add text and then Image URI
+            shareIntent.putExtra(Intent.EXTRA_TEXT, whatsAppShareData.toString());
+            shareIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
+            shareIntent.setType("image/jpeg");
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            try {
+                mContext.startActivity(shareIntent);
+            } catch (android.content.ActivityNotFoundException ex) {
+                Log.e(TAG, "An error has occurred during whatsapp share");
+            }
         }
 
         @Override
@@ -154,7 +225,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
                     verifyItemRemoval(getAdapterPosition());
                     break;
                 case R.id.bazar_ri_share:
-                    shareItem(v);
+                    shareItem(getAdapterPosition());
                     break;
             }
         }
@@ -170,7 +241,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
     public interface ClickListener {
         void onItemClick(int position, View v);
         void onItemLongClick(int position, View v);
-        void removedItem(ViewHolder viewHolderRemoved);
+        void longClickComplete(ViewHolder viewHolderRemoved);
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {

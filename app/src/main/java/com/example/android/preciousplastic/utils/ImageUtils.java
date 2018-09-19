@@ -1,16 +1,21 @@
 package com.example.android.preciousplastic.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class ImageCompressor {
+public class ImageUtils {
 
     private static final String TAG = "IMAGE_COMPRESSOR";
 
@@ -67,5 +72,50 @@ public class ImageCompressor {
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+
+    /**
+     * Creates a temp file from a bitmap.
+     * @param chosenImage image to write to file.
+     * @return the created temp file.
+     */
+    public static File generateTempFile(Context context, Bitmap chosenImage) {
+        // create a new file
+        File imageFile = new File(context.getCacheDir(), generateFileName());
+        imageFile.deleteOnExit();
+        bitmapToFile(chosenImage, imageFile);
+        return imageFile;
+    }
+
+    public static File bitmapToFile(Bitmap bitmap, File outputFile) {
+        //convert bitmap to byte array
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        //write the bytes in file
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(outputFile);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "generateTempFile: failed to create a temp file for gallery image.");
+            return null;
+        } catch (IOException e) {
+            Log.e(TAG, "generateTempFile: failed to write image to temp file.");
+            return null;
+        }
+        return outputFile;
+    }
+
+    /**
+     * Generates a time-stamp based file name.
+     * @return
+     */
+    @NonNull
+    public static String generateFileName() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return "JPEG_" + timeStamp + "_";
     }
 }
