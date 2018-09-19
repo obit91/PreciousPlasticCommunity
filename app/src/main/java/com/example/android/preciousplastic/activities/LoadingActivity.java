@@ -1,5 +1,7 @@
 package com.example.android.preciousplastic.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +15,10 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.Workspace;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.example.android.preciousplastic.fragments.FragmentCompleteTrade;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
+import com.example.android.preciousplastic.utils.EventNotifier;
+import com.example.android.preciousplastic.utils.OnBackPressed;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.example.android.preciousplastic.utils.Transitions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -164,14 +169,39 @@ public class LoadingActivity extends AppCompatActivity {
      * Switches activity to the home intent (upon login).
      */
     private void loggedIn(String nickname) {
-        userRepo.updateLastLogin(nickname);
-        Intent homeIntent = new Intent(this, HomeActivity.class);
-        try {
-            Thread.sleep(TRANSITION_TIME);
-        } catch (InterruptedException e) {
-            Log.d(TAG, "LoggedIn: failed to sleep, someone's rushing.");
+        LoginNotifier loginNotifier = new LoginNotifier(getApplicationContext());
+        userRepo.updateLastLogin(nickname, loginNotifier);
+    }
+
+    /**
+     * On successful trade switch to success screen, else show a failure message.
+     */
+    private class LoginNotifier extends EventNotifier {
+
+        private Context delegate;
+
+        public LoginNotifier(Context delegate) {
+            this.delegate = delegate;
         }
-        startActivity(homeIntent);
+
+        @Override
+        public void onResponse(Object dataSnapshotObj){
+            boolean success = (boolean)dataSnapshotObj;
+            if (success) {
+                Intent homeIntent = new Intent(delegate, HomeActivity.class);
+                try {
+                    Thread.sleep(TRANSITION_TIME);
+                } catch (InterruptedException e) {
+                    Log.d(TAG, "LoggedIn: failed to sleep, someone's rushing.");
+                }
+                startActivity(homeIntent);
+            } else {
+                Toast.makeText(delegate, "Nickname does not exist.", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(delegate, WelcomeActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                delegate.startActivity(i);
+            }
+        }
     }
 
     /**

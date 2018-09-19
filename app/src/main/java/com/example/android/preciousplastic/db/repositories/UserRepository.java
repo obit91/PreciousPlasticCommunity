@@ -34,16 +34,30 @@ public class UserRepository {
      * Updates the last login of the user.
      * @param nickname user that logged in.
      */
-    public void updateLastLogin(String nickname) {
-        PPSession.getUsersTable().child(nickname).child("lastLogin").setValue(System.nanoTime(), new DatabaseReference.CompletionListener() {
-            public void onComplete(DatabaseError error, DatabaseReference ref) {
-                if (error == null) {
-                    Log.i(TAG, "updateLastLogin: " + System.nanoTime());
-                } else {
-                    Log.e(TAG, "updateLastLogin: " + error.getMessage());
+    public void updateLastLogin(final String nickname, final EventNotifier eventNotifier) {
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user == null) {
+                    Log.w(TAG, String.format("updateLastLogin:onDataChange: user doesn't exist <%s>", nickname));
+                    eventNotifier.onResponse(false);
+                    return;
                 }
+                user.updateLogin();
+                user.commitChanges();
+                Log.d(TAG, String.format("updateLastLogin:onDataChange: last login updated <%s>", nickname));
+                eventNotifier.onResponse(true);
             }
-        });
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting User failed, log a message
+                Log.e(TAG, "updateLastLogin:onFirebaseCancelled", databaseError.toException());
+                eventNotifier.onError(databaseError.getMessage());
+            }
+        };
+        PPSession.getUsersTable().child(nickname).addListenerForSingleValueEvent(userListener);
     }
 
     /**

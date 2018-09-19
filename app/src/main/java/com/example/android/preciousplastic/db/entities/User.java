@@ -248,4 +248,8 @@ public class User {
         UserRepository userRepository = new UserRepository(PPSession.getContainerContext());
         userRepository.updateUser(this, null);
     }
+
+    public void updateLogin() {
+        this.lastLogin = System.nanoTime();
+    }
 }
