@@ -38,6 +38,7 @@ public class Transitions {
         for (String arg : args.keySet()) {
             i.putExtra(arg, args.get(arg));
         }
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         caller.startActivity(i);
     }
 

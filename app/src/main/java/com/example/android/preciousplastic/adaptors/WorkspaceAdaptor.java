@@ -84,6 +84,7 @@ public class WorkspaceAdaptor extends RecyclerView.Adapter<WorkspaceAdaptor.Work
                 if (!website.equals("")) {
                     try {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                        browserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         PPSession.getContainerContext().startActivity(browserIntent);
                     } catch (Exception e) {
                         Log.e("Website OnClick error", e.toString());
