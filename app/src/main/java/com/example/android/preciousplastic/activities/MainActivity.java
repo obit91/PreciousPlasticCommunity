@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.example.android.preciousplastic.connection.ConnectivityMonitor.isOnline;
 import static com.example.android.preciousplastic.utils.PPGUIManager.updateGUI;
 import static com.example.android.preciousplastic.utils.PPSession.setMainActivity;
 
