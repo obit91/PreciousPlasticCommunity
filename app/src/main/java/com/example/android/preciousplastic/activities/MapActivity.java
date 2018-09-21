@@ -592,6 +592,7 @@ public class MapActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     try {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                        browserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(browserIntent);
                     } catch (Exception e) {
                         Log.e("Website OnClick error", e.toString());

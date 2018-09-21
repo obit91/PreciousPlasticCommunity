@@ -42,10 +42,10 @@
                 android:id="@+id/drawer_my_workspace"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="My Workspace" />
-            <item
+            <!--item
                 android:id="@+id/drawer_edit_my_workspace"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="Edit My Workspace" />
+                android:title="Edit My Workspace" /-->
             <item
                 android:id="@+id/drawer_trade"
                 android:icon="@drawable/ic_menu_manage"

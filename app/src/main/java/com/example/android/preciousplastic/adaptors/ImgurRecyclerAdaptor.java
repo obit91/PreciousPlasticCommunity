@@ -220,6 +220,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             try {
+                shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(shareIntent);
             } catch (android.content.ActivityNotFoundException ex) {
                 Log.e(TAG, "An error has occurred during whatsapp share");

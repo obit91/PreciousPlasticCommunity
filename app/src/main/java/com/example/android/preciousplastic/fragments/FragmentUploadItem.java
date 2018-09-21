@@ -233,6 +233,7 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivityForResult(intent, REQUEST_PICK_IMAGE);
     }
 
@@ -309,6 +310,7 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
                         "com.example.android.preciousplastic",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                takePictureIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }

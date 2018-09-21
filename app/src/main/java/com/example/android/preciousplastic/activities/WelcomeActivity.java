@@ -109,6 +109,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
      */
     public void onRegisterClick(View view) {
         Intent i = new Intent(this, RegisterActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
     }
 

@@ -194,6 +194,7 @@ public class LoadingActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     Log.d(TAG, "LoggedIn: failed to sleep, someone's rushing.");
                 }
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
             } else {
                 Toast.makeText(delegate, "Nickname does not exist.", Toast.LENGTH_SHORT).show();

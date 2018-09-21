@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.android.preciousplastic.connection.ConnectivityMonitor;
+import com.example.android.preciousplastic.connection.OnTaskCompleted;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 
 import com.example.android.preciousplastic.R;
@@ -86,9 +89,11 @@ public class MainActivity extends AppCompatActivity {
             TransitionTypes type = TransitionTypes.AUTO_SIGN_IN;
             Intent loadingActivity = new Intent(this, LoadingActivity.class);
             loadingActivity.putExtra(Transitions.TRANSITION_TYPE, type);
+            loadingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(loadingActivity);
         } else {
             Intent welcomeActivity = new Intent(this, WelcomeActivity.class);
+            welcomeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(welcomeActivity);
         }
     }

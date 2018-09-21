@@ -1,5 +1,6 @@
 package com.example.android.preciousplastic.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.android.preciousplastic.connection.ConnectivityMonitor;
+import com.example.android.preciousplastic.connection.OnTaskCompleted;
 import com.example.android.preciousplastic.fragments.BaseFragment;
 import com.example.android.preciousplastic.fragments.FragmentEditMyWorkspace;
 import com.example.android.preciousplastic.fragments.FragmentPerformTrade;
@@ -45,7 +49,7 @@ import java.io.Serializable;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnTaskCompleted {
 
     private static final String TAG = "HOME_ACTIVITY";
 
@@ -57,6 +61,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
+
+
+        // check for active connection
+        ConnectivityMonitor connectivityMonitor = new ConnectivityMonitor(this);
+        connectivityMonitor.execute();
 
         // updating container context
         PPSession.setContainerContext(this);
@@ -77,11 +86,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Set edit workspace item un-clickable
+        // Set owner buttons unclickable for non-owners.
         final Menu menu = navigationView.getMenu();
-        final MenuItem emwIcon = menu.findItem(R.id.drawer_edit_my_workspace);
-        emwIcon.setVisible(PPSession.getCurrentUser().isOwner());
         final MenuItem tradeIcon = menu.findItem(R.id.drawer_trade);
+        tradeIcon.setVisible(PPSession.getCurrentUser().isOwner());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -197,9 +205,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_workspaces:
                 goToFragment(FragmentWorkspaces.class);
                 break;
-            case R.id.drawer_edit_my_workspace:
+            /*case R.id.drawer_edit_my_workspace:
                 goToFragment(FragmentEditMyWorkspace.class);
-                break;
+                break;*/
             case R.id.drawer_trade:
                 goToFragment(FragmentPerformTrade.class);
                 break;
@@ -225,6 +233,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.drawer_to_website:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PRECIOUS_PLASTIC_URL));
+                browserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(browserIntent);
                 break;
             case R.id.drawer_about_us:
@@ -289,6 +298,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      */
     public void switchFragment(final Class<? extends BaseFragment> fragmentClass) {
         goToFragment(fragmentClass);
+    }
+
+    @Override
+    public void onTaskCompleted(Object result) {
+        boolean connectivity = (boolean) result;
+        if (!connectivity) {
+            alertNoConnection();
+        }
+    }
+
+    private void alertNoConnection() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage("There is no active connection.");
+//            builder.setIcon(R.drawable.ic_launcher);
+        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }
