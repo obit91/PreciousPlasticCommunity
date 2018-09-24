@@ -3,12 +3,9 @@ package com.example.android.preciousplastic.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.android.preciousplastic.connection.ConnectivityMonitor;
-import com.example.android.preciousplastic.connection.OnTaskCompleted;
+import com.example.android.preciousplastic.services.ConnectivityMonitorService;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 
 import com.example.android.preciousplastic.R;
@@ -27,7 +24,7 @@ import static com.example.android.preciousplastic.utils.PPGUIManager.updateGUI;
 import static com.example.android.preciousplastic.utils.PPSession.setMainActivity;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MAIN_ACTIVITY";
 
@@ -38,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent connectivityMonitor = new Intent(this, ConnectivityMonitorService.class);
+
 
         // init firebase
         FirebaseApp.initializeApp(this);

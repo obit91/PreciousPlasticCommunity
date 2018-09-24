@@ -60,7 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends BaseActivity {
 
 
     private Context context;

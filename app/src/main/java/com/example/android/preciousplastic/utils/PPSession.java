@@ -1,8 +1,11 @@
 package com.example.android.preciousplastic.utils;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.android.preciousplastic.activities.BaseActivity;
 import com.example.android.preciousplastic.adaptors.WorkspaceAdaptor;
 import com.example.android.preciousplastic.fragments.BaseFragment;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
@@ -23,6 +26,8 @@ public class PPSession {
 
     private static final String TAG = "PPSession";
 
+    public static final String currentIntentKey = "activeIntentKey";
+
     private static User mUser;
     private static FirebaseAuth mAuth;
 
@@ -32,11 +37,11 @@ public class PPSession {
 
     private static Retrofit mRetrofit;
 
+    private static BaseActivity mCurrentActivity;
+
     private static Context containerContext;
     private static HomeActivity homeActivity;
-
     private static MapActivity mapActivity;
-
     private static WorkspaceAdaptor workspaceAdaptor;
     private static WorkspacesActivity workspacesActivity;
 
@@ -180,4 +185,13 @@ public class PPSession {
     public static void setRetrofit(Retrofit mRetrofit) {
         PPSession.mRetrofit = mRetrofit;
     }
+
+    public static BaseActivity getCurrentActivity() {
+        return mCurrentActivity;
+    }
+
+    public static void setCurrentActivity(BaseActivity mCurrentActivity) {
+        PPSession.mCurrentActivity = mCurrentActivity;
+    }
+
 }

@@ -20,32 +20,35 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
+        <service
+            android:name=".services.ConnectivityMonitorService"
+            android:exported="false"/>
+
         <activity
             android:name=".activities.MainActivity"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".activities.WelcomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.WelcomeActivity"/>
         <activity
-            android:name=".activities.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.HomeActivity"/>
         <activity
-            android:name=".activities.MapActivity"
-            android:windowSoftInputMode="stateAlwaysVisible" />
+            android:name=".activities.MapActivity"/>
         <activity
             android:name=".activities.LoadingActivity"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:noHistory="true"/>
         <activity
             android:name=".activities.RegisterActivity"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:noHistory="true"/>
+        <activity
+            android:name=".activities.NoConnectionActivity"
+            android:noHistory="true"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

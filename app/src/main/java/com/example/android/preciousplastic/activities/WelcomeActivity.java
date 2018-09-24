@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.services.ConnectivityMonitorService;
 import com.example.android.preciousplastic.utils.Transitions;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 import com.example.android.preciousplastic.utils.ViewTools;
@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class WelcomeActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "WELCOME_ACTIVITY";
 
@@ -31,6 +31,11 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initiates the connectivity monitor service
+        Intent monitorConnectivityIntent = new Intent(this, ConnectivityMonitorService.class);
+        startService(monitorConnectivityIntent);
+
         setContentView(R.layout.lo_welcome);
 
         // setting listeners
@@ -48,7 +53,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     public void onStart() {
         super.onStart();
         active = true;
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
@@ -58,13 +62,40 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         active = false;
     }
 
-    public static boolean isActive() {
-        return active;
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        if (!ViewTools.isTextViewNull(emailTextView)) {
+            savedInstanceState.putString("mail", emailTextView.getText().toString());
+        }
+
+        if (!ViewTools.isTextViewNull(passwordTextView)) {
+            savedInstanceState.putString("pass", passwordTextView.getText().toString());
+        }
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String mail = savedInstanceState.getString("mail");
+        String pass = savedInstanceState.getString("pass");
+        if (mail != null) {
+            emailTextView.setText(mail);
+        }
+        if (pass != null) {
+            passwordTextView.setText(pass);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "lol no turning back", Toast.LENGTH_SHORT).show();
+        // minimizes activity on back press
+        moveTaskToBack(true);
+    }
+
+    public static boolean isActive() {
+        return active;
     }
 
     public void onSignInClick(View view) {

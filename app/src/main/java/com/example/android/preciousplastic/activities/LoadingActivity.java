@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class LoadingActivity extends AppCompatActivity {
+public class LoadingActivity extends BaseActivity {
 
     private final int MAX_NUM_OF_LOADING_IMAGES = 4;
     private final int MAX_NUM_OF_QUOTES = 5;

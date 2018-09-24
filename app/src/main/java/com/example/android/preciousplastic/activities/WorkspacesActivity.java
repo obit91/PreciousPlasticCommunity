@@ -16,7 +16,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class WorkspacesActivity {
+public class WorkspacesActivity extends BaseActivity{
 
     private int radius = 4000;
     public boolean initialized = false;

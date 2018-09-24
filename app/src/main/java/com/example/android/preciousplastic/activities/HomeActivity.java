@@ -1,6 +1,5 @@
 package com.example.android.preciousplastic.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -11,8 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.android.preciousplastic.connection.ConnectivityMonitor;
-import com.example.android.preciousplastic.connection.OnTaskCompleted;
 import com.example.android.preciousplastic.fragments.BaseFragment;
-import com.example.android.preciousplastic.fragments.FragmentEditMyWorkspace;
 import com.example.android.preciousplastic.fragments.FragmentPerformTrade;
 import com.example.android.preciousplastic.imgur.ImgurConstants;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
@@ -49,7 +43,7 @@ import java.io.Serializable;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnTaskCompleted {
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "HOME_ACTIVITY";
 
@@ -61,11 +55,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
-
-
-        // check for active connection
-        ConnectivityMonitor connectivityMonitor = new ConnectivityMonitor(this);
-        connectivityMonitor.execute();
 
         // updating container context
         PPSession.setContainerContext(this);
@@ -156,7 +145,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (PPSession.getCurrentFragmentClass() == FragmentHome.class) {
-                Toast.makeText(this, "lol no turning back", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "lol no turning back", Toast.LENGTH_SHORT).show();
+                // minimizes app
+                moveTaskToBack(true);
             } else {
                 goToFragment(FragmentHome.class);
             }
@@ -299,29 +290,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void switchFragment(final Class<? extends BaseFragment> fragmentClass) {
         goToFragment(fragmentClass);
     }
-
-    @Override
-    public void onTaskCompleted(Object result) {
-        boolean connectivity = (boolean) result;
-        if (!connectivity) {
-            alertNoConnection();
-        }
-    }
-
-    private void alertNoConnection() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage("There is no active connection.");
-//            builder.setIcon(R.drawable.ic_launcher);
-        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
 }
 

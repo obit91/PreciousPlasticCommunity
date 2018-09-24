@@ -1,58 +1,73 @@
-package com.example.android.preciousplastic.connection;
+package com.example.android.preciousplastic.services;
 
-import android.os.AsyncTask;
+import android.app.IntentService;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
+import com.example.android.preciousplastic.activities.BaseActivity;
+import com.example.android.preciousplastic.utils.PPSession;
 
 import java.io.IOException;
 
-public class ConnectivityMonitor extends AsyncTask<Void, Integer, Boolean> {
+public class ConnectivityMonitorService extends IntentService {
 
-    private final String TAG = "CONNECTIVITY_MONITOR";
+    private static final String TAG = "CONNECTIVITY_MONITOR";
 
-    private OnTaskCompleted listener;
+    public enum OnlineStatus {
+        CONNECTED,
+        DISCONNECTED,
+        DONE
+    }
 
-    public ConnectivityMonitor(OnTaskCompleted listener) {
-        this.listener = listener;
+    public ConnectivityMonitorService() {
+        super("ConnectivityMonitorService");
+    }
+
+    public ConnectivityMonitorService(String name) {
+        super(name);
     }
 
     /**
      * Repeatedly checks whether there's an active connection, until a failure occurs..
-     * @param params
-     * @return false when there is no active connection.
+     * @param workIntent irrelevant, not using any parameters.
      */
     @Override
-    protected Boolean doInBackground(Void... params) {
+    protected void onHandleIntent(Intent workIntent) {
+        int secs = 1;
         while (true) {
             final OnlineStatus onlineStatus = isOnline();
             if(onlineStatus == OnlineStatus.DISCONNECTED) {
-                return false;
+                broadcastFailureToActivity();
+                return;
             } else if (onlineStatus == OnlineStatus.CONNECTED) {
                 try {
-                    // checks connectivity every 2 seconds.
-                    Thread.sleep(2 * 1000);
+                    // checks connectivity every "secs" seconds.
+                    Thread.sleep(secs * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             } else {
                 // means that we're done checking (interrupted).
-                return true;
+                return;
             }
         }
     }
 
     /**
-     * Delegates false when there is a connectivity issue.
-     * @param result a boolean indicating that there is no connectivity.
+     * notifies the current active activity of an internet failure.
      */
-    protected void onPostExecute(Boolean result) {
-        listener.onTaskCompleted(result);
+    private void broadcastFailureToActivity() {
+        Intent intent = new Intent(PPSession.currentIntentKey);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     /**
      * Checks whether there is an online connection by pinging google.
      * @return true if there is a connection, else - false.
      */
-    private OnlineStatus isOnline() {
+    public static OnlineStatus isOnline() {
         Runtime runtime = Runtime.getRuntime();
         try {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
@@ -70,11 +85,5 @@ public class ConnectivityMonitor extends AsyncTask<Void, Integer, Boolean> {
             return OnlineStatus.DONE;
         }
         return OnlineStatus.DISCONNECTED;
-    }
-
-    private enum OnlineStatus {
-        CONNECTED,
-        DISCONNECTED,
-        DONE
     }
 }
