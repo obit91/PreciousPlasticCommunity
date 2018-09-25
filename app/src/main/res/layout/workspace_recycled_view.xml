@@ -19,9 +19,10 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/workspace_name"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/workspace_name"
             android:textColor="@android:color/black"/>
 
         <TextView

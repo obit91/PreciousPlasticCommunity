@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:text="Register"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -74,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:text="Owner"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -85,26 +85,24 @@
 
     <CheckBox
         android:id="@+id/register_checkbox_shredder"
-        android:theme="@style/checkBoxStyleGreenLO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/colorStylishBlackText"
         android:text="Shredder"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/register_switch_btn_owner" />
+        android:textColor="@color/colorStylishBlackText"
+        android:theme="@style/checkBoxStyleGreenLO"
+        app:layout_constraintBaseline_toBaselineOf="@+id/register_checkbox_extrusion"
+        tools:layout_editor_absoluteX="36dp" />
 
     <CheckBox
         android:id="@+id/register_checkbox_injection"
-        android:theme="@style/checkBoxStyleGreenLO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="52dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/colorStylishBlackText"
         android:text="Injection"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        android:textColor="@color/colorStylishBlackText"
+        android:theme="@style/checkBoxStyleGreenLO"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_checkbox_shredder" />
 
     <CheckBox
@@ -121,21 +119,20 @@
 
     <CheckBox
         android:id="@+id/register_checkbox_compression"
-        android:theme="@style/checkBoxStyleGreenLO"
-        android:textColor="@color/colorStylishBlackText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="20dp"
         android:text="Compression"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/register_checkbox_extrusion" />
+        android:textColor="@color/colorStylishBlackText"
+        android:theme="@style/checkBoxStyleGreenLO"
+        app:layout_constraintBaseline_toBaselineOf="@+id/register_checkbox_injection"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="185dp" />
+        app:layout_constraintGuide_begin="160dp" />
 
 </android.support.constraint.ConstraintLayout>

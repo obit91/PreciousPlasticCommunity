@@ -6,12 +6,6 @@
     android:background="@drawable/blue_bg_light"
     tools:context=".fragments.FragmentWorkspaces">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/workspaces_recycleview"
         android:layout_height="match_parent"

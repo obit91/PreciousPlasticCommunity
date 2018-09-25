@@ -51,7 +51,7 @@
             <item
                 android:id="@+id/drawer_trade"
                 android:icon="@drawable/ic_exchange"
-                android:title="Trade" />
+                android:title="Recycle" />
             <item
                 android:id="@+id/drawer_settings"
                 android:icon="@drawable/ic_settings"
