@@ -54,12 +54,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
 
-    private ImageButton bazaarBtn;
-    private ImageButton tradeBtn;
-    private ImageButton profileBtn;
-    private ImageButton mapBtn;
 
-    private TextView userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +62,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         setContentView(R.layout.activity_navigation_drawer);
 
         // setting up buttons
-        SetupHubButtonListeners();
 
         // updating container context
         PPSession.setContainerContext(this);
@@ -105,36 +99,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         PPSession.setWorkspaceAdaptor(new WorkspaceAdaptor(inflater));
     }
 
-    private void SetupHubButtonListeners() {
-        bazaarBtn = (ImageButton) findViewById(R.id.hub_ib_bazaar);
-        mapBtn = (ImageButton) findViewById(R.id.hub_ib_map);
-        profileBtn = (ImageButton) findViewById(R.id.hub_ib_profile);
-        tradeBtn = (ImageButton) findViewById(R.id.hub_ib_trade);
-        bazaarBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToFragment(FragmentBazaar.class);
-            }
-        });
-        mapBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToFragment(FragmentMap.class);
-            }
-        });
-        tradeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToFragment(FragmentPerformTrade.class);
-            }
-        });
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToFragment(FragmentProfile.class);
-            }
-        });
-    }
+
 
 
 

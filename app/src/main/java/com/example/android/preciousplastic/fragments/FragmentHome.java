@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.activities.HomeActivity;
 import com.example.android.preciousplastic.utils.PPSession;
 
 public class FragmentHome extends BaseFragment
@@ -20,6 +22,12 @@ public class FragmentHome extends BaseFragment
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private ImageButton bazaarBtn;
+    private ImageButton tradeBtn;
+    private ImageButton profileBtn;
+    private ImageButton mapBtn;
+
+    private TextView userName;
     private TextView mEmail = null;
 
     // TODO: Rename and change types of parameters
@@ -51,7 +59,36 @@ public class FragmentHome extends BaseFragment
         fragment.setArguments(args);
         return fragment;
     }
+    private void SetupHubButtonListeners() {
 
+        if (bazaarBtn == null || mapBtn == null || profileBtn == null || tradeBtn == null) {
+            return;
+        }
+        bazaarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PPSession.getHomeActivity().switchFragment(FragmentBazaar.class);
+            }
+        });
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PPSession.getHomeActivity().switchFragment(FragmentMap.class);
+            }
+        });
+        tradeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PPSession.getHomeActivity().switchFragment(FragmentPerformTrade.class);
+            }
+        });
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PPSession.getHomeActivity().switchFragment(FragmentProfile.class);
+            }
+        });
+    }
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -71,6 +108,11 @@ public class FragmentHome extends BaseFragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mEmail = (TextView)view.findViewById(R.id.home_tv_email);
         mEmail.setText(PPSession.getEmail());
+        bazaarBtn = (ImageButton) view.findViewById(R.id.hub_ib_bazaar);
+        mapBtn = (ImageButton) view.findViewById(R.id.hub_ib_map);
+        profileBtn = (ImageButton) view.findViewById(R.id.hub_ib_profile);
+        tradeBtn = (ImageButton) view.findViewById(R.id.hub_ib_trade);
+        SetupHubButtonListeners();
         return view;
     }
 
