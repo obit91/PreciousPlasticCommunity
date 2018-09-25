@@ -10,8 +10,9 @@ import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.services.ConnectivityMonitorService;
+import com.example.android.preciousplastic.utils.PPSession;
 
-public class NoConnectionActivity extends AppCompatActivity {
+public class NoConnectionActivity extends BaseActivity {
 
 
     private TextView noConnectionText = null;
@@ -38,6 +39,15 @@ public class NoConnectionActivity extends AppCompatActivity {
             }
         });
     }
+
+/* TODO: doesn't work for some reason, fix..
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "test123", Toast.LENGTH_SHORT).show();
+        // minimizes activity on back press
+        moveTaskToBack(true);
+    }
+*/
 
     /**
      * Starts the application from the start.

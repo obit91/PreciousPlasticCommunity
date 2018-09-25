@@ -15,6 +15,8 @@ public class ConnectivityMonitorService extends IntentService {
 
     private static final String TAG = "CONNECTIVITY_MONITOR";
 
+    private static final int CONNECT_RETRIES = 3;
+
     public enum OnlineStatus {
         CONNECTED,
         DISCONNECTED,
@@ -36,13 +38,20 @@ public class ConnectivityMonitorService extends IntentService {
     @Override
     protected void onHandleIntent(Intent workIntent) {
         int secs = 1;
+        int tries = 0;
         while (true) {
             final OnlineStatus onlineStatus = isOnline();
             if(onlineStatus == OnlineStatus.DISCONNECTED) {
-                broadcastFailureToActivity();
-                return;
+                tries++;
+                Log.w(TAG, String.format("onHandleIntent: no connection, attempted %s retries.", tries));
+                if (tries == CONNECT_RETRIES) {
+                    Log.w(TAG, "onHandleIntent: failed to connect, broadcasting failure.");
+                    broadcastFailureToActivity();
+                    return;
+                }
             } else if (onlineStatus == OnlineStatus.CONNECTED) {
                 try {
+                    tries = 0;
                     // checks connectivity every "secs" seconds.
                     Thread.sleep(secs * 1000);
                 } catch (InterruptedException e) {
