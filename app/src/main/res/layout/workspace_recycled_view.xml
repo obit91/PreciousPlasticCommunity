@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="@color/cardview_dark_background">
+    android:background="@android:color/transparent">
 
     <ImageButton
         android:layout_width="100dp"
@@ -22,13 +22,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/workspace_name"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/workspace_desc"
-            android:textColor="@color/mapPrimary"/>
+            android:textColor="@color/colorStylishBlackText"/>
 
     </LinearLayout>
 

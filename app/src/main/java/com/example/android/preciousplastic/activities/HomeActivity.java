@@ -187,9 +187,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.beta_testing:
-                goToFragment(FragmentTest.class);
-                break;
+//            case R.id.beta_testing:
+//                goToFragment(FragmentTest.class);
+//                break;
             case R.id.drawer_home:
                 goToFragment(FragmentHome.class);
                 break;
