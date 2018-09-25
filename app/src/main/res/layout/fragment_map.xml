@@ -13,10 +13,11 @@
 
     <ImageButton
         android:id="@+id/filter_btn"
-        android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/filter_icon" />
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_filter" />
 
     <include layout="@layout/lo_hazard_report" />
 

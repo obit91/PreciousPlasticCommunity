@@ -95,7 +95,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/hub_ib_bazaar"
+        android:id="@+id/hub_ib_profile"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginBottom="2dp"
@@ -126,7 +126,7 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/hub_ib_bazaar"
+        app:layout_constraintStart_toEndOf="@+id/hub_ib_profile"
         app:layout_constraintTop_toBottomOf="@+id/hub_tv_nickname"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -142,11 +142,11 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/hub_ib_trade3"
+        app:layout_constraintStart_toEndOf="@+id/hub_ib_bazaar"
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <ImageButton
-        android:id="@+id/hub_ib_trade3"
+        android:id="@+id/hub_ib_bazaar"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginStart="16dp"
@@ -158,6 +158,6 @@
         app:layout_constraintEnd_toStartOf="@+id/hub_ib_map"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hub_ib_bazaar" />
+        app:layout_constraintTop_toBottomOf="@+id/hub_ib_profile" />
 
 </android.support.constraint.ConstraintLayout>
