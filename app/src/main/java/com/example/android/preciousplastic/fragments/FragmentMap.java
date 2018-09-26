@@ -32,6 +32,7 @@ public class FragmentMap extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
+        mapActivity.removeFilters();
         return false;
     }
 }
