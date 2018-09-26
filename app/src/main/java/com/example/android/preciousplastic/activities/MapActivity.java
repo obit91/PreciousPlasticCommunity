@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -67,9 +66,9 @@ public class MapActivity extends BaseActivity {
     private Resources resources;
     private RequestQueue requestQueue;
     private MapView mapView;
-    private double zoomVal = 12.0;
-    private double xLoc = 42.0;
-    private double yLoc = 35.5;
+    private final double INIT_ZOOM_VAL = 12.0;
+    private double latLoc = 31.0461;
+    private double longLoc = 34.8516;
 
 
     // Overlays containing pins for map
@@ -154,8 +153,8 @@ public class MapActivity extends BaseActivity {
         mapView.setHorizontalMapRepetitionEnabled(false);
 
         // set the map to user's location
-        double initLat = xLoc;
-        double initLong = yLoc;
+        double initLat = latLoc;
+        double initLong = longLoc;
         PPLocationManager ppLocationManager = new PPLocationManager(context);
         // ask user to allow location in settings
         if (!ppLocationManager.canGetLocation()){
@@ -168,7 +167,7 @@ public class MapActivity extends BaseActivity {
         ppLocationManager.stopUsingGPS();
 
         IMapController mapController = mapView.getController();
-        mapController.setZoom(zoomVal);
+        mapController.setZoom(INIT_ZOOM_VAL);
         GeoPoint startPoint = new GeoPoint(initLat, initLong);
         mapController.setCenter(startPoint);
 
@@ -185,7 +184,6 @@ public class MapActivity extends BaseActivity {
             @Override
             public boolean onZoom(ZoomEvent event) {
                 MapActivity.this.onZoom(event);
-                zoomVal = event.getZoomLevel();
                 return true;
             }
         });

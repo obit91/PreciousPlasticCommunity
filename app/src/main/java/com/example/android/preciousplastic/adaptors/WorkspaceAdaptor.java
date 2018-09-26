@@ -76,6 +76,10 @@ public class WorkspaceAdaptor extends RecyclerView.Adapter<WorkspaceAdaptor.Work
         ImageButton imgBtn = holder.layout.findViewById(R.id.workspace_img);
         imgBtn.setImageDrawable(dataImgs.get(pos));
 
+        // Set the layout background color
+        LinearLayout linearLayout = holder.layout.findViewById(R.id.workspace_single_view);
+        linearLayout.getBackground().setAlpha(18);
+
         // Link to website
         final String website = (String) currItem.get(MapConstants.MapPinKeys.SITE);
         imgBtn.setOnClickListener(new View.OnClickListener() {

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.activities.WorkspacesActivity;
@@ -155,6 +157,8 @@ public class FragmentWorkspaces extends BaseFragment
     private void setDataAndStartAdaptor(){
         mAdapter = new WorkspaceAdaptor(mInflater);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
         mAdapter.setData(workspacesActivity.getWorkspaces());
         mAdapter.setImagesData(workspacesActivity.getImages());
         mAdapter.notifyDataSetChanged();

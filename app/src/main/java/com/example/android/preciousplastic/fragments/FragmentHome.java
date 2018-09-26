@@ -1,8 +1,10 @@
 package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -64,6 +66,18 @@ public class FragmentHome extends BaseFragment
         if (bazaarBtn == null || mapBtn == null || profileBtn == null || tradeBtn == null) {
             return;
         }
+        //Setup btns backgrounds
+        int backgroundAlphaVal = 33; //Max 255
+        bazaarBtn.setBackgroundColor(Color.WHITE);
+        bazaarBtn.getBackground().setAlpha(backgroundAlphaVal);
+        mapBtn.setBackgroundColor(Color.WHITE);
+        mapBtn.getBackground().setAlpha(backgroundAlphaVal);
+        profileBtn.setBackgroundColor(Color.WHITE);
+        profileBtn.getBackground().setAlpha(backgroundAlphaVal);
+        tradeBtn.setBackgroundColor(Color.WHITE);
+        tradeBtn.getBackground().setAlpha(backgroundAlphaVal);
+
+        // Set up the buttons' listeners
         bazaarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

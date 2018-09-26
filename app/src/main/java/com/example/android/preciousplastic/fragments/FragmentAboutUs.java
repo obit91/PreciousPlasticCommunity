@@ -1,12 +1,14 @@
 package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.android.preciousplastic.R;
 
@@ -71,7 +73,9 @@ public class FragmentAboutUs extends BaseFragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about_us, container, false);
+        View v = inflater.inflate(R.layout.fragment_about_us, container, false);
+        //Todo Compress images here
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -4,33 +4,42 @@
     android:id="@+id/workspace_single_view"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="@android:color/transparent">
+    android:layout_height="wrap_content"
+    android:background="@color/colorSeaGlass">
 
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:id="@+id/workspace_img"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"/>
+        android:layout_marginStart="6dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/precious_plastic_logo_small"
+        android:background="@android:color/transparent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingRight="12dp"
+        android:paddingLeft="12dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/workspace_name"
-            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"/>
+            android:layout_marginTop="8dp"
+            android:text="My workspace"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/workspace_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/workspace_desc"
-            android:textColor="@color/colorStylishBlackText"/>
+            android:textSize="18sp"
+            android:text="This is the best workspace since it can hold whatever we want it to hold"
+            android:textColor="@color/colorStylishBlackText" />
 
     </LinearLayout>
 
