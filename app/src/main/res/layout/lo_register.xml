@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="64dp"
+        android:backgroundTint="@color/colorDarkGrey"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="28dp"
+        android:backgroundTint="@color/colorDarkGrey"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -62,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="28dp"
+        android:backgroundTint="@color/colorDarkGrey"
         android:ems="10"
         android:hint="Nickname"
         android:inputType="text"
@@ -136,7 +139,9 @@
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="160dp" />
+        app:layout_constraintGuide_begin="180dp"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="44dp"
         android:text="Edit Workspace"
         android:textAlignment="center"
         android:textSize="28sp"
@@ -30,12 +30,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/colorDarkGrey"
         android:ems="10"
         android:gravity="center"
         android:hint="Title"
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/emw_tv_title" />
 
@@ -44,13 +46,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorDarkGrey"
         android:ems="10"
         android:gravity="center"
         android:hint="Description"
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/emw_et_title" />
 
@@ -88,16 +91,13 @@
         android:id="@+id/emw_checkbox_extrusion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="@style/checkBoxStyleBlueLO"
-        android:textColor="@color/colorStylishBlackText"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="8dp"
         android:text="Extrusion"
+        android:textColor="@color/colorStylishBlackText"
+        android:theme="@style/checkBoxStyleBlueLO"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emw_checkbox_compression" />
 
@@ -105,13 +105,11 @@
         android:id="@+id/emw_checkbox_compression"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:theme="@style/checkBoxStyleBlueLO"
-        android:textColor="@color/colorStylishBlackText"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="48dp"
         android:text="Compression"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        android:textColor="@color/colorStylishBlackText"
+        android:theme="@style/checkBoxStyleBlueLO"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
@@ -119,12 +117,10 @@
         android:id="@+id/emw_btn_apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Apply"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -133,12 +129,10 @@
         android:id="@+id/emw_btn_goto_workspace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Workspace"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="To workspace"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -155,13 +149,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="192dp" />
+        app:layout_constraintGuide_begin="180dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="487dp" />
+        app:layout_constraintGuide_begin="467dp" />
 
 </android.support.constraint.ConstraintLayout>
