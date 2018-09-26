@@ -18,14 +18,12 @@
                 android:title="Home" />
             <item
                 android:id="@+id/drawer_workspaces"
-                android:iconTintMode="screen"
-                android:iconTint="@color/colorPrimary"
                 android:icon="@drawable/ic_businessman"
                 android:title="Workspaces" />
             <item
                 android:id="@+id/drawer_bazaar"
                 android:icon="@drawable/ic_cart"
-                android:title="Bazar"/>
+                android:title="Bazaar"/>
             <item
                 android:id="@+id/drawer_map"
                 android:icon="@drawable/ic_map"
@@ -71,7 +69,7 @@
                 android:title="To the website" />
             <item
                 android:id="@+id/drawer_about_us"
-                android:icon="@drawable/ic_info"
+                android:icon="@drawable/info_icon"
                 android:title="About us" />
         </menu>
     </item>

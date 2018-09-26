@@ -7,9 +7,38 @@
     android:background="@drawable/green_bg_light">
 
     <ImageView
+
+        android:id="@+id/profile_iv_bin1"
+        android:layout_width="70dp"
+
+        android:layout_height="0dp"
+        android:layout_marginEnd="50dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:layout_constraintVertical_bias="0.503"
+        app:srcCompat="@drawable/pete_1s" />
+
+    <ImageView
+        android:id="@+id/profile_iv_bin2"
+        android:layout_width="70dp"
+
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:srcCompat="@drawable/pp_5s" />
+
+    <ImageView
         android:id="@+id/profile_iv_bin3"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -21,6 +50,7 @@
         android:id="@+id/profile_iv_bin4"
         android:layout_width="0dp"
         android:layout_height="70dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toStartOf="@+id/profile_iv_bin3"
@@ -44,34 +74,13 @@
     <!--app:layout_constraintStart_toStartOf="parent"-->
     <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <ImageView
-        android:id="@+id/profile_iv_bin1"
-        android:layout_width="70dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:layout_constraintVertical_bias="0.503"
-        app:srcCompat="@drawable/pete_1s" />
-
-    <ImageView
-        android:id="@+id/profile_iv_bin2"
-        android:layout_width="70dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:srcCompat="@drawable/pp_5s" />
 
     <ImageView
         android:id="@+id/profile_iv_bin5"
         android:layout_width="70dp"
         android:layout_height="0dp"
         android:layout_marginEnd="24dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,25 +88,29 @@
         app:srcCompat="@drawable/hdpe_2s" />
 
     <ImageView
+        android:id="@+id/profile_iv_bin6"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="50dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:srcCompat="@drawable/ps_6s" />
+
+    <ImageView
         android:id="@+id/profile_iv_bin7"
         android:layout_width="70dp"
+
         android:layout_height="0dp"
         android:layout_marginBottom="28dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/other_7s" />
 
-    <ImageView
-        android:id="@+id/profile_iv_bin6"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:srcCompat="@drawable/ps_6s" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"
@@ -125,6 +138,7 @@
 
     <TextView
         android:id="@+id/profile_tv_bin6"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="82dp"
@@ -135,6 +149,7 @@
 
     <TextView
         android:id="@+id/profile_tv_bin3"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="105dp"
@@ -145,6 +160,7 @@
 
     <TextView
         android:id="@+id/profile_tv_bin4"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="105dp"

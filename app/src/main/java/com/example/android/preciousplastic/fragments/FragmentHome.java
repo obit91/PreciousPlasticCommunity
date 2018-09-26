@@ -4,9 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.activities.HomeActivity;
 import com.example.android.preciousplastic.utils.PPSession;
 
 public class FragmentHome extends BaseFragment
@@ -29,7 +25,8 @@ public class FragmentHome extends BaseFragment
     private ImageButton profileBtn;
     private ImageButton mapBtn;
 
-    private TextView userName;
+    private TextView mUserName;
+    private TextView mTitle;
     private TextView mEmail = null;
 
     // TODO: Rename and change types of parameters
@@ -120,12 +117,16 @@ public class FragmentHome extends BaseFragment
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        userName = (TextView) view.findViewById(R.id.hub_tv_nickname);
-        userName.setText(PPSession.getNickname());
+            mUserName = (TextView) view.findViewById(R.id.hub_tv_nickname);
+        mTitle = (TextView) view.findViewById(R.id.hub_tv_title);
         bazaarBtn = (ImageButton) view.findViewById(R.id.hub_ib_bazaar);
         mapBtn = (ImageButton) view.findViewById(R.id.hub_ib_map);
         profileBtn = (ImageButton) view.findViewById(R.id.hub_ib_profile);
         tradeBtn = (ImageButton) view.findViewById(R.id.hub_ib_trade);
+
+        mUserName.setText(PPSession.getNickname());
+        mTitle.setText(PPSession.getCurrentUser().getRank().getTitle());
+
         SetupHubButtonListeners();
         return view;
     }

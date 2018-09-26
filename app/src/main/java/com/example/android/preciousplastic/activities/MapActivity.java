@@ -66,7 +66,7 @@ public class MapActivity extends BaseActivity {
     private Resources resources;
     private RequestQueue requestQueue;
     private MapView mapView;
-    private final double INIT_ZOOM_VAL = 12.0;
+    private final double INIT_ZOOM_VAL = 10.0;
     private double latLoc = 31.0461;
     private double longLoc = 34.8516;
 

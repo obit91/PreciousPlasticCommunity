@@ -18,7 +18,7 @@ public enum UserRank {
     MASTER(1200, "Master"),
     GRAND_MASTER(1300, "Grand Master"),
     MOTHER_EARTH(1400, "Mother Earth"),
-    GAIA(1500, "Gaia");
+    GAIA(1500, "Gaia Goddess");
 
     private final int requiredExp;
     private final String title;

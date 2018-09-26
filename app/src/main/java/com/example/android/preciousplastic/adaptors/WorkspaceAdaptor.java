@@ -78,7 +78,7 @@ public class WorkspaceAdaptor extends RecyclerView.Adapter<WorkspaceAdaptor.Work
 
         // Set the layout background color
         LinearLayout linearLayout = holder.layout.findViewById(R.id.workspace_single_view);
-        linearLayout.getBackground().setAlpha(18);
+        linearLayout.getBackground().setAlpha(25);
 
         // Link to website
         final String website = (String) currItem.get(MapConstants.MapPinKeys.SITE);
