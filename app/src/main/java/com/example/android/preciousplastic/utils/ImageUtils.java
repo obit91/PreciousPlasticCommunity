@@ -1,6 +1,7 @@
 package com.example.android.preciousplastic.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -93,6 +94,7 @@ public class ImageUtils {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, compressRatio, baos);
 
+
         //write the bytes in file
         FileOutputStream fos;
         try {
@@ -112,11 +114,65 @@ public class ImageUtils {
 
     /**
      * Generates a time-stamp based file name.
-     * @return
+     * @return a timestamp based file name.
      */
     @NonNull
     public static String generateFileName() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         return "JPEG_" + timeStamp + "_";
+    }
+
+    /**
+     * Calculates the image samples size based on the image dimensions.
+     * @param options BitmapFactory options.
+     * @param reqWidth width
+     * @param reqHeight height
+     * @return sample size.
+     */
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    /**
+     * Returns a sampled bitmap from resources.
+     * @param res resource to decode.
+     * @param resId id of resource.
+     * @param reqWidth width of the sampled image.
+     * @param reqHeight height of the sampled image.
+     * @return
+     */
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
     }
 }
