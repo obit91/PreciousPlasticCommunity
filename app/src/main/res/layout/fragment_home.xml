@@ -8,6 +8,22 @@
     tools:context=".fragments.FragmentHome">
 
     <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/hub_iv_btns_bg"
+        android:layout_width="315dp"
+        android:layout_height="285dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:alpha="0.3"
+        android:src="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/hub_ib_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
     <TextView
         android:id="@+id/home_tv_email"
         android:layout_width="wrap_content"

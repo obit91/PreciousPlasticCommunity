@@ -106,8 +106,8 @@ public class FragmentHome extends BaseFragment
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mEmail = (TextView)view.findViewById(R.id.home_tv_email);
-        mEmail.setText(PPSession.getEmail());
+        userName = (TextView) view.findViewById(R.id.hub_tv_nickname);
+        userName.setText(PPSession.getNickname());
         bazaarBtn = (ImageButton) view.findViewById(R.id.hub_ib_bazaar);
         mapBtn = (ImageButton) view.findViewById(R.id.hub_ib_map);
         profileBtn = (ImageButton) view.findViewById(R.id.hub_ib_profile);

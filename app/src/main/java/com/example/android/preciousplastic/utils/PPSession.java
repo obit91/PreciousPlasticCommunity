@@ -169,6 +169,9 @@ public class PPSession {
     public static String getEmail() {
         return mAuth.getCurrentUser().getEmail();
     }
+    public static String getNickname() {
+        return mAuth.getCurrentUser().getDisplayName();
+    }
 
     public static boolean isLoggingIn() {
         return loggingIn;

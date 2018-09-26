@@ -30,5 +30,11 @@
         <!-- UNCHECKED COLOR -->
         <item name="android:textColorSecondary">@color/colorStylishBlackBox</item>
     </style>
+    <style name="GreenBGEditText" parent="Base.Theme.AppCompat">
+        <!-- CHECKED COLOR -->
+        <item name="colorAccent">@color/colorGreyishBlue</item>
+        <!-- UNCHECKED COLOR -->
+        <item name="android:textColorSecondary">@color/colorStylishBlackBox</item>
+    </style>
 
 </resources>

@@ -72,7 +72,8 @@ public class LoadingActivity extends BaseActivity {
 
         int randQuoteNum = random.nextInt(quotes.length);
 
-        quote.setText(String.format("%s \n %s", quotes[randQuoteNum], authors[randQuoteNum]));
+        quote.setText(String.format("%s \n\t\t\t -%s", quotes[randQuoteNum],
+                authors[randQuoteNum]));
     }
 
 
