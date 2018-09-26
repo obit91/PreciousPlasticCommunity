@@ -47,7 +47,7 @@
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Edit My Workspace" /-->
             <item
-                android:id="@+id/drawer_trade"
+                android:id="@+id/drawer_recycle"
                 android:icon="@drawable/ic_exchange"
                 android:title="Recycle" />
             <item

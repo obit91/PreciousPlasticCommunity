@@ -33,10 +33,6 @@ public class FragmentAboutUs extends BaseFragment
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private ImageView ohadIV = null;
-    private ImageView yoniIV = null;
-    private ImageView kerenIV = null;
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -85,9 +81,9 @@ public class FragmentAboutUs extends BaseFragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_about_us, container, false);
 
-        ohadIV = v.findViewById(R.id.aboutUs_iv_ohad);
-        yoniIV = v.findViewById(R.id.aboutUs_iv_yoni);
-        kerenIV = v.findViewById(R.id.aboutUs_iv_keren);
+        ImageView ohadIV = v.findViewById(R.id.aboutUs_iv_ohad);
+        ImageView yoniIV = v.findViewById(R.id.aboutUs_iv_yoni);
+        ImageView kerenIV = v.findViewById(R.id.aboutUs_iv_keren);
 
         ohadIV.setImageBitmap(
                 decodeSampledBitmapFromResource(getResources(), R.drawable.ohad_beltzer, 100, 150));
@@ -97,14 +93,6 @@ public class FragmentAboutUs extends BaseFragment
 
         kerenIV.setImageBitmap(
                 decodeSampledBitmapFromResource(getResources(), R.drawable.keren_meron, 100, 150));
-//
-//        Bitmap yoniImage = BitmapFactory.decodeResource(getResources(), R.drawable.yonatan_manor);
-//        compressBitmap(yoniImage);
-//        yoniIV.setImageBitmap(yoniImage);
-//
-//        Bitmap kerenImage = BitmapFactory.decodeResource(getResources(), R.drawable.keren_meron);
-//        compressBitmap(kerenImage);
-//        kerenIV.setImageBitmap(kerenImage);
 
         return v;
     }

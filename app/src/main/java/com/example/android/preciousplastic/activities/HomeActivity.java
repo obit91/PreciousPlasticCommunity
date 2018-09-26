@@ -15,13 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.fragments.BaseFragment;
-import com.example.android.preciousplastic.fragments.FragmentPerformTrade;
+import com.example.android.preciousplastic.fragments.FragmentPerformRecycle;
 import com.example.android.preciousplastic.imgur.ImgurConstants;
 import com.example.android.preciousplastic.utils.Transitions.TransitionTypes;
 
@@ -33,7 +30,6 @@ import com.example.android.preciousplastic.fragments.FragmentMyWorkspaceNonOwner
 import com.example.android.preciousplastic.fragments.FragmentMyWorkspaceOwner;
 import com.example.android.preciousplastic.fragments.FragmentProfile;
 import com.example.android.preciousplastic.fragments.FragmentSettings;
-import com.example.android.preciousplastic.fragments.FragmentTest;
 import com.example.android.preciousplastic.fragments.FragmentWorkspaces;
 import com.example.android.preciousplastic.adaptors.WorkspaceAdaptor;
 import com.example.android.preciousplastic.fragments.FragmentBazaar;
@@ -84,8 +80,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         // Set owner buttons unclickable for non-owners.
         final Menu menu = navigationView.getMenu();
-        final MenuItem tradeIcon = menu.findItem(R.id.drawer_trade);
-        tradeIcon.setVisible(PPSession.getCurrentUser().isOwner());
+        final MenuItem recycleIcon = menu.findItem(R.id.drawer_recycle);
+        recycleIcon.setVisible(PPSession.getCurrentUser().isOwner());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -210,8 +206,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             /*case R.id.drawer_edit_my_workspace:
                 goToFragment(FragmentEditMyWorkspace.class);
                 break;*/
-            case R.id.drawer_trade:
-                goToFragment(FragmentPerformTrade.class);
+            case R.id.drawer_recycle:
+                goToFragment(FragmentPerformRecycle.class);
                 break;
             case R.id.drawer_bazaar:
                 goToFragment(FragmentBazaar.class);

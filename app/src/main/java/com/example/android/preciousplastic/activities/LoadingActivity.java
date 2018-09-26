@@ -15,7 +15,7 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.Workspace;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
-import com.example.android.preciousplastic.fragments.FragmentCompleteTrade;
+import com.example.android.preciousplastic.fragments.FragmentCompleteRecycle;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
 import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.utils.OnBackPressed;
