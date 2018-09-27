@@ -38,13 +38,13 @@
 
     <TextView
         android:id="@+id/mw_tv_workspace_description"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="8dp"
         android:hint="Description"
-        android:text="Click edit to define your workspace"
+        android:text="Click EDIT to define your workspace"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintStart_toStartOf="parent"

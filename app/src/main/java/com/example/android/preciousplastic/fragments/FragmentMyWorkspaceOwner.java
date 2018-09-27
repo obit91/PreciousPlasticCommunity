@@ -36,8 +36,7 @@ import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull
  * Use the {@link FragmentMyWorkspaceOwner#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnClickListener
-{
+public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnClickListener {
 
     private final String TAG = "FragmentMWOwner";
 
@@ -46,6 +45,7 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private Boolean edited = false;
     private Button mEdit = null;
     private Button mUploadItem = null;
     private TextView mTitle = null;
@@ -57,8 +57,7 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentMyWorkspaceOwner()
-    {
+    public FragmentMyWorkspaceOwner() {
         // Required empty public constructor
     }
 
@@ -71,8 +70,7 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
      * @return A new instance of fragment FragmentMyWorkspaceOwner.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentMyWorkspaceOwner newInstance(String param1, String param2)
-    {
+    public static FragmentMyWorkspaceOwner newInstance(String param1, String param2) {
         FragmentMyWorkspaceOwner fragment = new FragmentMyWorkspaceOwner();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -82,11 +80,9 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
@@ -94,8 +90,7 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_workspace_owner, container, false);
 
@@ -103,6 +98,11 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
         mUploadItem = (Button) view.findViewById(R.id.mw_btn_upload);
         mTitle = (TextView) view.findViewById(R.id.mw_tv_workspace_title);
         mDescription = (TextView) view.findViewById(R.id.mw_tv_workspace_description);
+
+        if (!edited) {
+            mTitle.setVisibility(View.INVISIBLE);
+            mUploadItem.setVisibility(View.INVISIBLE);
+        }
 
         mUploadItem.setOnClickListener(this);
         mEdit.setOnClickListener(this);
@@ -121,32 +121,25 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri)
-    {
-        if (mListener != null)
-        {
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
 
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener)
-        {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        }
-        else
-        {
+        } else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
-    public void onDetach()
-    {
+    public void onDetach() {
         super.onDetach();
         mListener = null;
     }
@@ -166,14 +159,14 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener
-    {
+    public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
     /**
      * Shows the input message to the user.
+     *
      * @param msg message to show.
      */
     private void showToast(String msg) {
@@ -182,6 +175,7 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
 
     /**
      * Switches fragment to the upload item fragment.
+     *
      * @param view
      */
     private void onUploadClick(View view) {
@@ -190,6 +184,7 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
 
     /**
      * Switches fragment to the edit workspace fragment.
+     *
      * @param view
      */
     private void onEditClick(View view) {
@@ -203,6 +198,9 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
                 onUploadClick(view);
                 break;
             case (R.id.mw_btn_edit):
+                edited = true;
+                mTitle.setVisibility(View.VISIBLE); // After first edit, show title
+                mUploadItem.setVisibility(View.VISIBLE); // After first edit, allow upload
                 onEditClick(view);
                 break;
             default:
