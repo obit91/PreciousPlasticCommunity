@@ -4,11 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,10 +31,12 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
     private TextView bin6 = null;
     private TextView bin7 = null;
     private TextView binTotal = null;
-    private TextView rankTextView = null;
+    private TextView mTitle = null;
     private TextView currentXP = null;
     private TextView nextRankXP = null;
     private ProgressBar progressBar = null;
+
+    private TextView mNickname = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -101,10 +101,11 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
         bin6 = (TextView)view.findViewById(R.id.profile_tv_bin6);
         bin7 = (TextView)view.findViewById(R.id.profile_tv_bin7);
         binTotal = (TextView)view.findViewById(R.id.profile_tv_total);
-        rankTextView = (TextView)view.findViewById(R.id.profile_tv_title);
+        mTitle = (TextView)view.findViewById(R.id.profile_tv_title);
         currentXP = (TextView)view.findViewById(R.id.profile_tv_currentXP);
         nextRankXP = (TextView)view.findViewById(R.id.profile_tv_expToNextLvl);
-        progressBar = (ProgressBar)view.findViewById(R.id.profile_progressBar_plasticExp);
+        progressBar = (ProgressBar) view.findViewById(R.id.profile_progressBar_plasticExp);
+        mNickname = (TextView) view.findViewById(R.id.profile_tv_nickname);
     }
 
     public void updateGUI(View view) {
@@ -121,7 +122,8 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
 
         UserRank rank = currentUser.getRank();
         String title = rank.getTitle();
-        rankTextView.setText(title);
+        mTitle.setText(title);
+        mNickname.setText(PPSession.getNickname());
 
         currentXP.setText(points.getTotalPointsAsString());
         nextRankXP.setText(String.valueOf(rank.getRequiredExp()));
