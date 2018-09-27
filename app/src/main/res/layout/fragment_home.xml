@@ -74,11 +74,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="308dp" />
+
     <TextView
         android:id="@+id/hub_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="38dp"
         android:text="Caring Person"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +90,7 @@
         android:id="@+id/hub_tv_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="84dp"
         android:text="Yonatan"
         android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,15 +98,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <ImageButton
         android:id="@+id/hub_ib_profile"
+        style="@android:style/Widget.Holo.ImageButton"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginBottom="2dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/flakes"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
@@ -119,13 +119,13 @@
 
     <ImageButton
         android:id="@+id/hub_ib_trade"
+        style="@android:style/Widget.Holo.ImageButton"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginBottom="2dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/trade"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
@@ -138,12 +138,12 @@
 
     <ImageButton
         android:id="@+id/hub_ib_map"
+        style="@android:style/Widget.Holo.ImageButton"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/local_map"
         app:layout_constraintDimensionRatio="1:1"
@@ -154,11 +154,11 @@
 
     <ImageButton
         android:id="@+id/hub_ib_bazaar"
+        style="@android:style/Widget.Holo.ImageButton"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/bazaar"
         app:layout_constraintDimensionRatio="1:1"

@@ -239,7 +239,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="66dp"
         android:max="100"
         android:progress="0"
         android:visibility="visible"
@@ -253,6 +253,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:text="0"
+        android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/profile_tv_expToNextLvl"
         app:layout_constraintEnd_toStartOf="@+id/profile_progressBar_plasticExp" />
 
@@ -261,8 +262,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="61dp"
         android:text="100"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/profile_progressBar_plasticExp"
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
@@ -270,20 +272,20 @@
         android:id="@+id/profile_tv_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="84dp"
         android:text="Derp"
-        android:textSize="28sp"
+        android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_tv_title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/profile_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="38dp"
         android:text="Master"
-        android:textSize="20sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
