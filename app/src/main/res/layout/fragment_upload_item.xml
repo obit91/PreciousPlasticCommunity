@@ -11,39 +11,39 @@
 
     <EditText
         android:id="@+id/upload_et_title"
-        android:layout_width="wrap_content"
+        android:layout_width="201dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:hint="Title"
+        android:hint="Name your item"
         android:textColorLink="@color/colorPrimaryDark"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal" />
 
     <EditText
         android:id="@+id/upload_et_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="327dp"
+        android:layout_height="84dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="Description"
+        android:layout_marginTop="20dp"
+        android:hint="Describe your item in the best possible way :)"
         android:textColorLink="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal4"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintHorizontal_bias="0.396"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/upload_et_title"
-        app:layout_constraintVertical_bias="0.307" />
+        app:layout_constraintTop_toBottomOf="@+id/upload_et_title" />
 
     <Button
         android:id="@+id/upload_btn_upload"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="Upload"
+        android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal3"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintHorizontal_bias="0.458"
@@ -76,32 +76,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="145dp" />
+        app:layout_constraintGuide_begin="77dp" />
 
     <Button
         android:id="@+id/upload_btn_capture_image"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
         android:layout_marginTop="16dp"
         android:text="Camera"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintHorizontal_bias="0.436"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/upload_btn_choose_img"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
         android:text="Choose Image"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintHorizontal_bias="0.429"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@id/upload_btn_capture_image"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/upload_btn_capture_image"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/upload_iv_upload_img"
