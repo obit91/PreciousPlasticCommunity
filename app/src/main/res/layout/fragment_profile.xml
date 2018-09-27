@@ -215,21 +215,19 @@
         android:id="@+id/profile_tv_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="9dp"
-        android:layout_marginStart="9dp"
+        android:layout_marginBottom="65dp"
         android:text="0"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/profile_iv_bin5"
-        app:layout_constraintStart_toEndOf="@+id/profile_iv_bin2"
-        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        tools:layout_editor_absoluteX="173dp" />
 
     <TextView
         android:id="@+id/profile_tv_total2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:text="Current Total"
+        android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/profile_tv_total"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -237,7 +235,7 @@
     <ProgressBar
         android:id="@+id/profile_progressBar_plasticExp"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="134dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -269,11 +267,23 @@
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
+        android:id="@+id/profile_tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Derp"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_tv_title" />
+
+    <TextView
         android:id="@+id/profile_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text=""
+        android:layout_marginTop="48dp"
+        android:text="Master"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
