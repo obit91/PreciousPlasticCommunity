@@ -22,7 +22,6 @@ import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
 import com.example.android.preciousplastic.utils.External;
-import com.example.android.preciousplastic.utils.ImageUtils;
 import com.example.android.preciousplastic.utils.PPSession;
 import com.squareup.picasso.Picasso;
 
@@ -65,7 +64,9 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.text.setText(mDataSource.get(position).getTitle());
+        holder.title.setText(mDataSource.get(position).getTitle());
+        holder.creator.setText(mDataSource.get(position).getName());
+        holder.title.setText(mDataSource.get(position).getTitle());
         Picasso
             .with(mContext)
             .load(mDataSource.get(position).getLink())
@@ -81,9 +82,11 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
 
         boolean optionsVisible;
 
-        TextView text;
+        TextView title;
+        TextView creator;
+        TextView description;
         ImageView image;
-        Button deleteButton;
+        Button ownerButton;
         Button shareButton;
 
         ViewHolder(View itemView) {
@@ -91,11 +94,18 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
-            text = itemView.findViewById(R.id.bazar_ri_txt);
+            title = itemView.findViewById(R.id.bazar_ri_title);
+            creator = itemView.findViewById(R.id.bazar_ri_creator);
+            description = itemView.findViewById(R.id.bazar_ri_description);
             image = itemView.findViewById(R.id.bazar_ri_img);
 
-            deleteButton = itemView.findViewById(R.id.bazar_ri_delete);
-            deleteButton.setOnClickListener(this);
+            ownerButton = itemView.findViewById(R.id.bazar_ri_owner_button);
+            ownerButton.setOnClickListener(this);
+            if (PPSession.getCurrentUser().isOwner()) {
+                ownerButton.setText("Delete");
+            } else {
+                ownerButton.setText("Buy");
+            }
             shareButton = itemView.findViewById(R.id.bazar_ri_share);
             shareButton.setOnClickListener(this);
 
@@ -114,11 +124,13 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
                 visibility = View.INVISIBLE;
             }
 
-            text.setAlpha(alphaValue);
+            title.setAlpha(alphaValue);
+            creator.setAlpha(alphaValue);
+            description.setAlpha(alphaValue);
             image.setAlpha(alphaValue);
 
-            deleteButton.setClickable(visible);
-            deleteButton.setVisibility(visibility);
+            ownerButton.setClickable(visible);
+            ownerButton.setVisibility(visibility);
 
             shareButton.setClickable(visible);
             shareButton.setVisibility(visibility);
@@ -227,12 +239,23 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             }
         }
 
+        /**
+         * Sends a message to the owner of the item requesting a trade.
+         */
+        private void sendInterestMessage(final int position) {
+            //TODO: fill me!
+        }
+
         @Override
         public void onClick(View v) {
             clickListener.onItemClick(getAdapterPosition(), v);
             switch (v.getId()) {
-                case R.id.bazar_ri_delete:
-                    verifyItemRemoval(getAdapterPosition());
+                case R.id.bazar_ri_owner_button:
+                    if (PPSession.getCurrentUser().isOwner()) {
+                        verifyItemRemoval(getAdapterPosition());
+                    } else {
+                        sendInterestMessage(getAdapterPosition());
+                    }
                     break;
                 case R.id.bazar_ri_share:
                     shareItem(getAdapterPosition());
