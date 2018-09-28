@@ -100,12 +100,12 @@
 
     <ImageButton
         android:id="@+id/hub_ib_profile"
-        style="@android:style/Widget.Holo.ImageButton"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginBottom="2dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:elevation="2dp"
         android:scaleType="fitCenter"
         android:src="@drawable/flakes"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
@@ -119,13 +119,13 @@
 
     <ImageButton
         android:id="@+id/hub_ib_trade"
-        style="@android:style/Widget.Holo.ImageButton"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginBottom="2dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:elevation="2dp"
         android:scaleType="fitCenter"
         android:src="@drawable/trade"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
@@ -138,12 +138,12 @@
 
     <ImageButton
         android:id="@+id/hub_ib_map"
-        style="@android:style/Widget.Holo.ImageButton"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:elevation="2dp"
         android:scaleType="fitCenter"
         android:src="@drawable/local_map"
         app:layout_constraintDimensionRatio="1:1"
@@ -154,11 +154,11 @@
 
     <ImageButton
         android:id="@+id/hub_ib_bazaar"
-        style="@android:style/Widget.Holo.ImageButton"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:elevation="2dp"
         android:scaleType="fitCenter"
         android:src="@drawable/bazaar"
         app:layout_constraintDimensionRatio="1:1"

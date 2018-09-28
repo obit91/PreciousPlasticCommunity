@@ -64,7 +64,7 @@ public class FragmentHome extends BaseFragment
             return;
         }
         //Setup btns backgrounds
-        int backgroundAlphaVal = 33; //Max 255
+        int backgroundAlphaVal = 255; //Max 255
         bazaarBtn.setBackgroundColor(Color.WHITE);
         bazaarBtn.getBackground().setAlpha(backgroundAlphaVal);
         mapBtn.setBackgroundColor(Color.WHITE);

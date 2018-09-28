@@ -216,11 +216,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="65dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="0"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        tools:layout_editor_absoluteX="173dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/profile_tv_total2"
@@ -272,7 +275,7 @@
         android:id="@+id/profile_tv_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="62dp"
         android:text="Derp"
         android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -283,7 +286,7 @@
         android:id="@+id/profile_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="28dp"
         android:text="Master"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"

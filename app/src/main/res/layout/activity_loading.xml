@@ -20,13 +20,14 @@
     <TextView
         android:id="@+id/fragment_transition_tv_quote"
         android:layout_width="0dp"
-        android:textSize="16sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="140dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/fragment_transition_iv"
+        android:text="We recycle everything in my house. I am not into any particular organizations, but I am doing my part and that makes me feel okay.\n\t\t-Mark-Paul Gosselaar"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

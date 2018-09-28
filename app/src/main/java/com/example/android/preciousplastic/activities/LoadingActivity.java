@@ -37,6 +37,7 @@ import java.util.Random;
 
 public class LoadingActivity extends BaseActivity {
 
+    public static final int LONGEST_QUOTE = 3;
     private final int MAX_NUM_OF_LOADING_IMAGES = 4;
     private final int MAX_NUM_OF_QUOTES = 5;
 
@@ -65,10 +66,10 @@ public class LoadingActivity extends BaseActivity {
     private void randomize_quote() {
         quote = (TextView) findViewById(R.id.fragment_transition_tv_quote);
         String[] quotes;
-        quotes=getResources().getStringArray(R.array.quotesArray);
+        quotes = getResources().getStringArray(R.array.quotesArray);
 
         String[] authors;
-        authors=getResources().getStringArray(R.array.authorsArray);
+        authors = getResources().getStringArray(R.array.authorsArray);
 
         int randQuoteNum = random.nextInt(quotes.length);
 
@@ -102,7 +103,7 @@ public class LoadingActivity extends BaseActivity {
         userRepo = new UserRepository(this);
 
         Bundle b = getIntent().getExtras();
-        Transitions.TransitionTypes type = (Transitions.TransitionTypes)b.getSerializable(Transitions.TRANSITION_TYPE);
+        Transitions.TransitionTypes type = (Transitions.TransitionTypes) b.getSerializable(Transitions.TRANSITION_TYPE);
 
         switch (type) {
             case REGISTER:
@@ -124,6 +125,7 @@ public class LoadingActivity extends BaseActivity {
 
     /**
      * Retrieves login parameters and initiates the login procedure.
+     *
      * @param b input bundle.
      */
     private void initiateLogin(Bundle b) {
@@ -186,12 +188,17 @@ public class LoadingActivity extends BaseActivity {
         }
 
         @Override
-        public void onResponse(Object dataSnapshotObj){
-            boolean success = (boolean)dataSnapshotObj;
+        public void onResponse(Object dataSnapshotObj) {
+            boolean success = (boolean) dataSnapshotObj;
             if (success) {
                 Intent homeIntent = new Intent(delegate, HomeActivity.class);
                 try {
-                    Thread.sleep(TRANSITION_TIME);
+                    if (chosenImageIndex == LONGEST_QUOTE) {
+                        Thread.sleep(2 * TRANSITION_TIME);
+                    } else {
+                        Thread.sleep(TRANSITION_TIME);
+                    }
+
                 } catch (InterruptedException e) {
                     Log.d(TAG, "LoggedIn: failed to sleep, someone's rushing.");
                 }
@@ -208,6 +215,7 @@ public class LoadingActivity extends BaseActivity {
 
     /**
      * Creates a new workspace based on the input of ownerMachines map.
+     *
      * @param ownerMachines a map containing different machine types and indicators if exist.
      * @return a workspace corresponding to the map.
      */
@@ -258,6 +266,7 @@ public class LoadingActivity extends BaseActivity {
 
     /**
      * Updates indicators if machines exist of a new owner.
+     *
      * @param b Activity bundle.
      * @return
      */
@@ -280,6 +289,7 @@ public class LoadingActivity extends BaseActivity {
 
     /**
      * Retrieves user data from the bundle and initiates a new user creation procedure.
+     *
      * @param b input bundle.
      */
     private void initiateCreation(Bundle b) {
