@@ -32,7 +32,6 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.fragments.FragmentMap;
-import com.example.android.preciousplastic.permissions.PermissionResponseHandler;
 import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.db.repositories.HazardRepository;
 import com.example.android.preciousplastic.utils.InternetQuery;
@@ -181,6 +180,8 @@ public class MapActivity extends BaseActivity {
         // ask user to allow location in settings
         if (!ppLocationManager.canGetLocation()){
             getPermissions();
+        } else {
+            buildWithPermissions();
         }
     }
 
@@ -673,7 +674,7 @@ public class MapActivity extends BaseActivity {
         }
     }
 
-    public void buildPartTwo() {
+    public void buildWithPermissions() {
 
         // set the map to user's location
         double initLat = latLoc;

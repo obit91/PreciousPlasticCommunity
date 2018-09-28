@@ -2,7 +2,6 @@ package com.example.android.preciousplastic.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,7 @@ public class FragmentMap extends BaseFragment implements PermissionResponseHandl
 
     @Override
     public void permissionGranted(int permissionCode) {
-        mapActivity.buildPartTwo();
+        mapActivity.buildWithPermissions();
     }
 
     @Override
