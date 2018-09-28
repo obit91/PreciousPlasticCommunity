@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.android.preciousplastic.activities.HomeActivity"
+    tools:context="com.community.android.preciousplastic.activities.HomeActivity"
     tools:openDrawer="start">
 
     <include

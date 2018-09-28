@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:368476316959:android:5080c02eed3b2f0a",
+        "mobilesdk_app_id": "1:368476316959:android:ac9bd7ebee867104",
         "android_client_info": {
-          "package_name": "com.example.android.preciousplastic"
+          "package_name": "com.community.android.preciousplastic"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "368476316959-s9o8bmicjufa7iqvb88q5a33aahqm09q.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.android.preciousplastic",
-            "certificate_hash": "588fa6483db0b97be9f808f5fb211690ef4d41f3"
-          }
-        },
         {
           "client_id": "368476316959-lhm19hb0ja3240h5of8le0e2vgcnrml8.apps.googleusercontent.com",
           "client_type": 3
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "368476316959-lhm19hb0ja3240h5of8le0e2vgcnrml8.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
