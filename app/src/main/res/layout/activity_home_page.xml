@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.android.preciousplastic.activities.HomeActivity">
+    tools:context="com.community.android.preciousplastic.activities.HomeActivity">
 
     <Space
         android:layout_width="match_parent"

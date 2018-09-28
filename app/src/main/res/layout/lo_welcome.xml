@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/green_bg_light"
     android:backgroundTintMode="multiply"
-    tools:context="com.example.android.preciousplastic.activities.WelcomeActivity"
+    tools:context="com.community.android.preciousplastic.activities.WelcomeActivity"
     tools:layout_editor_absoluteY="25dp">
     <!--Icon container-->
 
