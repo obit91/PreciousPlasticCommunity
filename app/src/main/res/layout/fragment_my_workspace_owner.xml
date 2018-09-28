@@ -33,6 +33,7 @@
         android:background="@android:color/transparent"
         android:text="Edit"
         android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +42,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="22dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="8dp"
         android:hint="Description"
         android:text="Click EDIT to define your workspace"

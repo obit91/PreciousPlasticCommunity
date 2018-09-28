@@ -102,6 +102,10 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
         if (!edited) {
             mTitle.setVisibility(View.INVISIBLE);
             mUploadItem.setVisibility(View.INVISIBLE);
+        } else {
+            mTitle.setVisibility(View.VISIBLE);
+            mUploadItem.setVisibility(View.VISIBLE);
+            mDescription.setVisibility(View.VISIBLE);
         }
 
         mUploadItem.setOnClickListener(this);

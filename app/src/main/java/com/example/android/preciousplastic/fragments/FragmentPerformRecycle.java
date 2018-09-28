@@ -102,7 +102,7 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_perform_trade, container, false);
+        View view = inflater.inflate(R.layout.fragment_perform_recycle, container, false);
 
         // update spinner
         mTypeSpinner = (Spinner) view.findViewById(R.id.mw_spinner_type);
