@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ImageView;
         import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.entities.User;
@@ -60,7 +59,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
     public ImgurRecyclerAdaptor.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.bazar_rv_item, parent, false);
+        View view = inflater.inflate(R.layout.bazaar_rv_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

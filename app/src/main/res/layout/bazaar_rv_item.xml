@@ -1,0 +1,115 @@
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    card_view:cardCornerRadius="5dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="126dp"
+        android:layout_margin="20dp"
+        android:elevation="6dp"
+        android:id="@+id/relativeLayout">
+
+        <ImageView
+            android:id="@+id/bazar_ri_img"
+            android:layout_width="172dp"
+            android:src="@color/colorPrimary"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/bazar_ri_title"
+            android:layout_width="121dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="ItemName"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            card_view:layout_constraintStart_toEndOf="@+id/bazar_ri_img"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bazar_ri_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="20"
+            android:textSize="20sp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/bazar_ri_creator"
+            card_view:layout_constraintTop_toBottomOf="@+id/bzr_itm_tv_price_tag" />
+
+        <TextView
+            android:id="@+id/bazar_ri_creator"
+            android:layout_width="121dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Creater"
+            android:textSize="16sp"
+            card_view:layout_constraintStart_toEndOf="@+id/bazar_ri_img"
+            card_view:layout_constraintTop_toBottomOf="@+id/bazar_ri_title" />
+
+        <TextView
+            android:id="@+id/bazar_ri_description"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="This is the item's desc, it is the best item ever!"
+            android:textSize="14sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/bazar_ri_img"
+            card_view:layout_constraintTop_toBottomOf="@+id/bazar_ri_creator" />
+
+        <Button
+            android:id="@+id/bazar_ri_owner_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="owner button"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.205" />
+
+        <Button
+            android:id="@+id/bazar_ri_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="236dp"
+            android:layout_marginRight="236dp"
+            android:text="share"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.794" />
+
+        <TextView
+            android:id="@+id/bzr_itm_tv_price_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:text="Price"
+            android:textSize="16sp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/bazar_ri_title"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/bazar_ri_title" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
