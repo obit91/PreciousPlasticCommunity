@@ -92,16 +92,6 @@ public class User {
      * Adds points of a certain type.
      *
      * @param type  type to update.
-     * @param value number of points to add.
-     */
-    public void addPoints(PointsType type, double value) {
-        points.incrementType(type, value);
-    }
-
-    /**
-     * Adds points of a certain type.
-     *
-     * @param type  type to update.
      * @param value number of points to remove.
      */
     public void removePoints(PointsType type, double value) {
@@ -195,7 +185,13 @@ public class User {
      */
     public void checkPromotion() {
         UserRank nextRank = rank;
-        while  (points.getTotalPoints() >= nextRank.getRequiredExp() && !rank.isMaxRank()) {
+
+        double totalPoints = points.getType1() + points.getType2() +
+                             points.getType3() + points.getType4() +
+                             points.getType5() + points.getType5() +
+                             points.getType6() + points.getType7();
+
+        while  (totalPoints >= nextRank.getRequiredExp() && !rank.isMaxRank()) {
             nextRank = rank.getNextRank();
             rank = nextRank;
         }

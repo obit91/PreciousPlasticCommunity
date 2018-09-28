@@ -4,39 +4,32 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
-import com.example.android.preciousplastic.db.entities.User;
-import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.db.PointsType;
+import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
+import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.utils.PPSession;
-import com.example.android.preciousplastic.utils.ViewTools;
 
 import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentPerformRecycle.OnFragmentInteractionListener} interface
+ * {@link FragmentPerformTrade.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentPerformRecycle#newInstance} factory method to
+ * Use the {@link FragmentPerformTrade#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentPerformRecycle extends BaseFragment implements View.OnClickListener
+public class FragmentPerformTrade extends BaseFragment implements View.OnClickListener
 {
     private final String TAG = "FragmentMWOwner";
 
@@ -45,16 +38,9 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private Spinner mTypeSpinner = null;
     private EditText mNicknameEditView = null;
-    private EditText mWeightEditView = null;
-    private TextView mScoreTextView = null;
+    private TextView mPointsTextView = null;
     private Button mConfirmButton = null;
-
-    private PointsType mType = null;
-    private Double mWeight = null;
-    private Double mScore = null;
-
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -62,7 +48,7 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentPerformRecycle()
+    public FragmentPerformTrade()
     {
         // Required empty public constructor
     }
@@ -76,9 +62,9 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
      * @return A new instance of fragment FragmentMyWorkspaceOwner.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentPerformRecycle newInstance(String param1, String param2)
+    public static FragmentPerformTrade newInstance(String param1, String param2)
     {
-        FragmentPerformRecycle fragment = new FragmentPerformRecycle();
+        FragmentPerformTrade fragment = new FragmentPerformTrade();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -102,22 +88,11 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_perform_recycle, container, false);
+        View view = inflater.inflate(R.layout.fragment_perform_trade, container, false);
 
-        // update spinner
-        mTypeSpinner = (Spinner) view.findViewById(R.id.mw_spinner_type);
-        ArrayAdapter<PointsType> pointsTypeArrayAdapter = new ArrayAdapter<PointsType>(
-                getContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                PointsType.values());
-        mTypeSpinner.setAdapter(pointsTypeArrayAdapter);
-
-        mConfirmButton = (Button) view.findViewById(R.id.trade_btn_confirm);
-
-        // set TextView fields
-        mNicknameEditView = (EditText) view.findViewById(R.id.trade_et_nickname);
-        mWeightEditView = (EditText)view.findViewById(R.id.trade_et_points);
-        mScoreTextView = (TextView)view.findViewById(R.id.trade_tv_score);
+        mConfirmButton = view.findViewById(R.id.trade_btn_confirm);
+        mNicknameEditView = view.findViewById(R.id.trade_et_nickname);
+        mPointsTextView = view.findViewById(R.id.trade_et_points);
 
         return view;
     }
@@ -125,39 +100,8 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
     public void onStart() {
         super.onStart();
 
-        // spinner listener
-        mTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                typeUpdated();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         // button listener
         mConfirmButton.setOnClickListener(this);
-
-        // weight listener
-        mWeightEditView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                weightUpdated(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -220,19 +164,33 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
         UserRepository userRepository = new UserRepository(getContext());
         User currentUser = PPSession.getCurrentUser();
 
-        if (isTextViewNull(mNicknameEditView) || isTextViewNull(mWeightEditView)) {
+        if (isTextViewNull(mNicknameEditView) || isTextViewNull(mPointsTextView)) {
             showToast("Please enter all required fields");
             return;
         }
 
         if (mNicknameEditView.getText().toString().equals(currentUser.getNickname())) {
-            showToast("You can not give points to yourself.");
+            showToast("You can not trade points with yourself.");
             return;
         }
 
         String nickname = mNicknameEditView.getText().toString();
         WriteUserPoints eventNotifier = new WriteUserPoints();
-        userRepository.updateUserPoints(nickname, mType, mScore, true, eventNotifier);
+        Double points = Double.valueOf(mPointsTextView.getText().toString());
+
+        if (currentUser.getPoints().getTotalPoints() < points) {
+            Toast.makeText(getContext(), "You don't have enough purchase to trade.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        userRepository.updateUserPoints(nickname, PointsType.TYPE_TOTAL, points, true, eventNotifier);
+    }
+
+    private void decrementPoints() {
+        UserRepository userRepository = new UserRepository(getContext());
+        RemoveUserPoints eventNotifier = new RemoveUserPoints();
+        Double points = Double.valueOf(mPointsTextView.getText().toString());
+        userRepository.updateUserPoints(PPSession.getNickname(), PointsType.TYPE_TOTAL, points, false, eventNotifier);
     }
 
     /**
@@ -243,60 +201,25 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
         public void onResponse(Object dataSnapshotObj){
             boolean success = (boolean)dataSnapshotObj;
             if (success) {
-                PPSession.getHomeActivity().switchFragment(FragmentCompleteRecycle.class);
+                decrementPoints();
             } else {
                 Toast.makeText(getActivity(), "Nickname does not exist.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    /**
-     * Gets called upon updating the current plastic weight, parses the weight input.
-     * @param newValue new weight inputted.
-     */
-    private void weightUpdated(String newValue) {
-        if (ViewTools.isTextViewNull(mWeightEditView)) {
-            resetScore();
-            return;
+    private class RemoveUserPoints extends EventNotifier {
+        @Override
+        public void onResponse(Object dataSnapshotObj){
+            boolean success = (boolean)dataSnapshotObj;
+            if (success) {
+                PPSession.getHomeActivity().switchFragment(FragmentCompleteRecycle.class);
+            } else {
+                Toast.makeText(getActivity(), "Failed to decrement points.", Toast.LENGTH_SHORT).show();
+            }
         }
-
-        mWeight = Double.parseDouble(newValue);
-
-        if (mWeight <= 0) {
-            resetScore();
-            showToast("Weight must be greater than zero.");
-            return;
-        }
-        calculateScore();
     }
 
-    /**
-     * Gets called upon choosing a type from the spinner and parses the item.
-     */
-    private void typeUpdated() {
-        mType = (PointsType)mTypeSpinner.getSelectedItem();
-        calculateScore();
-    }
-
-    /**
-     * Resets the current plastic score and updates the UI accordingly.
-     */
-    private void resetScore() {
-        mScore = 0.0;
-        mScoreTextView.setText(String.valueOf(mScore));
-    }
-
-    /**
-     * Calculates the current plastic score, and updates the UI accordingly.
-     */
-    private void calculateScore() {
-        Log.i(TAG, "calculateScore: <weight, type>: <" + mWeight + "," + mType + ">");
-        if (mWeight == null || mType == null) {
-            return;
-        }
-        mScore = mWeight * mType.getPointValue();
-        mScoreTextView.setText(String.valueOf(mScore));
-    }
 
     /**
      * Shows the input message to the user.

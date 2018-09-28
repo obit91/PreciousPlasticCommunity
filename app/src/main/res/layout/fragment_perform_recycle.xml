@@ -25,7 +25,7 @@
     <!-- TODO: switch text type to alphanumeric below (mw_et_nickname) -->
 
     <EditText
-        android:id="@+id/mw_et_nickname"
+        android:id="@+id/trade_et_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/trade_tv_title" />
 
     <EditText
-        android:id="@+id/mw_et_weight"
+        android:id="@+id/trade_et_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -48,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.078"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
+        app:layout_constraintTop_toBottomOf="@+id/trade_et_nickname" />
 
     <Spinner
         android:id="@+id/mw_spinner_type"
@@ -57,10 +57,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mw_et_weight" />
+        app:layout_constraintTop_toBottomOf="@+id/trade_et_points" />
 
     <Button
-        android:id="@+id/mw_btn_confirm"
+        android:id="@+id/trade_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -70,17 +70,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.822"
         app:layout_constraintStart_toEndOf="@+id/mw_spinner_type"
-        app:layout_constraintTop_toBottomOf="@+id/mw_tv_score" />
+        app:layout_constraintTop_toBottomOf="@+id/trade_tv_score" />
 
     <TextView
-        android:id="@+id/mw_tv_score"
+        android:id="@+id/trade_tv_score"
         android:layout_width="113dp"
         android:layout_height="46dp"
         android:gravity="center"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="60dp"
         android:text="Score"
-        app:layout_constraintLeft_toRightOf="@+id/mw_et_nickname"
+        app:layout_constraintLeft_toRightOf="@+id/trade_et_nickname"
         app:layout_constraintTop_toBottomOf="@+id/trade_tv_title" />
 
 </android.support.constraint.ConstraintLayout>

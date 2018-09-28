@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/blue_bg_light"
-    tools:context=".fragments.FragmentPerformRecycle">
+    tools:context=".fragments.FragmentPerformTrade">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -25,7 +25,7 @@
     <!-- TODO: switch text type to alphanumeric below (mw_et_nickname) -->
 
     <EditText
-        android:id="@+id/mw_et_nickname"
+        android:id="@+id/trade_et_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/trade_tv_title" />
 
     <EditText
-        android:id="@+id/mw_et_weight"
+        android:id="@+id/trade_et_points"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -49,10 +49,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
+        app:layout_constraintTop_toBottomOf="@+id/trade_et_nickname" />
 
     <Button
-        android:id="@+id/mw_btn_confirm"
+        android:id="@+id/trade_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="64dp"
@@ -60,18 +60,18 @@
         android:elevation="3dp"
         android:text="CONFIRM"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mw_et_weight" />
+        app:layout_constraintTop_toBottomOf="@+id/trade_et_points" />
 
     <TextView
-        android:id="@+id/mw_tv_score"
+        android:id="@+id/trade_tv_score"
         android:layout_width="113dp"
         android:layout_height="46dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="Total cost"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/mw_btn_confirm"
-        app:layout_constraintEnd_toStartOf="@+id/mw_btn_confirm" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/trade_btn_confirm"
+        app:layout_constraintEnd_toStartOf="@+id/trade_btn_confirm" />
 
     <TextView
         android:id="@+id/textView3"
@@ -80,7 +80,7 @@
         android:layout_marginStart="16dp"
         android:text="Trade with:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBaseline_toBaselineOf="@+id/mw_et_nickname"
+        app:layout_constraintBaseline_toBaselineOf="@+id/trade_et_nickname"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -90,7 +90,7 @@
         android:layout_marginStart="16dp"
         android:text="How many points:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBaseline_toBaselineOf="@+id/mw_et_weight"
+        app:layout_constraintBaseline_toBaselineOf="@+id/trade_et_points"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

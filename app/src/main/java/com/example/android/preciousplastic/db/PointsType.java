@@ -7,7 +7,8 @@ public enum PointsType {
     TYPE_4(4),
     TYPE_5(5),
     TYPE_6(6),
-    TYPE_7(7);
+    TYPE_7(7),
+    TYPE_TOTAL(-1);
 
     // points worth by type
     private final double value;

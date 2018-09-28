@@ -90,7 +90,7 @@ public class UserRepository {
                 });
     }
 
-    public void updateUserPoints(final String nickname, final PointsType type, final double score, final EventNotifier notifier) {
+    public void updateUserPoints(final String nickname, final PointsType type, final double score, final boolean increment, final EventNotifier notifier) {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -99,7 +99,7 @@ public class UserRepository {
                     notifier.onResponse(false);
                     return;
                 }
-                writeUserPoints(user, type, score, notifier);
+                writeUserPoints(user, type, score, increment, notifier);
                 String msg = "updateUserPoints: <nick, type, score> = <%s><%s><%.2f>";
                 Log.i(TAG, String.format(msg, nickname, type, score));
             }
@@ -113,10 +113,14 @@ public class UserRepository {
         PPSession.getUsersTable().child(nickname).addListenerForSingleValueEvent(userListener);
     }
 
-    private void writeUserPoints(final User user, final PointsType type, final double score, EventNotifier notifier) {
+    private void writeUserPoints(final User user, final PointsType type, final double score, boolean increment, EventNotifier notifier) {
         UserPoints userPoints = user.getPoints();
-        userPoints.incrementType(type, score);
-        user.checkPromotion();
+        if (increment) {
+            userPoints.incrementType(type, score);
+            user.checkPromotion();
+        } else {
+            userPoints.decrementType(type, score);
+        }
         updateUser(user, notifier);
     }
 

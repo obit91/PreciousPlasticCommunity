@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ImageView;
         import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.entities.User;
@@ -66,7 +67,8 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.title.setText(mDataSource.get(position).getTitle());
         holder.creator.setText(mDataSource.get(position).getName());
-        holder.title.setText(mDataSource.get(position).getTitle());
+        holder.description.setText(mDataSource.get(position).getDescription());
+        holder.price.setText(String.valueOf(mDataSource.get(position).getPrice()));
         Picasso
             .with(mContext)
             .load(mDataSource.get(position).getLink())
@@ -81,10 +83,12 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
         private static final String TAG = "RECYCLER_VIEW_HOLDER";
 
         boolean optionsVisible;
+        boolean ownsItem;
 
         TextView title;
         TextView creator;
         TextView description;
+        TextView price;
         ImageView image;
         Button ownerButton;
         Button shareButton;
@@ -97,15 +101,12 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             title = itemView.findViewById(R.id.bazar_ri_title);
             creator = itemView.findViewById(R.id.bazar_ri_creator);
             description = itemView.findViewById(R.id.bazar_ri_description);
+            price = itemView.findViewById(R.id.bazar_ri_price);
             image = itemView.findViewById(R.id.bazar_ri_img);
 
             ownerButton = itemView.findViewById(R.id.bazar_ri_owner_button);
             ownerButton.setOnClickListener(this);
-            if (PPSession.getCurrentUser().isOwner()) {
-                ownerButton.setText("Delete");
-            } else {
-                ownerButton.setText("Buy");
-            }
+            ownerButton.setText("Default");
             shareButton = itemView.findViewById(R.id.bazar_ri_share);
             shareButton.setOnClickListener(this);
 
@@ -127,6 +128,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             title.setAlpha(alphaValue);
             creator.setAlpha(alphaValue);
             description.setAlpha(alphaValue);
+            price.setAlpha(alphaValue);
             image.setAlpha(alphaValue);
 
             ownerButton.setClickable(visible);
@@ -246,15 +248,27 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             //TODO: fill me!
         }
 
+        private void requestDeleteItem(int position) {
+            if (PPSession.getCurrentUser().isOwner()) {
+                verifyItemRemoval(position);
+            } else {
+                sendInterestMessage(position);
+            }
+        }
+
+        private void requestBuyItem(int position) {
+            Toast.makeText(mContext, "wanna buy this item", Toast.LENGTH_SHORT).show();
+        }
+
         @Override
         public void onClick(View v) {
             clickListener.onItemClick(getAdapterPosition(), v);
             switch (v.getId()) {
                 case R.id.bazar_ri_owner_button:
-                    if (PPSession.getCurrentUser().isOwner()) {
-                        verifyItemRemoval(getAdapterPosition());
+                    if (ownsItem) {
+                        requestDeleteItem(getAdapterPosition());
                     } else {
-                        sendInterestMessage(getAdapterPosition());
+                        requestBuyItem(getAdapterPosition());
                     }
                     break;
                 case R.id.bazar_ri_share:
@@ -269,9 +283,21 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             }
         }
 
+        private void checkOwner(int position) {
+            final ImgurBazarItem imgurBazarItem = mDataSource.get(position);
+            ownsItem = imgurBazarItem.getName().equals(PPSession.getNickname());
+            if (ownsItem) {
+                ownerButton.setText("DELETE");
+            } else {
+                ownerButton.setText("BUY");
+            }
+        }
+
         @Override
         public boolean onLongClick(View v) {
-            clickListener.onItemLongClick(getAdapterPosition(), v);
+            int position = getAdapterPosition();
+            clickListener.onItemLongClick(position, v);
+            checkOwner(position);
             setOptionsVisible(true);
             return true;
         }
