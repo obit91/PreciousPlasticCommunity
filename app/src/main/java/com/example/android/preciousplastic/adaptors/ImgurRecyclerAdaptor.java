@@ -21,9 +21,11 @@ import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.db.entities.User;
+import com.example.android.preciousplastic.fragments.FragmentPerformTrade;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
 import com.example.android.preciousplastic.utils.External;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.utils.SharedResources;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -257,7 +259,11 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
         }
 
         private void requestBuyItem(int position) {
-            Toast.makeText(mContext, "wanna buy this item", Toast.LENGTH_SHORT).show();
+            final ImgurBazarItem imgurBazarItem = mDataSource.get(position);
+            SharedResources.put("bazarTrade", true);
+            SharedResources.put("price", imgurBazarItem.getPrice());
+            SharedResources.put("name", imgurBazarItem.getName());
+            PPSession.getHomeActivity().switchFragment(FragmentPerformTrade.class);
         }
 
         @Override

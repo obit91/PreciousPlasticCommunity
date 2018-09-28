@@ -18,6 +18,7 @@ import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.db.repositories.UserRepository;
 import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.utils.SharedResources;
 
 import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull;
 
@@ -102,6 +103,16 @@ public class FragmentPerformTrade extends BaseFragment implements View.OnClickLi
 
         // button listener
         mConfirmButton.setOnClickListener(this);
+
+        final Object bazarTrade = SharedResources.get("bazarTrade");
+        if (bazarTrade != null) {
+            SharedResources.remove("bazarTrade");
+            String seller = (String)SharedResources.remove("name");
+            Double price = (Double)SharedResources.remove("price");
+            mNicknameEditView.setText(seller);
+            mPointsTextView.setText(String.valueOf(price));
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
