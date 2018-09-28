@@ -189,7 +189,7 @@ public class FragmentPerformTrade extends BaseFragment implements View.OnClickLi
         WriteUserPoints eventNotifier = new WriteUserPoints();
         Double points = Double.valueOf(mPointsTextView.getText().toString());
 
-        if (currentUser.getPoints().getTotalPoints() < points) {
+        if (currentUser.getPoints().getTotalPurchasePoints() < points) {
             Toast.makeText(getContext(), "You don't have enough purchase to trade.", Toast.LENGTH_SHORT).show();
             return;
         }

@@ -185,13 +185,7 @@ public class User {
      */
     public void checkPromotion() {
         UserRank nextRank = rank;
-
-        double totalPoints = points.getType1() + points.getType2() +
-                             points.getType3() + points.getType4() +
-                             points.getType5() + points.getType5() +
-                             points.getType6() + points.getType7();
-
-        while  (totalPoints >= nextRank.getRequiredExp() && !rank.isMaxRank()) {
+        while  (points.getPointsSum() >= nextRank.getRequiredExp() && !rank.isMaxRank()) {
             nextRank = rank.getNextRank();
             rank = nextRank;
         }
