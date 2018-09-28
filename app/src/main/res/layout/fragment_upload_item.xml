@@ -22,6 +22,20 @@
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal" />
 
     <EditText
+        android:id="@+id/upload_et_price"
+        android:layout_width="329dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="12dp"
+        android:hint="Item price"
+        android:textColorLink="@color/colorPrimaryDark"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/upload_et_description" />
+
+    <EditText
         android:id="@+id/upload_et_description"
         android:layout_width="327dp"
         android:layout_height="84dp"

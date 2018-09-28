@@ -15,6 +15,7 @@ public class ImgurBazarItem {
     protected String name;
     protected String link;
     protected Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    protected Double price;
 
     public String getId() {
         return id;
@@ -86,5 +87,13 @@ public class ImgurBazarItem {
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

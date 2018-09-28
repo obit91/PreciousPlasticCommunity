@@ -31,6 +31,7 @@ import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.imgur.ImgurAsyncGenericTask;
 import com.example.android.preciousplastic.imgur.ImgurData;
 import com.example.android.preciousplastic.imgur.ImgurRequestsGenerator;
+import com.example.android.preciousplastic.imgur.UploadNode;
 import com.example.android.preciousplastic.imgur.UploadTask;
 import com.example.android.preciousplastic.permissions.PermissionResponseHandler;
 import com.example.android.preciousplastic.utils.ImageUtils;
@@ -70,11 +71,12 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
     private EditText mTitle = null;
     private EditText mDescription = null;
     private Button mUploadButton = null;
+    private EditText mPrice = null;
 
     private Intent mChosenResult = null;
 
     // concurrentQueue to manage multi-threaded async uploads.
-    private static Queue<Bitmap> mUploadQueue = new ConcurrentLinkedQueue<>();
+    private static Queue<UploadNode> mUploadQueue = new ConcurrentLinkedQueue<>();
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_PICK_IMAGE = 2;
@@ -132,6 +134,9 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
         mDescription = (EditText) view.findViewById(R.id.upload_et_description);
         mDescription.setVisibility(View.INVISIBLE);
         uploadViews.add(mDescription);
+        mPrice = (EditText) view.findViewById(R.id.upload_et_price);
+        mPrice.setVisibility(View.INVISIBLE);
+        uploadViews.add(mPrice);
 
         // progress
         mUploadImage = (ImageView) view.findViewById(R.id.upload_iv_upload_img);
@@ -166,7 +171,7 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
                     mProgressBar = newFragment.getmProgressBar();
                     mProgressText = newFragment.getmProgressText();
                     mUploadImage = newFragment.getmUploadImage();
-                    mUploadImage.setImageBitmap(mUploadQueue.peek());
+                    mUploadImage.setImageBitmap(mUploadQueue.peek().getBitmap());
                 }
             }
 
@@ -174,7 +179,7 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
                 return;
             }
             visibility = View.VISIBLE;
-            mUploadImage.setImageBitmap(mUploadQueue.peek());
+            mUploadImage.setImageBitmap(mUploadQueue.peek().getBitmap());
         } else {
             visibility = View.INVISIBLE;
         }
@@ -209,6 +214,8 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
     @Override
     public void getResult(ImgurData imgurData) {
         final User currentUser = PPSession.getCurrentUser();
+        final UploadNode uploadNode = mUploadQueue.poll();
+        imgurData.setPrice(uploadNode.getPrice());
         currentUser.addBazarItem(imgurData);
     }
 
@@ -278,10 +285,16 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
         }
 
         // update upload queue with current image.
-        mUploadQueue.add(chosenImage);
+        UploadNode uploadNode = new UploadNode(chosenImage, Double.valueOf(mPrice.getText().toString()));
+        mUploadQueue.add(uploadNode);
+        final File tempFile = ImageUtils.generateTempFile(
+                getContext(),
+                chosenImage);
 
         final ImgurAsyncGenericTask imgurAsyncGenericTask = ImgurRequestsGenerator.generatePOST(this,
-                ImageUtils.generateTempFile(getContext(), chosenImage), mTitle.getText().toString(), mDescription.getText().toString());
+                        tempFile,
+                        mTitle.getText().toString(),
+                        mDescription.getText().toString());
         imgurAsyncGenericTask.execute();
     }
 
@@ -367,7 +380,6 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
         mProgressBar.setVisibility(View.INVISIBLE);
         String done = "Upload complete!";
         mProgressText.setText(done);
-        mUploadQueue.poll();
     }
 
     public ImageView getmUploadImage() {
@@ -404,6 +416,14 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
             invalidInput = true;
         } else {
             mDescription.setHintTextColor(Color.BLACK);
+        }
+
+        if ( ViewTools.isTextViewNull(mPrice)) {
+            msg.append("price").append("\n");
+            mPrice.setHintTextColor(Color.RED);
+            invalidInput = true;
+        } else {
+            mPrice.setHintTextColor(Color.BLACK);
         }
 
         if (invalidInput) {
@@ -443,6 +463,7 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
                 if (initiateUpload()) {
                     mTitle.setText(null);
                     mDescription.setText(null);
+                    mPrice.setText(null);
                 }
                 break;
         }

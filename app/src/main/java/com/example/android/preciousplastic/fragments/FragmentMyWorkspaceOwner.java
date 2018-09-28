@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.ViewUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -45,7 +46,6 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private Boolean edited = false;
     private Button mEdit = null;
     private Button mUploadItem = null;
     private TextView mTitle = null;
@@ -99,15 +99,6 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
         mTitle = (TextView) view.findViewById(R.id.mw_tv_workspace_title);
         mDescription = (TextView) view.findViewById(R.id.mw_tv_workspace_description);
 
-        if (!edited) {
-            mTitle.setVisibility(View.INVISIBLE);
-            mUploadItem.setVisibility(View.INVISIBLE);
-        } else {
-            mTitle.setVisibility(View.VISIBLE);
-            mUploadItem.setVisibility(View.VISIBLE);
-            mDescription.setVisibility(View.VISIBLE);
-        }
-
         mUploadItem.setOnClickListener(this);
         mEdit.setOnClickListener(this);
 
@@ -120,8 +111,19 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
         final User currentUser = PPSession.getCurrentUser();
         final Workspace workspace = currentUser.getWorkspace();
 
-        mTitle.setText(workspace.getTitle());
-        mDescription.setText(workspace.getDescription());
+        final String title = workspace.getTitle();
+        final String description = workspace.getDescription();
+
+        if (title == null || title.equals("") || description == null || description.equals("")) {
+            mTitle.setVisibility(View.INVISIBLE);
+            mUploadItem.setVisibility(View.INVISIBLE);
+        } else {
+            mTitle.setText(workspace.getTitle());
+            mDescription.setText(workspace.getDescription());
+
+            mTitle.setVisibility(View.VISIBLE);
+            mUploadItem.setVisibility(View.VISIBLE);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -202,9 +204,6 @@ public class FragmentMyWorkspaceOwner extends BaseFragment implements View.OnCli
                 onUploadClick(view);
                 break;
             case (R.id.mw_btn_edit):
-                edited = true;
-                mTitle.setVisibility(View.VISIBLE); // After first edit, show title
-                mUploadItem.setVisibility(View.VISIBLE); // After first edit, allow upload
                 onEditClick(view);
                 break;
             default:
