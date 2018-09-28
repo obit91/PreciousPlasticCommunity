@@ -229,7 +229,7 @@
         android:id="@+id/profile_tv_total2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Current Total"
+        android:text="Purchase points"
         android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/profile_tv_total"
         app:layout_constraintEnd_toEndOf="parent"

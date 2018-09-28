@@ -42,43 +42,36 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="#####"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
-
-    <Spinner
-        android:id="@+id/mw_spinner_type"
-        android:layout_width="219dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
 
     <Button
         android:id="@+id/mw_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginTop="128dp"
         android:elevation="3dp"
         android:text="CONFIRM"
-        tools:layout_editor_absoluteX="263dp"
-        tools:layout_editor_absoluteY="433dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mw_et_weight" />
 
     <TextView
         android:id="@+id/mw_tv_score"
         android:layout_width="113dp"
         android:layout_height="46dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="Total Points"
+        android:text="Total cost"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="93dp"
-        tools:layout_editor_absoluteY="433dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/mw_btn_confirm"
+        app:layout_constraintEnd_toStartOf="@+id/mw_btn_confirm" />
 
     <TextView
         android:id="@+id/textView3"
@@ -99,16 +92,5 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBaseline_toBaselineOf="@+id/mw_et_weight"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:text="Plastic type:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mw_et_nickname" />
 
 </android.support.constraint.ConstraintLayout>
