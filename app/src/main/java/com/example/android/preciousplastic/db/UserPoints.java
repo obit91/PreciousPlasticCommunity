@@ -9,7 +9,7 @@ public class UserPoints {
     private double type5;
     private double type6;
     private double type7;
-    private double totalPoints;
+    private double totalPurchasePoints;
 
     public UserPoints() {
 
@@ -100,12 +100,18 @@ public class UserPoints {
     }
 
     public double getTotalPurchasePoints() {
-        return totalPoints;
+        return totalPurchasePoints;
+    }
+
+    public void setTotalPurchasePoints(double totalPurchasePoints) {
+        this.totalPurchasePoints = totalPurchasePoints;
     }
 
     public String getTotalPurchasePointsAsString() {
-        return String.valueOf(totalPoints);
+        return String.valueOf(totalPurchasePoints);
     }
+
+
 
     public double getPointsSum() {
         return type1 + type2 + type3 + type4 + type5 + type6 + type7;
@@ -176,7 +182,7 @@ public class UserPoints {
             default:
                 break;
         }
-        totalPoints += value;
-        totalPoints = Math.max(totalPoints, 0);
+        totalPurchasePoints += value;
+        totalPurchasePoints = Math.max(totalPurchasePoints, 0);
     }
 }
