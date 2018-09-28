@@ -65,7 +65,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:background="@android:color/transparent"
-        android:text="Back To Portal"
+        android:text="Back To Hub"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.21"

@@ -116,7 +116,7 @@ public class FragmentHome extends BaseFragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_hub, container, false);
             mUserName = (TextView) view.findViewById(R.id.hub_tv_nickname);
         mTitle = (TextView) view.findViewById(R.id.hub_tv_title);
         bazaarBtn = (ImageButton) view.findViewById(R.id.hub_ib_bazaar);
