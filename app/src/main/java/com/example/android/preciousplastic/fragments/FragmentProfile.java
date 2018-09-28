@@ -127,14 +127,14 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
         mTitle.setText(title);
         mNickname.setText(PPSession.getNickname());
 
-        currentXP.setText(points.getTotalPurchasePointsAsString());
+        currentXP.setText(String.valueOf(points.getPointsSum()));
         nextRankXP.setText(String.valueOf(rank.getRequiredExp()));
 
         int progress = getProgress(points, rank);
         progressBar.getProgressDrawable().setColorFilter(
                 Color.BLUE, android.graphics.PorterDuff.Mode.SRC_IN);
         progressBar.setProgress(progress);
-        String percentage = progress + "%";
+        String percentage = (progress < 100 ? progress : "100") + "%";
         percentDone.setText(percentage);
     }
 
