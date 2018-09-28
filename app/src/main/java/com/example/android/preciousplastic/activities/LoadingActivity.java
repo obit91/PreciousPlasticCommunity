@@ -155,6 +155,10 @@ public class LoadingActivity extends BaseActivity {
                             Log.e(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoadingActivity.this, "Authentication failed.",
                                     Toast.LENGTH_LONG).show();
+
+                            Intent welcomeIntent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                            welcomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(welcomeIntent);
                         }
                         PPSession.setLoggingIn(false);
                     }
