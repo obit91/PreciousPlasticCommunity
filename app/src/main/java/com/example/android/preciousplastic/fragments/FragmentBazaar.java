@@ -3,6 +3,7 @@ package com.example.android.preciousplastic.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,19 +11,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.imgur.ImgurBazarItem;
 import com.example.android.preciousplastic.adaptors.ImgurRecyclerAdaptor;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.utils.ViewTools;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import com.example.android.preciousplastic.adaptors.ImgurRecyclerAdaptor.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,7 +40,7 @@ import java.util.List;
  * Use the {@link FragmentBazaar#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentBazaar extends BaseFragment
+public class FragmentBazaar extends BaseFragment implements View.OnClickListener
 {
     private static final String TAG = "FRAGMENT_BAZAR";
 
@@ -51,7 +58,8 @@ public class FragmentBazaar extends BaseFragment
     private RecyclerView mRecyclerView;
     private ImgurRecyclerAdaptor mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private View mButton;
+    private Button mApplySearch = null;
+    private EditText mCreatorText = null;
     private List<ImgurBazarItem> mImages = new ArrayList<>();
 
     private List<ViewHolder> mLongClickedItems = new ArrayList<>();
@@ -106,7 +114,11 @@ public class FragmentBazaar extends BaseFragment
 //        request.delegate = FragmentBazaar.this;
 //        request.execute();
 
-        retrieveMyItems();
+        mApplySearch = inflate.findViewById(R.id.bazar_btn_apply);
+        mApplySearch.setOnClickListener(this);
+        mCreatorText = inflate.findViewById(R.id.bazar_et_search_creator);
+
+        retrieveItems();
 
         return inflate;
     }
@@ -192,32 +204,52 @@ public class FragmentBazaar extends BaseFragment
     }
 
     /**
-     * Retrieves all of the connected user's items from the bazar.
+     * Retrieves all the items based on the creator.
      */
-    public void retrieveMyItems(){
+    public void retrieveItems(){
+
         final List<ImgurBazarItem> items = new ArrayList<>();
-        ValueEventListener itemsListener = new ValueEventListener() {
+
+        String creatorNick = null;
+        if (!ViewTools.isTextViewNull(mCreatorText)) {
+            creatorNick = mCreatorText.getText().toString();
+        }
+
+        Query query;
+        final DatabaseReference usersTable = PPSession.getUsersTable();
+
+        if (creatorNick != null) {
+            query = usersTable.orderByChild("nickname").equalTo(creatorNick);
+        } else {
+            query = usersTable.orderByChild("nickname");
+        }
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ImgurBazarItem imgurBazarItem;
-                for (DataSnapshot itemBazarSnapShot : dataSnapshot.getChildren()) {
-                    imgurBazarItem = itemBazarSnapShot.getValue(ImgurBazarItem.class);
-                    String msg = "retrieveMyItems: <title, date> = <%s><%s>";
-                    Log.i(TAG, String.format(msg, imgurBazarItem.getTitle(), imgurBazarItem.getDatetime()));
-                    items.add(imgurBazarItem);
-                    updateItems(items);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user;
+                HashMap<String, ImgurBazarItem> itemsOnSale;
+                for (DataSnapshot userDataSnapshop : dataSnapshot.getChildren()) {
+                    user = userDataSnapshop.getValue(User.class);
+                    if (user == null || !user.isOwner()) {
+                        continue;
+                    }
+                    itemsOnSale = user.getWorkspace().getItemsOnSale();
+                    for (ImgurBazarItem imgurBazarItem : itemsOnSale.values()) {
+                        String msg = "retrieveMyItems: <title, date> = <%s><%s>";
+                        Log.i(TAG, String.format(msg, imgurBazarItem.getTitle(), imgurBazarItem.getDatetime()));
+                        items.add(imgurBazarItem);
+                    }
                 }
+                updateItems(items);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Getting User failed, log a message
                 Log.e(TAG, "retrieveMyItems:onFirebaseCancelled", databaseError.toException());
             }
-        };
-        final String nickname = PPSession.getCurrentUser().getNickname();
-        final DatabaseReference child = PPSession.getUsersTable().child(nickname).child("workspace").child("itemsOnSale");
-        child.addListenerForSingleValueEvent(itemsListener);
+        });
     }
 
     /**
@@ -245,5 +277,18 @@ public class FragmentBazaar extends BaseFragment
         }
         mLongClickedItems.clear();
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case(R.id.bazar_btn_apply):
+                retrieveItems();
+                break;
+            case(R.id.bazar_et_search_creator):
+                break;
+            default:
+                break;
+        }
     }
 }

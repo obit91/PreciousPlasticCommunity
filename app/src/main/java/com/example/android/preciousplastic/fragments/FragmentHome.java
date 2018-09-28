@@ -21,7 +21,7 @@ public class FragmentHome extends BaseFragment
     private static final String ARG_PARAM2 = "param2";
 
     private ImageButton bazaarBtn;
-    private ImageButton tradeBtn;
+    private ImageButton recycleBtn;
     private ImageButton profileBtn;
     private ImageButton mapBtn;
 
@@ -60,7 +60,7 @@ public class FragmentHome extends BaseFragment
     }
     private void SetupHubButtonListeners() {
 
-        if (bazaarBtn == null || mapBtn == null || profileBtn == null || tradeBtn == null) {
+        if (bazaarBtn == null || mapBtn == null || profileBtn == null || recycleBtn == null) {
             return;
         }
         //Setup btns backgrounds
@@ -71,8 +71,8 @@ public class FragmentHome extends BaseFragment
         mapBtn.getBackground().setAlpha(backgroundAlphaVal);
         profileBtn.setBackgroundColor(Color.WHITE);
         profileBtn.getBackground().setAlpha(backgroundAlphaVal);
-        tradeBtn.setBackgroundColor(Color.WHITE);
-        tradeBtn.getBackground().setAlpha(backgroundAlphaVal);
+        recycleBtn.setBackgroundColor(Color.WHITE);
+        recycleBtn.getBackground().setAlpha(backgroundAlphaVal);
 
         // Set up the buttons' listeners
         bazaarBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,10 +87,10 @@ public class FragmentHome extends BaseFragment
                 PPSession.getHomeActivity().switchFragment(FragmentMap.class);
             }
         });
-        tradeBtn.setOnClickListener(new View.OnClickListener() {
+        recycleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PPSession.getHomeActivity().switchFragment(FragmentPerformTrade.class);
+                PPSession.getHomeActivity().switchFragment(FragmentPerformRecycle.class);
             }
         });
         profileBtn.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +122,7 @@ public class FragmentHome extends BaseFragment
         bazaarBtn = (ImageButton) view.findViewById(R.id.hub_ib_bazaar);
         mapBtn = (ImageButton) view.findViewById(R.id.hub_ib_map);
         profileBtn = (ImageButton) view.findViewById(R.id.hub_ib_profile);
-        tradeBtn = (ImageButton) view.findViewById(R.id.hub_ib_trade);
+        recycleBtn = (ImageButton) view.findViewById(R.id.hub_ib_recycle);
 
         mUserName.setText(PPSession.getNickname());
         mTitle.setText(PPSession.getCurrentUser().getRank().getTitle());

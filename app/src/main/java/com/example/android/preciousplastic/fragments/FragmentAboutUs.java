@@ -2,6 +2,7 @@ package com.example.android.preciousplastic.fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.android.preciousplastic.R;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
+import static com.example.android.preciousplastic.utils.ImageUtils.decodeSampledBitmapFromResource;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,8 +80,28 @@ public class FragmentAboutUs extends BaseFragment
     {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_about_us, container, false);
-        //Todo Compress images here
+
+        ImageView ohadIV = v.findViewById(R.id.aboutUs_iv_ohad);
+        ImageView yoniIV = v.findViewById(R.id.aboutUs_iv_yoni);
+        ImageView kerenIV = v.findViewById(R.id.aboutUs_iv_keren);
+
+        ohadIV.setImageBitmap(
+                decodeSampledBitmapFromResource(getResources(), R.drawable.ohad_beltzer, 100, 150));
+
+        yoniIV.setImageBitmap(
+                decodeSampledBitmapFromResource(getResources(), R.drawable.yonatan_manor, 100, 150));
+
+        kerenIV.setImageBitmap(
+                decodeSampledBitmapFromResource(getResources(), R.drawable.keren_meron, 100, 150));
+
         return v;
+    }
+
+    private void compressBitmap(Bitmap bitmap) {
+        int ratio = 25;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, ratio, out);
+        bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

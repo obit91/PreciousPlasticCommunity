@@ -11,36 +11,55 @@
         android:id="@+id/bazar_recycleview"
         android:layout_width="361dp"
         android:layout_height="509dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bazaar_et_searchbox" />
-
-    <TextView
-        android:id="@+id/bazaar_tv_search"
-        android:layout_width="65dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Search: "
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline16" />
 
     <EditText
-        android:id="@+id/bazaar_et_searchbox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/bazar_et_search_creator"
+        android:layout_width="120dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:backgroundTint="@color/colorDarkGrey"
-        android:hint="Username/ Name/ Descrition/ Etc'"
+        android:gravity="center"
+        android:hint="Creator"
         android:textColorLink="#181a84"
-        app:layout_constraintBaseline_toBaselineOf="@+id/bazaar_tv_search"
+        app:layout_constraintBottom_toTopOf="@+id/guideline16"
+        app:layout_constraintEnd_toStartOf="@+id/guideline15"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/bazar_btn_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Apply"
+        app:layout_constraintBottom_toTopOf="@+id/guideline16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/bazaar_tv_search" />
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="192dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="57dp" />
 
 </android.support.constraint.ConstraintLayout>

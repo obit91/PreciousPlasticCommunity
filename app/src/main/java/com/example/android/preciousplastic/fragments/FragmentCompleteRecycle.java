@@ -4,20 +4,16 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.android.preciousplastic.R;
 import com.example.android.preciousplastic.utils.PPSession;
 
-import org.w3c.dom.Text;
-
-public class FragmentCompleteTrade extends BaseFragment implements View.OnClickListener {
+public class FragmentCompleteRecycle extends BaseFragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +31,7 @@ public class FragmentCompleteTrade extends BaseFragment implements View.OnClickL
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentCompleteTrade() {
+    public FragmentCompleteRecycle() {
         // Required empty public constructor
     }
 
@@ -48,8 +44,8 @@ public class FragmentCompleteTrade extends BaseFragment implements View.OnClickL
      * @return A new instance of fragment FragmentSettings.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentCompleteTrade newInstance(String param1, String param2) {
-        FragmentCompleteTrade fragment = new FragmentCompleteTrade();
+    public static FragmentCompleteRecycle newInstance(String param1, String param2) {
+        FragmentCompleteRecycle fragment = new FragmentCompleteRecycle();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -164,7 +160,7 @@ public class FragmentCompleteTrade extends BaseFragment implements View.OnClickL
      * Switches back to the trade screen.
      */
     private void performAnother() {
-        PPSession.getHomeActivity().switchFragment(FragmentPerformTrade.class);
+        PPSession.getHomeActivity().switchFragment(FragmentPerformRecycle.class);
     }
 
     /**

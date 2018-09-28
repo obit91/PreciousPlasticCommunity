@@ -213,6 +213,7 @@ public class User {
             return false;
         }
 
+        bazarItem.setName(nickname);
         workspace.updateBazarItem(bazarItem, BazarOperations.ADD_ITEM);
         commitChanges();
         return true;

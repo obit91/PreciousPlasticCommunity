@@ -46,7 +46,10 @@ import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.util.TileSystem;
+import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
@@ -61,6 +64,13 @@ import java.util.TreeMap;
 
 public class MapActivity extends BaseActivity {
 
+    private static final String TAG = "MAP_ACTIVITY";
+
+    private static final Double ZOOM_MIN_SCOPE = 3.0;
+    private static final Double NORTH = -85.0;
+    private static final Double EAST = -180.0;
+    private static final Double SOUTH = 85.0;
+    private static final Double WEST = 180.0;
 
     private Context context;
     private Resources resources;
@@ -144,13 +154,16 @@ public class MapActivity extends BaseActivity {
 
         this.mapView = mapView;
 
+        mapView.setMinZoomLevel(ZOOM_MIN_SCOPE);
+
         zoomLevel = (int) mapView.getZoomLevelDouble();
 
         // Map settings
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
-        mapView.setHorizontalMapRepetitionEnabled(false);
+        mapView.setHorizontalMapRepetitionEnabled(true);
+        mapView.setVerticalMapRepetitionEnabled(false);
 
         // set the map to user's location
         double initLat = latLoc;
@@ -178,11 +191,13 @@ public class MapActivity extends BaseActivity {
         mapView.addMapListener(new MapListener() {
             @Override
             public boolean onScroll(ScrollEvent event) {
+                removeFilters();
                 MapActivity.this.onScroll(event);
                 return true;
             }
             @Override
             public boolean onZoom(ZoomEvent event) {
+                removeFilters();
                 MapActivity.this.onZoom(event);
                 return true;
             }
@@ -192,11 +207,13 @@ public class MapActivity extends BaseActivity {
         MapEventsReceiver mReceive = new MapEventsReceiver() {
             @Override
             public boolean singleTapConfirmedHelper(GeoPoint p) {
+                removeFilters();
                 return false;
             }
 
             @Override
             public boolean longPressHelper(GeoPoint p) {
+                removeFilters();
                 onLongClick(p);
                 return true;
             }
@@ -207,6 +224,13 @@ public class MapActivity extends BaseActivity {
         // set and draw overlays on map
         setOverlays();
         drawOverlaysOnMap();
+    }
+
+    public void removeFilters() {
+        if (filterWindow != null && filterWindow.isShowing()) {
+            filterWindow.dismiss();
+            filterWindow = null;
+        }
     }
 
     public void onLongClick(GeoPoint p){
@@ -234,6 +258,7 @@ public class MapActivity extends BaseActivity {
         int newX = scrollEvent.getX();
         int newY = scrollEvent.getY();
         // process only if movement is significant
+        scrollEvent.getSource().getBoundingBox();
         if (Math.hypot(newX-x, newY-y) > 100){
             onMove();
         }
@@ -243,6 +268,7 @@ public class MapActivity extends BaseActivity {
         int newZoom = (int) zoomEvent.getZoomLevel();
         // process only if zoom jump is significant and repeats itself twice (user halts on zoom)
         if (newZoom != zoomLevel){
+            Log.d(TAG, "onZoom: zoom level changed to: " + newZoom);
             zoomLevel = newZoom;
             onMove();
         }
@@ -380,8 +406,7 @@ public class MapActivity extends BaseActivity {
                         });
                     }
                 } else {
-                    filterWindow.dismiss();
-                    filterWindow = null;
+                    removeFilters();
                 }
             }
         });
@@ -634,6 +659,7 @@ public class MapActivity extends BaseActivity {
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+
                         if (pinType == MapConstants.PinType.SINGLE) {
                             LinkedTreeMap<String, Object> chosenPointInfo = (LinkedTreeMap<String, Object>) webPinsArrayList.get(index);
                             String website = "";

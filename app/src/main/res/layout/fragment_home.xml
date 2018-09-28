@@ -17,12 +17,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--<ImageView-->
-    <!--android:id="@+id/hub_ib_trade"-->
+    <!--android:id="@+id/hub_ib_recycle"-->
     <!--android:layout_width="159dp"-->
     <!--android:layout_height="113dp"-->
     <!--android:layout_marginEnd="16dp"-->
     <!--android:layout_marginTop="32dp"-->
-    <!--android:src="@drawable/trade"-->
+    <!--android:src="@drawable/recycle"-->
     <!--app:layout_constraintDimensionRatio="h,1:1"-->
     <!--app:layout_constraintEnd_toEndOf="parent"-->
     <!--app:layout_constraintHorizontal_bias="0.5"-->
@@ -37,7 +37,7 @@
     <!--android:layout_marginTop="32dp"-->
     <!--android:src="@drawable/local_map"-->
     <!--app:layout_constraintDimensionRatio="h,1:1"-->
-    <!--app:layout_constraintEnd_toStartOf="@+id/hub_ib_trade"-->
+    <!--app:layout_constraintEnd_toStartOf="@+id/hub_ib_recycle"-->
     <!--app:layout_constraintHorizontal_bias="0.5"-->
     <!--app:layout_constraintStart_toStartOf="parent"-->
     <!--app:layout_constraintTop_toTopOf="@+id/guideline8" />-->
@@ -110,7 +110,7 @@
         android:src="@drawable/flakes"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/hub_ib_trade"
+        app:layout_constraintEnd_toStartOf="@+id/hub_ib_recycle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +118,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
-        android:id="@+id/hub_ib_trade"
+        android:id="@+id/hub_ib_recycle"
         android:layout_width="118dp"
         android:layout_height="128dp"
         android:layout_marginBottom="2dp"
@@ -127,7 +127,7 @@
         android:layout_marginTop="8dp"
         android:elevation="2dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/trade"
+        android:src="@drawable/recycle"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"

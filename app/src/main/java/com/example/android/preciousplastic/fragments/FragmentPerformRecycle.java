@@ -31,12 +31,12 @@ import static com.example.android.preciousplastic.utils.ViewTools.isTextViewNull
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentPerformTrade.OnFragmentInteractionListener} interface
+ * {@link FragmentPerformRecycle.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentPerformTrade#newInstance} factory method to
+ * Use the {@link FragmentPerformRecycle#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentPerformTrade extends BaseFragment implements View.OnClickListener
+public class FragmentPerformRecycle extends BaseFragment implements View.OnClickListener
 {
     private final String TAG = "FragmentMWOwner";
 
@@ -62,7 +62,7 @@ public class FragmentPerformTrade extends BaseFragment implements View.OnClickLi
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentPerformTrade()
+    public FragmentPerformRecycle()
     {
         // Required empty public constructor
     }
@@ -76,9 +76,9 @@ public class FragmentPerformTrade extends BaseFragment implements View.OnClickLi
      * @return A new instance of fragment FragmentMyWorkspaceOwner.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentPerformTrade newInstance(String param1, String param2)
+    public static FragmentPerformRecycle newInstance(String param1, String param2)
     {
-        FragmentPerformTrade fragment = new FragmentPerformTrade();
+        FragmentPerformRecycle fragment = new FragmentPerformRecycle();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -243,7 +243,7 @@ public class FragmentPerformTrade extends BaseFragment implements View.OnClickLi
         public void onResponse(Object dataSnapshotObj){
             boolean success = (boolean)dataSnapshotObj;
             if (success) {
-                PPSession.getHomeActivity().switchFragment(FragmentCompleteTrade.class);
+                PPSession.getHomeActivity().switchFragment(FragmentCompleteRecycle.class);
             } else {
                 Toast.makeText(getActivity(), "Nickname does not exist.", Toast.LENGTH_SHORT).show();
             }

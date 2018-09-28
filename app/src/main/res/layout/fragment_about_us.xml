@@ -47,51 +47,45 @@
         android:layout_alignParentRight="true">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/aboutUs_iv_keren"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        android:src="@drawable/keren_meron"
         tools:layout_editor_absoluteX="261dp"
         tools:layout_editor_absoluteY="94dp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/aboutUs_tv_keren"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Keren"/>
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/aboutUs_iv_ohad"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        android:src="@drawable/ohad_beltzer"
         tools:layout_editor_absoluteX="261dp"
         tools:layout_editor_absoluteY="94dp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/aboutUs_tv_ohad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Ohad" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/aboutUs_iv_yoni"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        android:src="@drawable/yonatan_manor"
         tools:layout_editor_absoluteX="261dp"
         tools:layout_editor_absoluteY="94dp" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/aboutUs_tv_yoni"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Yonatan" />
-
-
-
     </LinearLayout>
 </RelativeLayout>
