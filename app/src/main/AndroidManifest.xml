@@ -36,7 +36,7 @@
 
         <activity
             android:name=".activities.WelcomeActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+            android:theme="@style/AppTheme.GreenActionBar"/>
         <activity
             android:name=".activities.HomeActivity"/>
         <activity
@@ -46,7 +46,8 @@
             android:noHistory="true"/>
         <activity
             android:name=".activities.RegisterActivity"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:theme="@style/AppTheme.GreenActionBar"/>
         <activity
             android:name=".activities.NoConnectionActivity"
             android:noHistory="true"/>

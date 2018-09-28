@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:text="Shredder"
-        android:textColor="@color/colorStylishBlackText"
+        android:textColor="@color/colorStylishPrimaryBar"
         android:theme="@style/checkBoxStyleGreenLO"
         app:layout_constraintBaseline_toBaselineOf="@+id/register_checkbox_extrusion"
         app:layout_constraintStart_toStartOf="parent" />
@@ -107,7 +107,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="20dp"
         android:text="Injection"
-        android:textColor="@color/colorStylishBlackText"
+        android:textColor="@color/colorStylishPrimaryBar"
         android:theme="@style/checkBoxStyleGreenLO"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_checkbox_shredder" />
@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/colorStylishBlackText"
+        android:textColor="@color/colorStylishPrimaryBar"
         android:text="Extrusion"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/register_switch_btn_owner" />
@@ -130,7 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:text="Compression"
-        android:textColor="@color/colorStylishBlackText"
+        android:textColor="@color/colorStylishPrimaryBar"
         android:theme="@style/checkBoxStyleGreenLO"
         app:layout_constraintBaseline_toBaselineOf="@+id/register_checkbox_injection"
         app:layout_constraintStart_toStartOf="@+id/guideline3" />

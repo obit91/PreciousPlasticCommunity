@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="This is the best workspace since it can hold whatever we want it to hold"
-            android:textColor="@color/colorStylishBlackText" />
+            android:textColor="@color/colorStylishPrimaryBar" />
 
     </LinearLayout>
 

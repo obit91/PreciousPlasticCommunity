@@ -6,6 +6,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.GreenActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="actionBarWidgetTheme">@null</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+
+        <!-- Panel attributes -->
+        <item name="listChoiceBackgroundIndicator">@drawable/abc_list_selector_holo_dark</item>
+
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
 
         <item name="windowActionBar">false</item>
@@ -32,7 +44,7 @@
     </style>
     <style name="GreenBGEditText" parent="Base.Theme.AppCompat">
         <!-- CHECKED COLOR -->
-        <item name="colorAccent">@color/colorGreyishBlue</item>
+        <item name="colorAccent">@color/preciousPlasticBlue</item>
         <!-- UNCHECKED COLOR -->
         <item name="android:textColorSecondary">@color/colorStylishBlackBox</item>
     </style>

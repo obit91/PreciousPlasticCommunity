@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#24307b</color>
+    <color name="colorPrimary">#24307b</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
     <color name="legendItemBackground">#E2FFF6</color>
     <color name="colorAccent">#FF4081</color>
     <color name="mapPrimary">#f58d8e</color>
     <color name="colorSeaGlass">#C0F9D6</color>
     <color name="colorDarkGrey">#403c3c</color>
     <color name="colorStylishBlackBox">#3A3A3A</color>
-    <color name="colorStylishBlackText">#1a4a16</color>
+    <color name="colorStylishSecondaryGreen">#1a4a16</color>
+    <color name="colorStylishPrimaryBar">#0e632b</color>
     <color name="colorGreyishBlue">#98A2FF</color>
+    <color name="preciousPlasticBlue">#98A2FF</color>
 
 </resources>

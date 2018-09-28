@@ -38,54 +38,77 @@
         android:textSize="22sp" />
     </LinearLayout>
 
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="212dp"
+        android:layout_height="658dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:gravity="right"
-        android:layout_alignParentRight="true">
+        <ImageView
+            android:id="@+id/aboutUs_iv_keren"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            app:layout_constraintBottom_toTopOf="@+id/aboutUs_tv_keren"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/aboutUs_iv_keren"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        tools:layout_editor_absoluteX="261dp"
-        tools:layout_editor_absoluteY="94dp" />
+        <TextView
+            android:id="@+id/aboutUs_tv_keren"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="170dp"
+            android:text="Keren"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/aboutUs_tv_keren"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Keren"/>
+        <ImageView
+            android:id="@+id/aboutUs_iv_ohad"
+            android:layout_width="100dp"
+            android:layout_height="108dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/aboutUs_tv_ohad"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/aboutUs_iv_ohad"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        tools:layout_editor_absoluteX="261dp"
-        tools:layout_editor_absoluteY="94dp" />
+        <TextView
+            android:id="@+id/aboutUs_tv_ohad"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="140dp"
+            android:text="Ohad"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aboutUs_tv_keren" />
 
-    <TextView
-        android:id="@+id/aboutUs_tv_ohad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Ohad" />
+        <ImageView
+            android:id="@+id/aboutUs_iv_yoni"
+            android:layout_width="100dp"
+            android:layout_height="107dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/aboutUs_tv_yoni"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/aboutUs_iv_yoni"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        tools:layout_editor_absoluteX="261dp"
-        tools:layout_editor_absoluteY="94dp" />
+        <TextView
+            android:id="@+id/aboutUs_tv_yoni"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="120dp"
+            android:text="Yonatan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aboutUs_tv_ohad" />
+    </android.support.constraint.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/aboutUs_tv_yoni"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Yonatan" />
-    </LinearLayout>
+
 </RelativeLayout>
