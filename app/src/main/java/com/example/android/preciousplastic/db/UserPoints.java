@@ -99,16 +99,16 @@ public class UserPoints {
         return String.valueOf(type7);
     }
 
-    public double getTotalPoints() {
+    public double getTotalPurchasePoints() {
         return totalPoints;
     }
 
-    public String getTotalPointsAsString() {
+    public String getTotalPurchasePointsAsString() {
         return String.valueOf(totalPoints);
     }
 
-    public void setTotalPoints(double totalPoints) {
-        this.totalPoints = totalPoints;
+    public double getPointsSum() {
+        return type1 + type2 + type3 + type4 + type5 + type6 + type7;
     }
 
     /**

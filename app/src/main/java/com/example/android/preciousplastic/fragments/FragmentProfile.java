@@ -35,6 +35,7 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
     private TextView currentXP = null;
     private TextView nextRankXP = null;
     private ProgressBar progressBar = null;
+    private TextView percentDone = null;
 
     private TextView mNickname = null;
 
@@ -93,19 +94,20 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
      * @param view fragment view.
      */
     private void attachFields(View view) {
-        bin1 = (TextView)view.findViewById(R.id.profile_tv_bin1);
-        bin2 = (TextView)view.findViewById(R.id.profile_tv_bin2);
-        bin3 = (TextView)view.findViewById(R.id.profile_tv_bin3);
-        bin4 = (TextView)view.findViewById(R.id.profile_tv_bin4);
-        bin5 = (TextView)view.findViewById(R.id.profile_tv_bin5);
-        bin6 = (TextView)view.findViewById(R.id.profile_tv_bin6);
-        bin7 = (TextView)view.findViewById(R.id.profile_tv_bin7);
-        binTotal = (TextView)view.findViewById(R.id.profile_tv_total);
-        mTitle = (TextView)view.findViewById(R.id.profile_tv_title);
-        currentXP = (TextView)view.findViewById(R.id.profile_tv_currentXP);
-        nextRankXP = (TextView)view.findViewById(R.id.profile_tv_expToNextLvl);
-        progressBar = (ProgressBar) view.findViewById(R.id.profile_progressBar_plasticExp);
-        mNickname = (TextView) view.findViewById(R.id.profile_tv_nickname);
+        bin1 = view.findViewById(R.id.profile_tv_bin1);
+        bin2 = view.findViewById(R.id.profile_tv_bin2);
+        bin3 = view.findViewById(R.id.profile_tv_bin3);
+        bin4 = view.findViewById(R.id.profile_tv_bin4);
+        bin5 = view.findViewById(R.id.profile_tv_bin5);
+        bin6 = view.findViewById(R.id.profile_tv_bin6);
+        bin7 = view.findViewById(R.id.profile_tv_bin7);
+        binTotal = view.findViewById(R.id.profile_tv_total);
+        mTitle = view.findViewById(R.id.profile_tv_title);
+        currentXP = view.findViewById(R.id.profile_tv_currentXP);
+        nextRankXP = view.findViewById(R.id.profile_tv_expToNextLvl);
+        progressBar = view.findViewById(R.id.profile_progressBar_plasticExp);
+        percentDone = view.findViewById(R.id.profile_tv_percent);
+        mNickname = view.findViewById(R.id.profile_tv_nickname);
     }
 
     public void updateGUI(View view) {
@@ -118,20 +120,22 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
         bin5.setText(points.getType5AsString());
         bin6.setText(points.getType6AsString());
         bin7.setText(points.getType7AsString());
-        binTotal.setText(points.getTotalPointsAsString());
+        binTotal.setText(points.getTotalPurchasePointsAsString());
 
         UserRank rank = currentUser.getRank();
         String title = rank.getTitle();
         mTitle.setText(title);
         mNickname.setText(PPSession.getNickname());
 
-        currentXP.setText(points.getTotalPointsAsString());
+        currentXP.setText(points.getTotalPurchasePointsAsString());
         nextRankXP.setText(String.valueOf(rank.getRequiredExp()));
 
         int progress = getProgress(points, rank);
         progressBar.getProgressDrawable().setColorFilter(
                 Color.BLUE, android.graphics.PorterDuff.Mode.SRC_IN);
         progressBar.setProgress(progress);
+        String percentage = progress + "%";
+        percentDone.setText(percentage);
     }
 
     private int getProgress(UserPoints points, UserRank rank) {
@@ -144,7 +148,7 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
             from = prevRank.getRequiredExp();
         }
         to = rank.getRequiredExp();
-        return (int)((points.getTotalPoints() - from) / (to - from) * 100);
+        return (int)((points.getPointsSum() - from) / (to - from) * 100);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
