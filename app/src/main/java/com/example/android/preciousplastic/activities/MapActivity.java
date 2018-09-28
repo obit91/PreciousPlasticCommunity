@@ -31,11 +31,14 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.fragments.FragmentMap;
+import com.example.android.preciousplastic.permissions.PermissionResponseHandler;
 import com.example.android.preciousplastic.utils.EventNotifier;
 import com.example.android.preciousplastic.db.repositories.HazardRepository;
 import com.example.android.preciousplastic.utils.InternetQuery;
 import com.example.android.preciousplastic.utils.PPLocationManager;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.permissions.PermissionManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -46,10 +49,7 @@ import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.util.TileSystem;
-import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
@@ -67,6 +67,10 @@ public class MapActivity extends BaseActivity {
     private static final String TAG = "MAP_ACTIVITY";
 
     private static final Double ZOOM_MIN_SCOPE = 3.0;
+
+    /**
+     * Hardcoded locations of map edges.
+     */
     private static final Double NORTH = -85.0;
     private static final Double EAST = -180.0;
     private static final Double SOUTH = 85.0;
@@ -79,6 +83,10 @@ public class MapActivity extends BaseActivity {
     private final double INIT_ZOOM_VAL = 10.0;
     private double latLoc = 31.0461;
     private double longLoc = 34.8516;
+
+    private FragmentMap fragmentMap = null;
+
+    private PPLocationManager ppLocationManager;
 
 
     // Overlays containing pins for map
@@ -144,6 +152,10 @@ public class MapActivity extends BaseActivity {
         new InitMapsDataAsyncTask().execute();
     }
 
+    public void setMapFragment(FragmentMap fragmentMap) {
+        this.fragmentMap = fragmentMap;
+    }
+
     // ===========================================================
     // Public Methods & Classes
     // ===========================================================
@@ -165,65 +177,11 @@ public class MapActivity extends BaseActivity {
         mapView.setHorizontalMapRepetitionEnabled(true);
         mapView.setVerticalMapRepetitionEnabled(false);
 
-        // set the map to user's location
-        double initLat = latLoc;
-        double initLong = longLoc;
-        PPLocationManager ppLocationManager = new PPLocationManager(context);
+        ppLocationManager = new PPLocationManager(context);
         // ask user to allow location in settings
         if (!ppLocationManager.canGetLocation()){
-            ppLocationManager.showSettingsAlert();
+            getPermissions();
         }
-        if (ppLocationManager.canGetLocation()){
-            initLat = ppLocationManager.getLatitude();
-            initLong = ppLocationManager.getLongitude();
-        }
-        ppLocationManager.stopUsingGPS();
-
-        IMapController mapController = mapView.getController();
-        mapController.setZoom(INIT_ZOOM_VAL);
-        GeoPoint startPoint = new GeoPoint(initLat, initLong);
-        mapController.setCenter(startPoint);
-
-        // add Image Button which opens a filter window
-        setFilterListeners();
-
-        // set map's onZoom
-        mapView.addMapListener(new MapListener() {
-            @Override
-            public boolean onScroll(ScrollEvent event) {
-                removeFilters();
-                MapActivity.this.onScroll(event);
-                return true;
-            }
-            @Override
-            public boolean onZoom(ZoomEvent event) {
-                removeFilters();
-                MapActivity.this.onZoom(event);
-                return true;
-            }
-        });
-
-        // set map's LongClickListener
-        MapEventsReceiver mReceive = new MapEventsReceiver() {
-            @Override
-            public boolean singleTapConfirmedHelper(GeoPoint p) {
-                removeFilters();
-                return false;
-            }
-
-            @Override
-            public boolean longPressHelper(GeoPoint p) {
-                removeFilters();
-                onLongClick(p);
-                return true;
-            }
-        };
-        OverlayEvents = new MapEventsOverlay(context, mReceive);
-        mapView.getOverlays().add(OverlayEvents);
-
-        // set and draw overlays on map
-        setOverlays();
-        drawOverlaysOnMap();
     }
 
     public void removeFilters() {
@@ -239,6 +197,11 @@ public class MapActivity extends BaseActivity {
 
     public static boolean isWithin(Point p, MapView mapView) {
         return (p.x > 0 & p.x < mapView.getWidth() & p.y > 0 & p.y < mapView.getHeight());
+    }
+
+    private void getPermissions() {
+        PermissionManager permissionManager = new PermissionManager(fragmentMap);
+        permissionManager.showStatePermissions(PermissionManager.PERMISSIONS.REQUEST_PERMISSION_FINE_LOCATION);
     }
 
     public void onResume() {
@@ -708,6 +671,65 @@ public class MapActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    public void buildPartTwo() {
+
+        // set the map to user's location
+        double initLat = latLoc;
+        double initLong = longLoc;
+
+        if (ppLocationManager.canGetLocation()){
+            initLat = ppLocationManager.getLatitude();
+            initLong = ppLocationManager.getLongitude();
+        }
+        ppLocationManager.stopUsingGPS();
+
+        IMapController mapController = mapView.getController();
+        mapController.setZoom(INIT_ZOOM_VAL);
+        GeoPoint startPoint = new GeoPoint(initLat, initLong);
+        mapController.setCenter(startPoint);
+
+        // add Image Button which opens a filter window
+        setFilterListeners();
+
+        // set map's onZoom
+        mapView.addMapListener(new MapListener() {
+            @Override
+            public boolean onScroll(ScrollEvent event) {
+                removeFilters();
+                MapActivity.this.onScroll(event);
+                return true;
+            }
+            @Override
+            public boolean onZoom(ZoomEvent event) {
+                removeFilters();
+                MapActivity.this.onZoom(event);
+                return true;
+            }
+        });
+
+        // set map's LongClickListener
+        MapEventsReceiver mReceive = new MapEventsReceiver() {
+            @Override
+            public boolean singleTapConfirmedHelper(GeoPoint p) {
+                removeFilters();
+                return false;
+            }
+
+            @Override
+            public boolean longPressHelper(GeoPoint p) {
+                removeFilters();
+                onLongClick(p);
+                return true;
+            }
+        };
+        OverlayEvents = new MapEventsOverlay(context, mReceive);
+        mapView.getOverlays().add(OverlayEvents);
+
+        // set and draw overlays on map
+        setOverlays();
+        drawOverlaysOnMap();
     }
 }
 

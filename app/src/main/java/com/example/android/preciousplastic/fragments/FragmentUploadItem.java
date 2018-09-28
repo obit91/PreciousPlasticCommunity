@@ -3,7 +3,6 @@ package com.example.android.preciousplastic.fragments;
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,12 +11,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,22 +26,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.activities.BaseActivity;
 import com.example.android.preciousplastic.db.entities.User;
 import com.example.android.preciousplastic.imgur.ImgurAsyncGenericTask;
 import com.example.android.preciousplastic.imgur.ImgurData;
 import com.example.android.preciousplastic.imgur.ImgurRequestsGenerator;
 import com.example.android.preciousplastic.imgur.UploadTask;
+import com.example.android.preciousplastic.permissions.PermissionResponseHandler;
 import com.example.android.preciousplastic.utils.ImageUtils;
 import com.example.android.preciousplastic.utils.PPSession;
+import com.example.android.preciousplastic.permissions.PermissionManager;
 import com.example.android.preciousplastic.utils.ViewTools;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
@@ -54,7 +48,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static android.app.Activity.RESULT_OK;
 
 
-public class FragmentUploadItem extends BaseFragment implements View.OnClickListener, UploadTask {
+public class FragmentUploadItem extends BaseFragment implements View.OnClickListener, UploadTask, PermissionResponseHandler {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,6 +59,8 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
     private String mParam1;
 
     private OnFragmentInteractionListener mListener;
+
+    private PermissionManager permissionManager;
 
     private Button mCaptureButton = null;
     private Button mChooseButton = null;
@@ -83,8 +79,6 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_PICK_IMAGE = 2;
 
-    private static final int REQUEST_PERMISSION_CAMERA_STATE = 1;
-    private static final int REQUEST_PERMISSION_WRITE_EXTERNAL = 2;
     private static String mCurrentPhotoPath = null;
 
     private Set<View> uploadViews;
@@ -107,6 +101,8 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
         }
+        permissionManager = new PermissionManager(this);
+        setPermissionResponseHandler(this);
     }
 
     @Override
@@ -145,7 +141,6 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
         mProgressText = (TextView) view.findViewById(R.id.upload_tv_progress);
 
         updateProgressGUI();
-
         return view;
     }
 
@@ -246,37 +241,6 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
     }
 
     /**
-     * Requests permissions for requirements for camera usage and gallery update.
-     */
-    private void showStatePermissions() {
-        int permissionCheck = 0;
-
-        permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.CAMERA)) {
-                showExplanation("Permission Needed", "Rationale", Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA_STATE);
-            } else {
-                requestPermission(Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA_STATE);
-            }
-        } else {
-            Log.d(TAG,"CameraPermission: Permission (already) Granted!");
-        }
-
-        permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                showExplanation("Permission Needed", "Rationale", Manifest.permission.CAMERA, REQUEST_PERMISSION_WRITE_EXTERNAL);
-            } else {
-                requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL);
-            }
-        } else {
-            Log.d(TAG,"WriteExternal: Permission (already) Granted!");
-        }
-    }
-
-    /**
      * Takes a picture using the camera.
      */
     private void dispatchTakePictureIntent() {
@@ -287,33 +251,8 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
             Toast.makeText(getActivity(), "No camera available.", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "startCamera: no camera available.");
             return;
-        } else {
-            showStatePermissions();
         }
-
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                Toast.makeText(getActivity(), "Error occurred during image capture..", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "startCamera: " + ex.getMessage());
-                return;
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(
-                        getActivity(),
-                        "com.example.android.preciousplastic",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                takePictureIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
+        permissionManager.showStatePermissions(PermissionManager.PERMISSIONS.REQUEST_PERMISSION_CAMERA_STATE);
     }
 
     /**
@@ -402,63 +341,6 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
-    }
-
-    /**
-     * Handles the results of a permission request from the user.
-     * @param requestCode what type of request we're catching.
-     * @param permissions permissions requested (we're only requesting one at a time).
-     * @param grantResults results returned.
-     */
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode,
-            @NonNull String permissions[],
-            @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_PERMISSION_CAMERA_STATE:
-                break;
-            case REQUEST_PERMISSION_WRITE_EXTERNAL:
-                break;
-        }
-        if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getActivity(), "Permission Granted!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(), "Permission Denied!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * Shows an explanation to the user, why are we asking for permissions?
-     * @param title title
-     * @param message message
-     * @param permission which permission we're requesting
-     * @param permissionRequestCode the unique permission request code.
-     */
-    private void showExplanation(String title,
-                                 String message,
-                                 final String permission,
-                                 final int permissionRequestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        requestPermission(permission, permissionRequestCode);
-                    }
-                });
-        builder.create().show();
-    }
-
-    /**
-     * Initiates a permission request popup.
-     * @param permissionName name of the permission we desire.
-     * @param permissionRequestCode unique permission code.
-     */
-    private void requestPermission(String permissionName, int permissionRequestCode) {
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{permissionName}, permissionRequestCode);
     }
 
     /**
@@ -564,5 +446,58 @@ public class FragmentUploadItem extends BaseFragment implements View.OnClickList
                 }
                 break;
         }
+    }
+
+    @Override
+    public void permissionGranted(int permission) {
+
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissionManager.showStatePermissions(PermissionManager.PERMISSIONS.REQUEST_PERMISSION_WRITE_EXTERNAL);
+                return;
+            }
+        } else {
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        final PackageManager packageManager = getActivity().getPackageManager();
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Toast.makeText(getActivity(), "Error occurred during image capture..", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "startCamera: " + ex.getMessage());
+                return;
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(
+                        getActivity(),
+                        "com.example.android.preciousplastic",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                takePictureIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    @Override
+    public void setPermissionResponseHandler(PermissionResponseHandler permissionResponseHandler) {
+        final BaseActivity activity = (BaseActivity) getActivity();
+        activity.setPermissionResponseHandler(permissionResponseHandler);
+    }
+
+    @Override
+    public void permissionDenied(int permissionCode) {
+
     }
 }

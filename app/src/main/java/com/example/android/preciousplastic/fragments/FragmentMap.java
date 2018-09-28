@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.preciousplastic.R;
+import com.example.android.preciousplastic.activities.BaseActivity;
 import com.example.android.preciousplastic.activities.MapActivity;
+import com.example.android.preciousplastic.permissions.PermissionResponseHandler;
 import com.example.android.preciousplastic.utils.PPSession;
 
 import org.osmdroid.views.MapView;
 
-public class FragmentMap extends BaseFragment {
+public class FragmentMap extends BaseFragment implements PermissionResponseHandler {
     private MapActivity mapActivity = null;
 
     @Nullable
@@ -25,7 +27,10 @@ public class FragmentMap extends BaseFragment {
     public void onStart() {
         super.onStart();
 
+        setPermissionResponseHandler(this);
+
         mapActivity = PPSession.getMapActivity();
+        mapActivity.setMapFragment(this);
         MapView mapView = getView().findViewById(R.id.map_view);
         mapActivity.buildMap(mapView);
     }
@@ -34,5 +39,21 @@ public class FragmentMap extends BaseFragment {
     public boolean onBackPressed() {
         mapActivity.removeFilters();
         return false;
+    }
+
+    @Override
+    public void permissionGranted(int permissionCode) {
+        mapActivity.buildPartTwo();
+    }
+
+    @Override
+    public void setPermissionResponseHandler(PermissionResponseHandler permissionResponseHandler) {
+        final BaseActivity baseActivity = (BaseActivity) getActivity();
+        baseActivity.setPermissionResponseHandler(this);
+    }
+
+    @Override
+    public void permissionDenied(int permissionCode) {
+        PPSession.getHomeActivity().onBackPressed();
     }
 }
