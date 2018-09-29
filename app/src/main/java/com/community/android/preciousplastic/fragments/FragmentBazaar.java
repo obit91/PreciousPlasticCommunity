@@ -182,7 +182,8 @@ public class FragmentBazaar extends BaseFragment implements View.OnClickListener
 
             @Override
             public void longClickComplete(ViewHolder viewHolderRemoved) {
-                mLongClickedItems.remove(viewHolderRemoved);
+                revertBazarItems();
+                mLongClickedItems.clear();
             }
         });
     }
@@ -272,11 +273,18 @@ public class FragmentBazaar extends BaseFragment implements View.OnClickListener
         if (mLongClickedItems.size() == 0) {
             return false;
         }
+        revertBazarItems();
+        mLongClickedItems.clear();
+        return true;
+    }
+
+    /**
+     * Shows all items in the initial way.
+     */
+    private void revertBazarItems() {
         for (ViewHolder itemViewHolder : mLongClickedItems) {
             itemViewHolder.setOptionsVisible(false);
         }
-        mLongClickedItems.clear();
-        return true;
     }
 
     @Override
