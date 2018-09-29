@@ -37,9 +37,9 @@
             android:id="@+id/workspace_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:text="This is the best workspace since it can hold whatever we want it to hold"
-            android:textColor="@color/colorStylishPrimaryBar" />
+            android:textColor="#494d4b"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

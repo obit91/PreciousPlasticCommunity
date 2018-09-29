@@ -12,5 +12,6 @@
     <color name="colorStylishPrimaryBar">#0e632b</color>
     <color name="colorGreyishBlue">#98A2FF</color>
     <color name="preciousPlasticBlue">#98A2FF</color>
+    <color name="colorCheckBoxesDarkBlue">#1d1f2c</color>
 
 </resources>

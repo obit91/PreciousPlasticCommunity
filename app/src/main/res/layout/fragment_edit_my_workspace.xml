@@ -13,15 +13,14 @@
         android:id="@+id/emw_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="44dp"
         android:text="Edit Workspace"
         android:textAlignment="center"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -29,133 +28,98 @@
         android:id="@+id/emw_et_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="40dp"
         android:backgroundTint="@color/colorDarkGrey"
         android:ems="10"
         android:gravity="center"
         android:hint="Title"
         android:inputType="text"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.479"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emw_tv_title" />
 
     <EditText
         android:id="@+id/emw_et_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/colorDarkGrey"
         android:ems="10"
         android:gravity="center"
         android:hint="Description"
         android:inputType="text"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.479"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emw_et_title" />
 
     <CheckBox
         android:id="@+id/emw_checkbox_shredder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="@style/checkBoxStyleBlueLO"
-        android:textColor="@color/colorStylishPrimaryBar"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
         android:text="Shredder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        android:textColor="@color/colorCheckBoxesDarkBlue"
+        android:theme="@style/checkBoxStyleBlueLO"
+        app:layout_constraintBaseline_toBaselineOf="@+id/emw_checkbox_compression"
+        app:layout_constraintStart_toEndOf="@+id/emw_checkbox_compression"
+        app:layout_constraintStart_toStartOf="@+id/emw_checkbox_injection" />
 
     <CheckBox
         android:id="@+id/emw_checkbox_injection"
         android:layout_width="87dp"
         android:layout_height="wrap_content"
-        android:theme="@style/checkBoxStyleBlueLO"
-        android:textColor="@color/colorStylishPrimaryBar"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="80dp"
         android:text="Injection"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/emw_checkbox_shredder" />
+        android:textColor="@color/colorCheckBoxesDarkBlue"
+        android:theme="@style/checkBoxStyleBlueLO"
+        app:layout_constraintBaseline_toBaselineOf="@+id/emw_checkbox_extrusion"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <CheckBox
         android:id="@+id/emw_checkbox_extrusion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="8dp"
         android:text="Extrusion"
-        android:textColor="@color/colorStylishPrimaryBar"
+        android:textColor="@color/colorCheckBoxesDarkBlue"
         android:theme="@style/checkBoxStyleBlueLO"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/emw_checkbox_compression"
         app:layout_constraintTop_toBottomOf="@+id/emw_checkbox_compression" />
 
     <CheckBox
         android:id="@+id/emw_checkbox_compression"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="65dp"
         android:text="Compression"
-        android:textColor="@color/colorStylishPrimaryBar"
+        android:textColor="@color/colorCheckBoxesDarkBlue"
         android:theme="@style/checkBoxStyleBlueLO"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        app:layout_constraintTop_toBottomOf="@+id/emw_et_description" />
 
     <Button
         android:id="@+id/emw_btn_apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Apply"
+        app:layout_constraintBaseline_toBaselineOf="@+id/emw_btn_goto_workspace"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/emw_btn_goto_workspace" />
 
     <Button
         android:id="@+id/emw_btn_goto_workspace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="To workspace"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        android:layout_marginTop="30dp"
+        android:text="Back"
+        app:layout_constraintEnd_toStartOf="@+id/emw_btn_apply"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="335dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="180dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="467dp" />
+        app:layout_constraintTop_toBottomOf="@+id/emw_checkbox_extrusion" />
 
 </android.support.constraint.ConstraintLayout>

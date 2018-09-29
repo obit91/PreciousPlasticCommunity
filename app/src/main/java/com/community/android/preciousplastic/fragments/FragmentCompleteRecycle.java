@@ -100,6 +100,7 @@ public class FragmentCompleteRecycle extends BaseFragment implements View.OnClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_complete_trade, container, false);
+        view.getBackground().setAlpha(180);
 
         mCompleteTitle = view.findViewById(R.id.trade_complete_tv_title);
         mDescription = view.findViewById(R.id.trade_complete_tv_description);
