@@ -17,7 +17,7 @@
         android:hint="Title"
         android:text="Title"
         android:textAlignment="center"
-        android:textSize="28sp"
+        android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +33,7 @@
         android:background="@android:color/transparent"
         android:text="Edit"
         android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -67,7 +68,7 @@
         app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/guideline9"
-        app:layout_constraintVertical_bias="0.423" />
+        app:layout_constraintVertical_bias="0.23000002" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline8"

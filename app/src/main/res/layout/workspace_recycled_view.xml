@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="This is the best workspace since it can hold whatever we want it to hold"
-            android:textColor="#494d4b"
+            android:textColor="@color/workspaceLightBlack"
             android:textSize="18sp" />
 
     </LinearLayout>
