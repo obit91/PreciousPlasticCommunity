@@ -67,6 +67,9 @@ public class MapActivity extends BaseActivity {
 
     private static final Double ZOOM_MIN_SCOPE = 3.0;
 
+    double userLat;
+    double userLong;
+
     /**
      * Hardcoded locations of map edges.
      */
@@ -80,8 +83,6 @@ public class MapActivity extends BaseActivity {
     private RequestQueue requestQueue;
     private MapView mapView;
     private final double INIT_ZOOM_VAL = 10.0;
-    private double latLoc = 31.0461;
-    private double longLoc = 34.8516;
 
     private FragmentMap fragmentMap = null;
 
@@ -372,6 +373,14 @@ public class MapActivity extends BaseActivity {
                 } else {
                     removeFilters();
                 }
+            }
+        });
+
+        ImageButton findMeButton = mapLayout.findViewById(R.id.frag_map_ib_locate);
+        findMeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToUserLocation();
             }
         });
     }
@@ -676,20 +685,13 @@ public class MapActivity extends BaseActivity {
 
     public void buildWithPermissions() {
 
-        // set the map to user's location
-        double initLat = latLoc;
-        double initLong = longLoc;
-
         if (ppLocationManager.canGetLocation()){
-            initLat = ppLocationManager.getLatitude();
-            initLong = ppLocationManager.getLongitude();
+            userLat = ppLocationManager.getLatitude();
+            userLong = ppLocationManager.getLongitude();
         }
         ppLocationManager.stopUsingGPS();
 
-        IMapController mapController = mapView.getController();
-        mapController.setZoom(INIT_ZOOM_VAL);
-        GeoPoint startPoint = new GeoPoint(initLat, initLong);
-        mapController.setCenter(startPoint);
+        goToUserLocation();
 
         // add Image Button which opens a filter window
         setFilterListeners();
@@ -728,9 +730,14 @@ public class MapActivity extends BaseActivity {
         OverlayEvents = new MapEventsOverlay(context, mReceive);
         mapView.getOverlays().add(OverlayEvents);
 
-        // set and draw overlays on map
-        setOverlays();
-        drawOverlaysOnMap();
+        onMove();
+    }
+
+    private void goToUserLocation() {
+        IMapController mapController = mapView.getController();
+        mapController.setZoom(INIT_ZOOM_VAL);
+        GeoPoint startPoint = new GeoPoint(userLat, userLong);
+        mapController.setCenter(startPoint);
     }
 }
 
