@@ -36,6 +36,27 @@
         android:text="We are just three students who care about the environment.\n\nSo we decided to make Precious Plastic available on android. :) "
         android:textColor="@android:color/black"
         android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/about_us_dave_credit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="30dp"
+            android:text="Many thanks to Dave Hakkens and his company for starting this idea!"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/about_us_icons_credits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="30dp"
+            android:text="Icons made by:\nmonkik\nFreePik\nSmashicons\nRoundicons\nKiranshastry \nfrom www.flaticon.com  "
+            android:textSize="12sp" />
+
+
     </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
