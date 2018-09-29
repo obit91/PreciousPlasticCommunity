@@ -50,7 +50,8 @@
             android:theme="@style/AppTheme.GreenActionBar"/>
         <activity
             android:name=".activities.NoConnectionActivity"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:theme="@style/AppTheme.GreenActionBar"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
