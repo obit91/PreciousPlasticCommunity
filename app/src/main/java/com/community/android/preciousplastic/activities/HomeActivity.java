@@ -256,8 +256,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private void goToFragment(final Class<? extends BaseFragment> fragmentClass) {
 
         if (fragmentClass == PPSession.getCurrentFragmentClass()) {
-            String msg = "Useless user is useless! <%s>";
-            Toast.makeText(this, String.format(msg, fragmentClass.getSimpleName()), Toast.LENGTH_SHORT).show();
+//            String msg = "Useless user is useless! <%s>";
+//            Toast.makeText(this, String.format(msg, fragmentClass.getSimpleName()), Toast.LENGTH_SHORT).show();
             return;
         }
 
