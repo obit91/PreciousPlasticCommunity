@@ -67,8 +67,8 @@ public class MapActivity extends BaseActivity {
 
     private static final Double ZOOM_MIN_SCOPE = 3.0;
 
-    double userLat;
-    double userLong;
+    double userLat = 31.776870;
+    double userLong = 35.197912;
 
     /**
      * Hardcoded locations of map edges.
