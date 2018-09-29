@@ -332,7 +332,7 @@ public class LoadingActivity extends BaseActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LoadingActivity.this, "Authentication failed.\n" + task.getException(),
+                            Toast.makeText(LoadingActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
                             finish();
                         }
