@@ -30,7 +30,7 @@
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/colorDarkGrey"
         android:gravity="center"
-        android:hint="Creator"
+        android:hint="Search creators..."
         android:textColorLink="#181a84"
         app:layout_constraintBottom_toTopOf="@+id/guideline16"
         app:layout_constraintEnd_toStartOf="@+id/guideline15"

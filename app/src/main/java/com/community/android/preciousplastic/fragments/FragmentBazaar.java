@@ -220,7 +220,7 @@ public class FragmentBazaar extends BaseFragment implements View.OnClickListener
         final DatabaseReference usersTable = PPSession.getUsersTable();
 
         if (creatorNick != null) {
-            query = usersTable.orderByChild("nickname").equalTo(creatorNick);
+            query = usersTable.orderByChild("nickname").startAt(creatorNick).endAt(creatorNick + "\uf8ff");
         } else {
             query = usersTable.orderByChild("nickname");
         }
