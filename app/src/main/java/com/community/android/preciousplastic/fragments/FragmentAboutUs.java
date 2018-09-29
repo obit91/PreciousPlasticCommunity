@@ -81,18 +81,18 @@ public class FragmentAboutUs extends BaseFragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_about_us, container, false);
         v.getBackground().setAlpha(180);
-//        ImageView ohadIV = v.findViewById(R.id.aboutUs_iv_ohad);
-//        ImageView yoniIV = v.findViewById(R.id.aboutUs_iv_yoni);
-//        ImageView kerenIV = v.findViewById(R.id.aboutUs_iv_keren);
+        ImageView ohadIV = v.findViewById(R.id.aboutUs_iv_ohad);
+        ImageView yoniIV = v.findViewById(R.id.aboutUs_iv_yoni);
+        ImageView kerenIV = v.findViewById(R.id.aboutUs_iv_keren);
 
-//        ohadIV.setImageBitmap(
-//                decodeSampledBitmapFromResource(getResources(), R.drawable.ohad_beltzer, 100, 150));
-//
-//        yoniIV.setImageBitmap(
-//                decodeSampledBitmapFromResource(getResources(), R.drawable.yonatan_manor, 100, 150));
-//
-//        kerenIV.setImageBitmap(
-//                decodeSampledBitmapFromResource(getResources(), R.drawable.keren_meron, 100, 150));
+        ohadIV.setImageBitmap(
+                decodeSampledBitmapFromResource(getResources(), R.drawable.ohad_beltzer, 100, 150));
+
+        yoniIV.setImageBitmap(
+                decodeSampledBitmapFromResource(getResources(), R.drawable.yonatan_manor, 100, 150));
+
+        kerenIV.setImageBitmap(
+                decodeSampledBitmapFromResource(getResources(), R.drawable.keren_meron, 100, 150));
 
         return v;
     }
