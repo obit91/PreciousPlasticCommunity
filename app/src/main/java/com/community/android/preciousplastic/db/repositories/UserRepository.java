@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.community.android.preciousplastic.fragments.FragmentMyWorkspaceOwner;
 import com.community.android.preciousplastic.utils.EventNotifier;
 import com.community.android.preciousplastic.db.PointsType;
 import com.community.android.preciousplastic.db.UserPoints;
@@ -140,6 +141,7 @@ public class UserRepository {
                     PPSession.setCurrentUser(user);
                     String msg = String.format("becomeOwner: %s has become an owner.", user.getNickname());
                     Log.i(TAG, String.format(msg, nickname));
+                    PPSession.getHomeActivity().switchFragment(FragmentMyWorkspaceOwner.class);
                 }
             }
 

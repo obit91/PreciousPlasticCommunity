@@ -144,7 +144,6 @@ public class FragmentMyWorkspaceNonOwner extends BaseFragment implements View.On
     private void onBecomeOwnerClick(View view) {
         UserRepository userRepository = new UserRepository(getContext());
         userRepository.becomeOwner();
-        PPSession.getHomeActivity().switchFragment(FragmentMyWorkspaceOwner.class);
     }
 
     @Override
