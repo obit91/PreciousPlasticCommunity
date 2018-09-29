@@ -43,7 +43,7 @@
             android:textSize="20sp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toEndOf="@+id/bazar_ri_creator"
-            card_view:layout_constraintTop_toBottomOf="@+id/bzr_itm_tv_price_tag" />
+            card_view:layout_constraintTop_toBottomOf="@+id/bzr_ri_price_tag" />
 
         <TextView
             android:id="@+id/bazar_ri_creator"
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="90dp"
             android:text="owner button"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintStart_toEndOf="@+id/bazar_ri_share" />
@@ -91,7 +91,7 @@
             card_view:layout_constraintEnd_toStartOf="@+id/bazar_ri_description" />
 
         <TextView
-            android:id="@+id/bzr_itm_tv_price_tag"
+            android:id="@+id/bzr_ri_price_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"

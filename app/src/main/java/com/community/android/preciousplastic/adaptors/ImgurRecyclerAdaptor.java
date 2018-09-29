@@ -89,6 +89,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
         TextView title;
         TextView creator;
         TextView description;
+        TextView priceTag;
         TextView price;
         ImageView image;
         Button ownerButton;
@@ -103,6 +104,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             creator = itemView.findViewById(R.id.bazar_ri_creator);
             description = itemView.findViewById(R.id.bazar_ri_description);
             price = itemView.findViewById(R.id.bazar_ri_price);
+            priceTag = itemView.findViewById(R.id.bzr_ri_price_tag);
             image = itemView.findViewById(R.id.bazar_ri_img);
 
             ownerButton = itemView.findViewById(R.id.bazar_ri_owner_button);
@@ -130,6 +132,7 @@ public class ImgurRecyclerAdaptor extends RecyclerView.Adapter<ImgurRecyclerAdap
             creator.setAlpha(alphaValue);
             description.setAlpha(alphaValue);
             price.setAlpha(alphaValue);
+            priceTag.setAlpha(alphaValue);
             image.setAlpha(alphaValue);
 
             ownerButton.setClickable(visible);
