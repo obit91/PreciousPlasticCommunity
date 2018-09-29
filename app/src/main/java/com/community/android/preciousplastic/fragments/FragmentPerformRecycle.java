@@ -25,7 +25,13 @@ import com.community.android.preciousplastic.db.PointsType;
 import com.community.android.preciousplastic.db.repositories.UserRepository;
 import com.community.android.preciousplastic.utils.PPSession;
 import com.community.android.preciousplastic.utils.ViewTools;
+import com.google.android.gms.common.util.ArrayUtils;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import static com.community.android.preciousplastic.db.PointsType.TYPE_TOTAL;
 import static com.community.android.preciousplastic.utils.ViewTools.isTextViewNull;
 
 /**
@@ -105,19 +111,21 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
         View view = inflater.inflate(R.layout.fragment_perform_recycle, container, false);
 
         // update spinner
-        mTypeSpinner = (Spinner) view.findViewById(R.id.mw_spinner_type);
+        mTypeSpinner = view.findViewById(R.id.mw_spinner_type);
+        final List<PointsType> pointsTypes = new LinkedList<>(Arrays.asList(PointsType.values()));
+        pointsTypes.remove(TYPE_TOTAL);
         ArrayAdapter<PointsType> pointsTypeArrayAdapter = new ArrayAdapter<PointsType>(
                 getContext(),
                 android.R.layout.simple_spinner_dropdown_item,
-                PointsType.values());
+                pointsTypes);
         mTypeSpinner.setAdapter(pointsTypeArrayAdapter);
 
-        mConfirmButton = (Button) view.findViewById(R.id.trade_btn_confirm);
+        mConfirmButton = view.findViewById(R.id.trade_btn_confirm);
 
         // set TextView fields
-        mNicknameEditView = (EditText) view.findViewById(R.id.trade_et_nickname);
-        mWeightEditView = (EditText)view.findViewById(R.id.trade_et_points);
-        mScoreTextView = (TextView)view.findViewById(R.id.trade_tv_score);
+        mNicknameEditView = view.findViewById(R.id.trade_et_nickname);
+        mWeightEditView = view.findViewById(R.id.trade_et_points);
+        mScoreTextView = view.findViewById(R.id.trade_tv_score);
 
         return view;
     }
