@@ -52,7 +52,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,9 +94,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         LayoutInflater inflater = (LayoutInflater) PPSession.getContainerContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         PPSession.setWorkspaceAdaptor(new WorkspaceAdaptor(inflater));
     }
-
-
-
 
 
     @Override
@@ -201,6 +197,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.drawer_home:
                 goToFragment(FragmentHome.class);
                 break;
+            case R.id.trade_frag:
+                goToFragment(FragmentPerformRecycle.class);
+                break;
             case R.id.drawer_workspaces:
                 goToFragment(FragmentWorkspaces.class);
                 break;
@@ -271,6 +270,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * Implements a fragment switch.
+     *
      * @param fragmentClass fragment to switch to.
      */
     private void performFragmentSwitch(Class<? extends BaseFragment> fragmentClass) {
@@ -297,6 +297,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * External method to switch fragments from fragments.
+     *
      * @param fragmentClass fragment to switch to.
      */
     public void switchFragment(final Class<? extends BaseFragment> fragmentClass) {

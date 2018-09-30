@@ -17,6 +17,10 @@
                 android:icon="@drawable/ic_home"
                 android:title="Home" />
             <item
+                android:id="@+id/trade_frag"
+                android:icon="@drawable/ic_exchange"
+                android:title="Home" />
+            <item
                 android:id="@+id/drawer_workspaces"
                 android:icon="@drawable/ic_businessman"
                 android:title="Workspaces" />
@@ -48,7 +52,7 @@
                 android:title="Edit My Workspace" /-->
             <item
                 android:id="@+id/drawer_recycle"
-                android:icon="@drawable/ic_exchange"
+                android:icon="@drawable/recycling_menu"
                 android:title="Recycle" />
             <item
                 android:id="@+id/drawer_settings"
