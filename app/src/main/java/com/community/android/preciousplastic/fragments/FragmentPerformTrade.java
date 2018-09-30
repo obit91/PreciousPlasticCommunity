@@ -194,6 +194,11 @@ public class FragmentPerformTrade extends BaseFragment implements View.OnClickLi
             return;
         }
 
+        if (points <= 0) {
+            Toast.makeText(getContext(), "Please fill a number greater than zero.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         userRepository.updateUserPoints(nickname, PointsType.TYPE_TOTAL, points, true, eventNotifier);
     }
 
