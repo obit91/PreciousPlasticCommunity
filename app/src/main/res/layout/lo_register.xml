@@ -61,6 +61,7 @@
             android:backgroundTint="@color/colorDarkGrey"
             android:ems="10"
             android:hint="Password"
+            android:tooltipText="Password must contain at least 6 letters."
             android:textColorLink="@android:color/holo_green_dark"
             android:textSize="17sp"
             android:inputType="textPassword"/>
