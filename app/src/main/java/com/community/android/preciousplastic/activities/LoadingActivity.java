@@ -156,7 +156,7 @@ public class LoadingActivity extends BaseActivity {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoadingActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_SHORT).show();
 
                             Intent welcomeIntent = new Intent(getApplicationContext(), WelcomeActivity.class);
                             welcomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -337,7 +337,7 @@ public class LoadingActivity extends BaseActivity {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoadingActivity.this, task.getException().getMessage(),
-                                    Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_SHORT).show();
                             finish();
                         }
                         // ...

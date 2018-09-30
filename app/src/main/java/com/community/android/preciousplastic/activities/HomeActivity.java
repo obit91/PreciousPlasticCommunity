@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.community.android.preciousplastic.fragments.BaseFragment;
 import com.community.android.preciousplastic.fragments.FragmentPerformRecycle;
+import com.community.android.preciousplastic.fragments.FragmentPerformTrade;
 import com.community.android.preciousplastic.fragments.FragmentTutorial;
 import com.community.android.preciousplastic.imgur.ImgurConstants;
 import com.community.android.preciousplastic.utils.Transitions;
@@ -230,7 +231,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 goToFragment(FragmentHome.class);
                 break;
             case R.id.trade_frag:
-                goToFragment(FragmentPerformRecycle.class);
+                goToFragment(FragmentPerformTrade.class);
                 break;
             case R.id.drawer_workspaces:
                 goToFragment(FragmentWorkspaces.class);
