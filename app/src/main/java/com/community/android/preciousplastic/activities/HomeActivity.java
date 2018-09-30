@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.community.android.preciousplastic.fragments.BaseFragment;
 import com.community.android.preciousplastic.fragments.FragmentPerformRecycle;
+import com.community.android.preciousplastic.fragments.FragmentTutorial;
 import com.community.android.preciousplastic.imgur.ImgurConstants;
 import com.community.android.preciousplastic.utils.Transitions.TransitionTypes;
 
@@ -239,6 +240,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.drawer_sign_out:
                 signOut();
+                finish();
+                break;
+            case R.id.drawer_tutorial:
+                goToFragment(FragmentTutorial.class);
                 finish();
                 break;
             default:
