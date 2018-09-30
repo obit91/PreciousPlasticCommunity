@@ -72,6 +72,11 @@
                 android:id="@+id/drawer_about_us"
                 android:icon="@drawable/info_icon"
                 android:title="About us" />
+            <item
+                android:id="@+id/drawer_tutorial"
+                android:icon="@drawable/ic_help_outline_black_24dp"
+                android:title="Tutorial"/>
+
         </menu>
     </item>
 

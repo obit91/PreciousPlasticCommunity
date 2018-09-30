@@ -21,6 +21,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/faq_intro"
         android:layout_width="0dp"
@@ -30,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:text="Welcome to Precious Plastic Community.\nFollow the steps below to learn how to use the application. Once you're done, click next. You can always go back to this tutorial from the menu ."
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,9 +43,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
-        android:text="-Recycle plastic to receive points. You can use the points to purchase items from the bazaar or directly from the workspace you recycled."
+        android:text="-Recycle plastic to receive purchase points, keep track of purchase points in profile. "
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryUnclickedLink"
@@ -53,12 +54,28 @@
         app:layout_constraintTop_toBottomOf="@+id/faq_intro" />
 
     <Button
+        android:id="@+id/faq_btn_trade_for_items"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:text="-You can use the points to purchase items by trading. Directly from the workspace or from the bazaar [long click the item you desire]."
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryUnclickedLink"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/faq_btn_recycle_plastic_for_points" />
+
+    <Button
         android:id="@+id/faq_btn_rank_progression"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:text="-Progress in ranks as you recycle plastic and brag to your friends"
         android:textAlignment="viewStart"
@@ -66,7 +83,7 @@
         android:textColor="@color/colorPrimaryUnclickedLink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/faq_btn_recycle_plastic_for_points" />
+        app:layout_constraintTop_toBottomOf="@+id/faq_btn_trade_for_items" />
 
     <Button
         android:id="@+id/faq_btn_track_recycling"
@@ -76,11 +93,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
-        android:text="-Track the amount of plastic you recycled of all types"
+        android:text="-Track the amount of plastic you recycled of all types, see which type you recycle most!"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryUnclickedLink"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/faq_btn_rank_progression" />
 
@@ -90,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:background="@android:color/transparent"
         android:text="-Check out the Bazaar to see cool items, created by plastic artisans. Search for your favorite plastic creator too"
         android:textAlignment="viewStart"
@@ -107,7 +125,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:text="-Explore other workspaces around the world!"
         android:textAlignment="viewStart"
@@ -124,13 +141,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:text="-Share plastic gold mines [dumps] on the map by long clicking on the map"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryUnclickedLink"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/faq_btn_explore_workspaces" />
 
@@ -138,11 +155,12 @@
         android:id="@+id/faq_btn_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/faq_btn_map_long_click" />
 
     <TextView
         android:id="@+id/faq_next_text"
@@ -151,7 +169,7 @@
         android:layout_marginStart="8dp"
         android:text="Let's start to make the world a cleaner plastic free place"
         android:textColor="@android:color/black"
-        android:textSize="22sp"
+        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/faq_btn_next"
         app:layout_constraintEnd_toStartOf="@+id/faq_btn_next"
         app:layout_constraintStart_toStartOf="parent" />
