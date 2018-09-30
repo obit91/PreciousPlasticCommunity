@@ -84,18 +84,18 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial, container, false);
-        attachButtons(view);
-        profileBtn.setOnClickListener(this);
-        tradeBtn.setOnClickListener(this);
-        rankBtn.setOnClickListener(this);
-        trackHistBtn.setOnClickListener(this);
-        bazaarBtn.setOnClickListener(this);
-        workspacesBtn.setOnClickListener(this);
-        mapBtn.setOnClickListener(this);
-        mBackToTutBtn.setOnClickListener(this);
-        mNextBtn.setOnClickListener(this);
-
-        mBackToTutBtn.setVisibility(View.INVISIBLE);
+//        attachButtons(view);
+//        profileBtn.setOnClickListener(this);
+//        tradeBtn.setOnClickListener(this);
+//        rankBtn.setOnClickListener(this);
+//        trackHistBtn.setOnClickListener(this);
+//        bazaarBtn.setOnClickListener(this);
+//        workspacesBtn.setOnClickListener(this);
+//        mapBtn.setOnClickListener(this);
+//        mBackToTutBtn.setOnClickListener(this);
+//        mNextBtn.setOnClickListener(this);
+//        mTutImage.setVisibility(View.GONE);
+//        mBackToTutBtn.setVisibility(View.INVISIBLE);
 
         return view;
     }
@@ -108,9 +108,9 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
         bazaarBtn = (Button) view.findViewById(R.id.faq_btn_bazaar_search);
         workspacesBtn = (Button) view.findViewById(R.id.faq_btn_explore_workspaces);
         mapBtn = (Button) view.findViewById(R.id.faq_btn_map_long_click);
-        mBackToTutBtn = (Button) view.findViewById(R.id.faq_btn_to_faq);
+//        mBackToTutBtn = (Button) view.findViewById(R.id.faq_btn_to_faq);
         mNextBtn = (Button) view.findViewById(R.id.faq_btn_next);
-        mTutImage = (ImageView) view.findViewById(R.id.faq_iv_current_tutorial_image);
+//        mTutImage = (ImageView) view.findViewById(R.id.faq_iv_current_tutorial_image);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -167,11 +167,11 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.faq_btn_next:
                 break;
-            case R.id.faq_btn_to_faq:
-                mTutImage.setVisibility(View.GONE);
-                mBackToTutBtn.setVisibility(View.GONE);
-                mNextBtn.setVisibility(View.VISIBLE);
-                break;
+//            case R.id.faq_btn_to_faq:
+//                mTutImage.setVisibility(View.GONE);
+//                mBackToTutBtn.setVisibility(View.GONE);
+//                mNextBtn.setVisibility(View.VISIBLE);
+//                break;
             default:
                 break;
         }

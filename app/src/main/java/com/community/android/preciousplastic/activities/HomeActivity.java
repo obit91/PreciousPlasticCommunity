@@ -237,12 +237,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.drawer_about_us:
                 goToFragment(FragmentAboutUs.class);
                 break;
-            case R.id.drawer_sign_out:
-                signOut();
-                finish();
-                break;
             case R.id.drawer_tutorial:
                 goToFragment(FragmentTutorial.class);
+                finish();
+                break;
+            case R.id.drawer_sign_out:
+                signOut();
                 finish();
                 break;
             default:
