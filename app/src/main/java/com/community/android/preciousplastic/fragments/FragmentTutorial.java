@@ -86,6 +86,15 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_tutorial, container, false);
         attachButtons(view);
         profileBtn.setOnClickListener(this);
+        tradeBtn.setOnClickListener(this);
+        rankBtn.setOnClickListener(this);
+        trackHistBtn.setOnClickListener(this);
+        bazaarBtn.setOnClickListener(this);
+        workspacesBtn.setOnClickListener(this);
+        mapBtn.setOnClickListener(this);
+        mBackToTutBtn.setOnClickListener(this);
+        mNextBtn.setOnClickListener(this);
+
         mBackToTutBtn.setVisibility(View.INVISIBLE);
 
         return view;
@@ -140,8 +149,9 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
                 mTutImage.setVisibility(View.VISIBLE);
 //                mTutImage.setImageResource(); //Todo aquire picture and set it
 //                profileBtn.setTextColor(R.color.colorPrimaryClickedLink); //Todo change color to clicked
+                /*Todo Need to HIDE ALL OTHER buttons while clicking on one button. (maybe not because I put the image on the first "layer" so it may override others)*/
                 mBackToTutBtn.setVisibility(View.VISIBLE);
-                mNextBtn.setVisibility(View.GONE);
+                mNextBtn.setVisibility(View.GONE); // Replaces changing the ALPHA value
                 break;
             case R.id.faq_btn_trade_for_items:
                 break;
@@ -158,6 +168,9 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
             case R.id.faq_btn_next:
                 break;
             case R.id.faq_btn_to_faq:
+                mTutImage.setVisibility(View.GONE);
+                mBackToTutBtn.setVisibility(View.GONE);
+                mNextBtn.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
