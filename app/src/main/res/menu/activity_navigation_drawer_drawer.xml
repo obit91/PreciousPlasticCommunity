@@ -19,7 +19,7 @@
             <item
                 android:id="@+id/trade_frag"
                 android:icon="@drawable/ic_exchange"
-                android:title="Home" />
+                android:title="Trade" />
             <item
                 android:id="@+id/drawer_workspaces"
                 android:icon="@drawable/ic_businessman"
