@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.community.android.preciousplastic.R;
 
-public class FragmentTutorial extends BaseFragment {
+public class FragmentTutorial extends BaseFragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,7 +24,16 @@ public class FragmentTutorial extends BaseFragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    private Button profileBtn = null;
+    private Button tradeBtn = null;
+    private Button rankBtn = null;
+    private Button trackHistBtn = null;
+    private Button bazaarBtn = null;
+    private Button workspacesBtn = null;
+    private Button mapBtn = null;
+    private Button mNextBtn = null;
+    private Button mBackToTutBtn = null;
+    private ImageView mTutImage = null;
 
     public FragmentTutorial() {
         // Required empty public constructor
@@ -69,8 +80,24 @@ public class FragmentTutorial extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial, container, false);
+        attachButtons(view);
+        profileBtn.setOnClickListener(this);
+        mBackToTutBtn.setVisibility(View.INVISIBLE);
 
         return view;
+    }
+
+    private void attachButtons(View view) {
+        profileBtn = (Button) view.findViewById(R.id.faq_btn_recycle_plastic_for_points);
+        tradeBtn = (Button) view.findViewById(R.id.faq_btn_trade_for_items);
+        rankBtn =(Button)  view.findViewById(R.id.faq_btn_rank_progression);
+        trackHistBtn =(Button)  view.findViewById(R.id.faq_btn_track_recycling);
+        bazaarBtn = (Button) view.findViewById(R.id.faq_btn_bazaar_search);
+        workspacesBtn = (Button) view.findViewById(R.id.faq_btn_explore_workspaces);
+        mapBtn = (Button) view.findViewById(R.id.faq_btn_map_long_click);
+        mBackToTutBtn = (Button) view.findViewById(R.id.faq_btn_to_faq);
+        mNextBtn = (Button) view.findViewById(R.id.faq_btn_next);
+        mTutImage = (ImageView) view.findViewById(R.id.faq_iv_current_tutorial_image);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -100,6 +127,32 @@ public class FragmentTutorial extends BaseFragment {
     @Override
     public boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.faq_btn_recycle_plastic_for_points:
+                break;
+            case R.id.faq_btn_trade_for_items:
+                break;
+            case R.id.faq_btn_rank_progression:
+                break;
+            case R.id.faq_btn_bazaar_search:
+                break;
+            case R.id.faq_btn_track_recycling:
+                break;
+            case R.id.faq_btn_explore_workspaces:
+                break;
+            case R.id.faq_btn_map_long_click:
+                break;
+            case R.id.faq_btn_next:
+                break;
+            case R.id.faq_btn_to_faq:
+                break;
+            default:
+                break;
+        }
     }
 
     /**

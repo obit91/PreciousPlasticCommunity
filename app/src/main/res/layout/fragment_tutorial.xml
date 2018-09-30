@@ -163,7 +163,7 @@
         app:layout_constraintTop_toBottomOf="@+id/faq_btn_map_long_click" />
 
     <TextView
-        android:id="@+id/faq_next_text"
+        android:id="@+id/faq_tv_next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
