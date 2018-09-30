@@ -2,8 +2,12 @@ package com.community.android.preciousplastic.fragments;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.v4.media.RatingCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,6 +137,11 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.faq_btn_recycle_plastic_for_points:
+                mTutImage.setVisibility(View.VISIBLE);
+//                mTutImage.setImageResource(); //Todo aquire picture and set it
+//                profileBtn.setTextColor(R.color.colorPrimaryClickedLink); //Todo change color to clicked
+                mBackToTutBtn.setVisibility(View.VISIBLE);
+                mNextBtn.setVisibility(View.GONE);
                 break;
             case R.id.faq_btn_trade_for_items:
                 break;
