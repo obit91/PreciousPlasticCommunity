@@ -54,6 +54,8 @@ public class LoadingActivity extends BaseActivity {
     private TextView quote;
     private Random random;
 
+    private Transitions.TransitionTypes TransitionType = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +105,9 @@ public class LoadingActivity extends BaseActivity {
         userRepo = new UserRepository(this);
 
         Bundle b = getIntent().getExtras();
-        Transitions.TransitionTypes type = (Transitions.TransitionTypes) b.getSerializable(Transitions.TRANSITION_TYPE);
+        TransitionType = (Transitions.TransitionTypes) b.getSerializable(Transitions.TRANSITION_TYPE);
 
-        switch (type) {
+        switch (TransitionType) {
             case REGISTER:
                 initiateCreation(b);
                 break;
@@ -195,6 +197,7 @@ public class LoadingActivity extends BaseActivity {
         public void onResponse(Object dataSnapshotObj) {
             boolean success = (boolean) dataSnapshotObj;
             if (success) {
+                //TODO: replace this with Handler and Delayed execution of callback.
                 Intent homeIntent = new Intent(delegate, HomeActivity.class);
                 try {
                     if (chosenImageIndex == LONGEST_QUOTE) {
@@ -206,6 +209,7 @@ public class LoadingActivity extends BaseActivity {
                 } catch (InterruptedException e) {
                     Log.d(TAG, "LoggedIn: failed to sleep, someone's rushing.");
                 }
+                homeIntent.putExtra(Transitions.TRANSITION_TYPE, TransitionType);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
             } else {
