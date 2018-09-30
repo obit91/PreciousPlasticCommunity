@@ -38,7 +38,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_password" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome_wrapper_password" />
 
     <ImageView
         android:id="@+id/img_logo"
@@ -94,22 +94,29 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/tv_precious_plastic_title" />
 
-    <EditText
-        android:id="@+id/welcome_text_password"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/welcome_wrapper_password"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="28dp"
-        android:backgroundTint="@color/colorDarkGrey"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textColorLink="@android:color/holo_green_dark"
-        android:textSize="17sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_email" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_email"
+        app:passwordToggleEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/welcome_text_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorDarkGrey"
+            android:ems="10"
+            android:hint="Password"
+            android:textColorLink="@android:color/holo_green_dark"
+            android:textSize="17sp"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/welcome_tv_register_text"
