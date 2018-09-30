@@ -14,5 +14,7 @@
     <color name="preciousPlasticBlue">#98A2FF</color>
     <color name="colorCheckBoxesDarkBlue">#1d1f2c</color>
     <color name="workspaceLightBlack">#131313</color>
+    <color name="colorPrimaryClickedLink">#8a014d</color>
+    <color name="colorPrimaryUnclickedLink">#2644ef</color>
 
 </resources>
