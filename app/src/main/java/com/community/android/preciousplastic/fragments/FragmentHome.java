@@ -64,15 +64,15 @@ public class FragmentHome extends BaseFragment
             return;
         }
         //Setup btns backgrounds
-        int backgroundAlphaVal = 255; //Max 255
-        bazaarBtn.setBackgroundColor(Color.WHITE);
-        bazaarBtn.getBackground().setAlpha(backgroundAlphaVal);
-        mapBtn.setBackgroundColor(Color.WHITE);
-        mapBtn.getBackground().setAlpha(backgroundAlphaVal);
-        profileBtn.setBackgroundColor(Color.WHITE);
-        profileBtn.getBackground().setAlpha(backgroundAlphaVal);
-        tradeBtn.setBackgroundColor(Color.WHITE);
-        tradeBtn.getBackground().setAlpha(backgroundAlphaVal);
+//        int backgroundAlphaVal = 255; //Max 255
+//        bazaarBtn.setBackgroundColor(Color.WHITE);
+//        bazaarBtn.getBackground().setAlpha(backgroundAlphaVal);
+//        mapBtn.setBackgroundColor(Color.WHITE);
+//        mapBtn.getBackground().setAlpha(backgroundAlphaVal);
+//        profileBtn.setBackgroundColor(Color.WHITE);
+//        profileBtn.getBackground().setAlpha(backgroundAlphaVal);
+//        tradeBtn.setBackgroundColor(Color.WHITE);
+//        tradeBtn.getBackground().setAlpha(backgroundAlphaVal);
 
         // Set up the buttons' listeners
         bazaarBtn.setOnClickListener(new View.OnClickListener() {
