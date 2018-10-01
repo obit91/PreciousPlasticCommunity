@@ -233,8 +233,18 @@ public class FragmentPerformRecycle extends BaseFragment implements View.OnClick
             return;
         }
 
-        if (mNicknameEditView.getText().toString().equals(currentUser.getNickname())) {
-            showToast("You can not give points to yourself.");
+//        if (mNicknameEditView.getText().toString().equals(currentUser.getNickname())) {
+//            showToast("You can not give points to yourself.");
+//            return;
+//        }
+
+        if (mScore <= 0) {
+            Toast.makeText(getContext(), "Please fill a weight greater than zero.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!currentUser.getWorkspace().isShredderMachine()) {
+            Toast.makeText(getContext(), "A shredder machine is a required for starting the recycling process.", Toast.LENGTH_SHORT).show();
             return;
         }
 

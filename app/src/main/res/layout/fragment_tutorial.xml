@@ -6,17 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/orange_bg_light"
-    tools:context=".fragments.FragmentTutorial"
+    tools:context=".fragments.FragmentAboutUs"
     tools:layout_editor_absoluteY="25dp">
 
+    <ImageView
+        android:id="@+id/faq_iv_current_tutorial_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/white"
+        android:contentDescription="changing tutorial image"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/faq_intro"
+        android:id="@+id/faq_tv_intro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Welcome to Precious Plastic Community.\nFollow the steps below to learn how to use the application. Once you're done, click next. You can always go back to this tutorial from the menu ."
+        android:text="Welcome to Precious Plastic Community.\nFollow the steps below to learn how to use the application. Once you're done, click next. You can always go back to this tutorial from the menu."
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,13 +45,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
-        android:text="-Recycle plastic to receive purchase points, keep track of purchase points in profile. "
+        android:text="-Recycle plastic to receive purchase points, keep track of purchase points in profile."
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryUnclickedLink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/faq_intro" />
+        app:layout_constraintTop_toBottomOf="@+id/faq_tv_intro" />
 
     <Button
         android:id="@+id/faq_btn_trade_for_items"
@@ -64,7 +77,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
-        android:text="-Progress in ranks as you recycle plastic and brag to your friends"
+        android:text="-Progress in ranks as you recycle plastic and brag to your friends."
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryUnclickedLink"
@@ -97,7 +110,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:background="@android:color/transparent"
-        android:text="-Check out the Bazaar to see cool items, created by plastic artisans. Search for your favorite plastic creator too"
+        android:text="-Check out the Bazaar to see cool items, created by plastic artisans. Search for your favorite plastic creator too."
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryUnclickedLink"
@@ -129,7 +142,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:background="@android:color/transparent"
-        android:text="-Share plastic gold mines [dumps] on the map by long clicking on the map"
+        android:text="-Share plastic gold mines [dumps] on the map by long clicking on the map."
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryUnclickedLink"
@@ -150,15 +163,47 @@
         app:layout_constraintTop_toBottomOf="@+id/faq_btn_map_long_click" />
 
     <TextView
-        android:id="@+id/faq_tv_next"
+        android:id="@+id/faq_tv_inspiration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Let's start to make the world a cleaner plastic free place"
+        android:text="Let's start to make the world a cleaner plastic free place."
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/faq_btn_next"
         app:layout_constraintEnd_toStartOf="@+id/faq_btn_next"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/faq_btn_to_faq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:text="back to faq"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="192dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="123dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="400dp" />
 
 </android.support.constraint.ConstraintLayout>

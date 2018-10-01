@@ -1,5 +1,6 @@
 package com.community.android.preciousplastic.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +21,10 @@ import android.widget.Toast;
 
 import com.community.android.preciousplastic.fragments.BaseFragment;
 import com.community.android.preciousplastic.fragments.FragmentPerformRecycle;
+import com.community.android.preciousplastic.fragments.FragmentPerformTrade;
 import com.community.android.preciousplastic.fragments.FragmentTutorial;
 import com.community.android.preciousplastic.imgur.ImgurConstants;
+import com.community.android.preciousplastic.utils.Transitions;
 import com.community.android.preciousplastic.utils.Transitions.TransitionTypes;
 
 import com.community.android.preciousplastic.R;
@@ -51,13 +55,22 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
 
+    TransitionTypes transitionType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
 
-        // setting up buttons
+
+        final Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            final Serializable potentialTransitionType = extras.getSerializable(Transitions.TRANSITION_TYPE);
+            if (potentialTransitionType != null) {
+                transitionType = (TransitionTypes) extras.getSerializable(Transitions.TRANSITION_TYPE);
+            }
+        }
 
         // updating container context
         PPSession.setContainerContext(this);
@@ -125,6 +138,26 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (PPSession.getCurrentFragmentClass() == null) {
             goToFragment(FragmentHome.class);
+        }
+
+        if (transitionType != null && transitionType == TransitionTypes.REGISTER) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.app_name);
+            builder.setMessage("Welcome to Precious Plastic Community!\nIt seems that we haven't met before,\nwould you like to go through a short tutorial?");
+//            builder.setIcon(R.drawable.ic_launcher);
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    goToFragment(FragmentTutorial.class);
+                    dialog.dismiss();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     }
 
@@ -198,7 +231,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 goToFragment(FragmentHome.class);
                 break;
             case R.id.trade_frag:
-                goToFragment(FragmentPerformRecycle.class);
+                goToFragment(FragmentPerformTrade.class);
                 break;
             case R.id.drawer_workspaces:
                 goToFragment(FragmentWorkspaces.class);
@@ -239,7 +272,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.drawer_tutorial:
                 goToFragment(FragmentTutorial.class);
-                finish();
                 break;
             case R.id.drawer_sign_out:
                 signOut();

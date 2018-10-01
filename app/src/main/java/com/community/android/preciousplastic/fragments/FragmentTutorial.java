@@ -2,19 +2,24 @@ package com.community.android.preciousplastic.fragments;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.v4.media.RatingCompat;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.community.android.preciousplastic.R;
+import com.community.android.preciousplastic.utils.PPSession;
+import com.squareup.picasso.Picasso;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class FragmentTutorial extends BaseFragment implements View.OnClickListener {
 
@@ -22,6 +27,8 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private static final String TAG = "FRAGMENT_TUTORIAL";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -38,9 +45,113 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     private Button mNextBtn = null;
     private Button mBackToTutBtn = null;
     private ImageView mTutImage = null;
+    TextView mIntroText = null;
+    TextView mInspirationText = null;
+
+    private int currentSlidePos = 0;
+
+    private LinkedList<View> mainViews = new LinkedList<>();
+    private List<Slide> tutorialSlides = new LinkedList<>();
+
+    private static final Integer TWO_SECONDS_TO_MILLIS = 2 * 1000;
+    private static final Integer FIVE_SECONDS_TO_MILLIS = 5 * 1000;
+
+    /**
+     * Contains a slide resource id and duration time (in milliseconds);
+     */
+    private static class Slide {
+        private Integer slideDrawableId;
+        private Integer showDurationMillis;
+
+        public Slide(Integer slideDrawableId, Integer showDurationMillis) {
+            this.slideDrawableId = slideDrawableId;
+            this.showDurationMillis = showDurationMillis;
+        }
+
+        public Integer getSlideDrawableId() {
+            return slideDrawableId;
+        }
+
+        public Integer getShowDurationMillis() {
+            return showDurationMillis;
+        }
+    }
+
+    /**
+     * A runnable class which shows a slide.
+     */
+    private class SlideTask implements Runnable {
+
+        private Slide innerSlide;
+
+        private SlideTask(Slide innerSlide) {
+            this.innerSlide = innerSlide;
+        }
+
+        @Override
+        public void run() {
+            if (innerSlide != null) {
+                populateSlide(innerSlide);
+            } else {
+                setMainViewsVisible(true);
+            }
+        }
+    }
 
     public FragmentTutorial() {
         // Required empty public constructor
+    }
+
+    /**
+     * Adds all main views to a container.
+     */
+    private void collectMainViews() {
+        mainViews.add(profileBtn);
+        mainViews.add(tradeBtn);
+        mainViews.add(rankBtn);
+        mainViews.add(trackHistBtn);
+        mainViews.add(bazaarBtn);
+        mainViews.add(workspacesBtn);
+        mainViews.add(mapBtn);
+        mainViews.add(mNextBtn);
+        mainViews.add(mIntroText);
+        mainViews.add(mInspirationText);
+    }
+
+    /**
+     * Generates a list of slides for the tutorial.
+     */
+    private void generateTutorialSlides() {
+        Slide tempSlide;
+        tempSlide = new Slide(R.drawable.tutorial_profile_select, TWO_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_profile_histo_plast, FIVE_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_profile_purchase_points, FIVE_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_profile_rank_explanation, FIVE_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_bazaar_select, TWO_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_bazaar_info, FIVE_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_trade_select, TWO_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_trade_info, FIVE_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_workspaces_select, TWO_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        tempSlide = new Slide(R.drawable.tutorial_workspaces_info, FIVE_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        if (PPSession.getCurrentUser().isOwner()) {
+            tempSlide = new Slide(R.drawable.tutorial_recycle_select, TWO_SECONDS_TO_MILLIS);
+            tutorialSlides.add(tempSlide);
+            tempSlide = new Slide(R.drawable.tutorial_recycle_info, FIVE_SECONDS_TO_MILLIS);
+            tutorialSlides.add(tempSlide);
+        }
+        tempSlide = new Slide(R.drawable.tutorial_map_select, TWO_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        //TODO: missing map, myworkspace
     }
 
     /**
@@ -84,7 +195,10 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial, container, false);
-//        attachButtons(view);
+        mIntroText = view.findViewById(R.id.faq_tv_intro);
+        mInspirationText = view.findViewById(R.id.faq_tv_inspiration);
+        attachButtons(view);
+        //todo fix this eventually.. commented out for now.
 //        profileBtn.setOnClickListener(this);
 //        tradeBtn.setOnClickListener(this);
 //        rankBtn.setOnClickListener(this);
@@ -92,25 +206,75 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
 //        bazaarBtn.setOnClickListener(this);
 //        workspacesBtn.setOnClickListener(this);
 //        mapBtn.setOnClickListener(this);
-//        mBackToTutBtn.setOnClickListener(this);
-//        mNextBtn.setOnClickListener(this);
-//        mTutImage.setVisibility(View.GONE);
-//        mBackToTutBtn.setVisibility(View.INVISIBLE);
+        mBackToTutBtn.setOnClickListener(this);
+        mNextBtn.setOnClickListener(this);
 
+        mBackToTutBtn.setVisibility(View.INVISIBLE);
+
+        attachImageListener(view);
+
+        generateTutorialSlides();
+        collectMainViews();
+        setMainViewsVisible(true);
         return view;
     }
 
     private void attachButtons(View view) {
-        profileBtn = (Button) view.findViewById(R.id.faq_btn_recycle_plastic_for_points);
-        tradeBtn = (Button) view.findViewById(R.id.faq_btn_trade_for_items);
-        rankBtn =(Button)  view.findViewById(R.id.faq_btn_rank_progression);
-        trackHistBtn =(Button)  view.findViewById(R.id.faq_btn_track_recycling);
-        bazaarBtn = (Button) view.findViewById(R.id.faq_btn_bazaar_search);
-        workspacesBtn = (Button) view.findViewById(R.id.faq_btn_explore_workspaces);
-        mapBtn = (Button) view.findViewById(R.id.faq_btn_map_long_click);
-//        mBackToTutBtn = (Button) view.findViewById(R.id.faq_btn_to_faq);
-        mNextBtn = (Button) view.findViewById(R.id.faq_btn_next);
-//        mTutImage = (ImageView) view.findViewById(R.id.faq_iv_current_tutorial_image);
+        profileBtn = view.findViewById(R.id.faq_btn_recycle_plastic_for_points);
+        tradeBtn = view.findViewById(R.id.faq_btn_trade_for_items);
+        rankBtn = view.findViewById(R.id.faq_btn_rank_progression);
+        trackHistBtn = view.findViewById(R.id.faq_btn_track_recycling);
+        bazaarBtn =  view.findViewById(R.id.faq_btn_bazaar_search);
+        workspacesBtn = view.findViewById(R.id.faq_btn_explore_workspaces);
+        mapBtn = view.findViewById(R.id.faq_btn_map_long_click);
+        mBackToTutBtn = view.findViewById(R.id.faq_btn_to_faq);
+        mNextBtn = view.findViewById(R.id.faq_btn_next);
+    }
+
+    private void attachImageListener(View view) {
+        mTutImage = view.findViewById(R.id.faq_iv_current_tutorial_image);
+
+        final GestureDetector gesture = new GestureDetector(getActivity(),
+                new GestureDetector.SimpleOnGestureListener() {
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                                           float velocityY) {
+                        Log.i(TAG, "onFling has been called!");
+                        final int SWIPE_MIN_DISTANCE = 120;
+                        final int SWIPE_MAX_OFF_PATH = 250;
+                        final int SWIPE_THRESHOLD_VELOCITY = 200;
+                        try {
+                            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                                return false;
+                            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+                                    && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                                Log.i(TAG, "Right to Left");
+                                if (currentSlidePos + 1 <= tutorialSlides.size() - 1) {
+                                    currentSlidePos++;
+                                    populateSlide(tutorialSlides.get(currentSlidePos));
+                                }
+                            } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+                                    && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                                Log.i(TAG, "Left to Right");
+                                if (currentSlidePos -1 >= 0) {
+                                    currentSlidePos--;
+                                    populateSlide(tutorialSlides.get(currentSlidePos));
+                                }
+                            }
+                        } catch (Exception e) {
+                            // nothing
+                        }
+                        return super.onFling(e1, e2, velocityX, velocityY);
+                    }
+                });
+
+        mTutImage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -137,6 +301,27 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
         mListener = null;
     }
 
+    private void setMainViewsVisible(boolean visible) {
+        int visibility;
+        int reverseVisibility;
+        if (visible) {
+            visibility = View.VISIBLE;
+            reverseVisibility = View.INVISIBLE;
+        } else {
+            visibility = View.INVISIBLE;
+            reverseVisibility = View.VISIBLE;
+        }
+        for (View view : mainViews) {
+            view.setVisibility(visibility);
+            view.setClickable(visible);
+        }
+
+        mTutImage.setVisibility(reverseVisibility);
+        mTutImage.setClickable(!visible);
+        mBackToTutBtn.setVisibility(reverseVisibility);
+        mBackToTutBtn.setClickable(!visible);
+    }
+
     @Override
     public boolean onBackPressed() {
         return false;
@@ -146,12 +331,7 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.faq_btn_recycle_plastic_for_points:
-                mTutImage.setVisibility(View.VISIBLE);
-//                mTutImage.setImageResource(); //Todo aquire picture and set it
-//                profileBtn.setTextColor(R.color.colorPrimaryClickedLink); //Todo change color to clicked
-                /*Todo Need to HIDE ALL OTHER buttons while clicking on one button. (maybe not because I put the image on the first "layer" so it may override others)*/
-                mBackToTutBtn.setVisibility(View.VISIBLE);
-                mNextBtn.setVisibility(View.GONE); // Replaces changing the ALPHA value
+                startSlides();
                 break;
             case R.id.faq_btn_trade_for_items:
                 break;
@@ -166,15 +346,67 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
             case R.id.faq_btn_map_long_click:
                 break;
             case R.id.faq_btn_next:
+                startSlides();
                 break;
-//            case R.id.faq_btn_to_faq:
-//                mTutImage.setVisibility(View.GONE);
-//                mBackToTutBtn.setVisibility(View.GONE);
-//                mNextBtn.setVisibility(View.VISIBLE);
-//                break;
+            case R.id.faq_btn_to_faq:
+                setMainViewsVisible(true);
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * Shows all tutorial slides.
+     */
+    private void startSlides() {
+//                mTutImage.setImageResource(); //Todo aquire picture and set it
+//                profileBtn.setTextColor(R.color.colorPrimaryClickedLink); //Todo change color to clicked
+
+        /*SlideTask slideTask;
+        if (tutorialSlides.size() == 0) {
+            return;
+        }
+
+        setMainViewsVisible(false);
+
+        Slide firstSlide = tutorialSlides.remove(0);
+        populateSlide(firstSlide);
+        Integer delayDuration = firstSlide.getShowDurationMillis();
+
+        final Handler handler = new Handler();
+        for (Slide slide : tutorialSlides) {
+            slideTask = new SlideTask(slide);
+            handler.postDelayed(slideTask, delayDuration);
+            delayDuration += slide.getShowDurationMillis();
+        }
+
+        // set a null slide to let final slide end and run a callback to return to the main views.
+        slideTask = new SlideTask(null);
+        handler.postDelayed(slideTask, delayDuration);*/
+
+//        Picasso.with(getActivity())
+//                .load(R.drawable.transperent_black_phone)
+//                .fit()
+//                .centerCrop()
+//                .into(mBlackPhone);
+
+        setMainViewsVisible(false);
+        populateSlide(tutorialSlides.get(0));
+    }
+
+    private void populateSlide(Slide slide) {
+
+        if (slide == null) {
+            return;
+        }
+
+        Picasso.with(getActivity())
+                .load(slide.getSlideDrawableId())
+//                .resize(100, 200)
+                .fit()
+                .centerCrop()
+                .into(mTutImage);
     }
 
     /**
