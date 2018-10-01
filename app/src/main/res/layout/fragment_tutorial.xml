@@ -9,18 +9,54 @@
     tools:context=".fragments.FragmentAboutUs"
     tools:layout_editor_absoluteY="25dp">
 
-    <ImageView
-        android:id="@+id/faq_iv_current_tutorial_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/white"
-        android:contentDescription="changing tutorial image"
-        android:visibility="gone"
+    <!--ImageView
+        android:id="@+id/faq_iv_black_phone"
+        android:layout_width="740dp"
+        android:layout_height="740dp"
+        android:background="@drawable/black_phone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" /-->
+
+    <!--ImageView
+        android:id="@+id/faq_iv_current_tutorial_image"
+        android:background="@drawable/webp"
+        android:layout_width="285dp"
+        android:layout_height="474dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="changing tutorial image"
+        app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintEnd_toStartOf="@+id/guideline18"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline7" /-->
+
+    <TextView
+        android:id="@+id/faq_loading_slide"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="Loading slide information in background"
+        android:gravity="center"
+        android:text="L O A D I N G    S L I D E    . .  ."
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/faq_iv_current_tutorial_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="changing tutorial image" />
 
     <TextView
         android:id="@+id/faq_tv_intro"
@@ -178,32 +214,11 @@
         android:id="@+id/faq_btn_to_faq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="back to faq"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="192dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="123dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="400dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

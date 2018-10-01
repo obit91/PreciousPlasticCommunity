@@ -21,6 +21,8 @@ import com.squareup.picasso.Picasso;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.community.android.preciousplastic.utils.ImageUtils.decodeSampledBitmapFromResource;
+
 public class FragmentTutorial extends BaseFragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -45,6 +47,8 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     private Button mNextBtn = null;
     private Button mBackToTutBtn = null;
     private ImageView mTutImage = null;
+    private ImageView mBlackPhone = null;
+    private TextView mLoadingSlide = null;
     TextView mIntroText = null;
     TextView mInspirationText = null;
 
@@ -151,7 +155,9 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
         }
         tempSlide = new Slide(R.drawable.tutorial_map_select, TWO_SECONDS_TO_MILLIS);
         tutorialSlides.add(tempSlide);
-        //TODO: missing map, myworkspace
+        tempSlide = new Slide(R.drawable.tutorial_map_info, FIVE_SECONDS_TO_MILLIS);
+        tutorialSlides.add(tempSlide);
+        //TODO: myworkspace
     }
 
     /**
@@ -197,6 +203,13 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_tutorial, container, false);
         mIntroText = view.findViewById(R.id.faq_tv_intro);
         mInspirationText = view.findViewById(R.id.faq_tv_inspiration);
+        mLoadingSlide = view.findViewById(R.id.faq_loading_slide);
+
+        mTutImage = view.findViewById(R.id.faq_iv_current_tutorial_image);
+
+//        mBlackPhone = view.findViewById(R.id.faq_iv_black_phone);
+//        mBlackPhone.setImageBitmap(
+//                decodeSampledBitmapFromResource(getResources(), R.drawable.black_phone, 740, 740));
         attachButtons(view);
         //todo fix this eventually.. commented out for now.
 //        profileBtn.setOnClickListener(this);
@@ -208,11 +221,8 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
 //        mapBtn.setOnClickListener(this);
         mBackToTutBtn.setOnClickListener(this);
         mNextBtn.setOnClickListener(this);
-
         mBackToTutBtn.setVisibility(View.INVISIBLE);
-
         attachImageListener(view);
-
         generateTutorialSlides();
         collectMainViews();
         setMainViewsVisible(true);
@@ -232,8 +242,6 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     }
 
     private void attachImageListener(View view) {
-        mTutImage = view.findViewById(R.id.faq_iv_current_tutorial_image);
-
         final GestureDetector gesture = new GestureDetector(getActivity(),
                 new GestureDetector.SimpleOnGestureListener() {
 
@@ -318,6 +326,10 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
 
         mTutImage.setVisibility(reverseVisibility);
         mTutImage.setClickable(!visible);
+        mLoadingSlide.setVisibility(reverseVisibility);
+        mLoadingSlide.setClickable(!visible);
+//        mBlackPhone.setVisibility(reverseVisibility);
+//        mBlackPhone.setClickable(!visible);
         mBackToTutBtn.setVisibility(reverseVisibility);
         mBackToTutBtn.setClickable(!visible);
     }
@@ -400,6 +412,8 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
         if (slide == null) {
             return;
         }
+//        mTutImage.setImageBitmap(
+//                decodeSampledBitmapFromResource(getResources(), slide.getSlideDrawableId(), 285, 474));
 
         Picasso.with(getActivity())
                 .load(slide.getSlideDrawableId())
