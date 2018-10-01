@@ -17,6 +17,8 @@ import com.community.android.preciousplastic.utils.PPSession;
 public abstract class BaseActivity extends AppCompatActivity {
 
     PermissionResponseHandler permissionResponseHandler;
+    private boolean isInForeground;
+    private boolean shouldSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +35,36 @@ public abstract class BaseActivity extends AppCompatActivity {
     private BroadcastReceiver messageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            shouldSwitch = true;
             alertNoConnection();
         }
     };
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        isInForeground = false;
+        if (shouldSwitch) {
+            alertNoConnection();
+        }
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        isInForeground = true;
+    }
+
     private void alertNoConnection() {
-        switchToNoConnection();
+        if (!isInForeground) {
+            switchToNoConnection();
+        }
     }
 
     private void switchToNoConnection() {
+        shouldSwitch = false;
         Intent noConnectionIntent = new Intent(this, NoConnectionActivity.class);
         noConnectionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(noConnectionIntent);

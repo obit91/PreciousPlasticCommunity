@@ -36,9 +36,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent connectivityMonitor = new Intent(this, ConnectivityMonitorService.class);
-
-
         // init firebase
         FirebaseApp.initializeApp(this);
     }
