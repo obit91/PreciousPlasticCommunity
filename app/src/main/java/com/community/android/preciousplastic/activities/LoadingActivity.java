@@ -3,6 +3,7 @@ package com.community.android.preciousplastic.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ public class LoadingActivity extends BaseActivity {
     public static final int LONGEST_QUOTE = 3;
     private final int MAX_NUM_OF_LOADING_IMAGES = 4;
     private final int MAX_NUM_OF_QUOTES = 5;
+    private static final long THREE_SECONDS_TO_MILLIS = 3 * 1000;
+    private static final long FIVE_SECONDS_TO_MILLIS = 5 * 1000;
 
     private static final int TRANSITION_TIME = 1500;
 
@@ -155,12 +158,17 @@ public class LoadingActivity extends BaseActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoadingActivity.this, "Authentication failed.",
+                            Toast.makeText(LoadingActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
-
-                            Intent welcomeIntent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                            welcomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(welcomeIntent);
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent welcomeIntent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                                    welcomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(welcomeIntent);
+                                }
+                            }, THREE_SECONDS_TO_MILLIS);
                         }
                         PPSession.setLoggingIn(false);
                     }
@@ -198,20 +206,16 @@ public class LoadingActivity extends BaseActivity {
             boolean success = (boolean) dataSnapshotObj;
             if (success) {
                 //TODO: replace this with Handler and Delayed execution of callback.
-                Intent homeIntent = new Intent(delegate, HomeActivity.class);
-                try {
-                    if (chosenImageIndex == LONGEST_QUOTE) {
-                        Thread.sleep(2 * TRANSITION_TIME);
-                    } else {
-                        Thread.sleep(TRANSITION_TIME);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent homeIntent = new Intent(delegate, HomeActivity.class);
+                        homeIntent.putExtra(Transitions.TRANSITION_TYPE, TransitionType);
+                        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeIntent);
                     }
-
-                } catch (InterruptedException e) {
-                    Log.d(TAG, "LoggedIn: failed to sleep, someone's rushing.");
-                }
-                homeIntent.putExtra(Transitions.TRANSITION_TYPE, TransitionType);
-                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(homeIntent);
+                }, THREE_SECONDS_TO_MILLIS);
             } else {
                 Toast.makeText(delegate, "Nickname does not exist.", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(delegate, WelcomeActivity.class);
@@ -338,9 +342,14 @@ public class LoadingActivity extends BaseActivity {
                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoadingActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
-                            finish();
+                            Handler handler = new Handler();
+                            handler .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    finish();
+                                }
+                            }, THREE_SECONDS_TO_MILLIS);
                         }
-                        // ...
                     }
                 });
     }
