@@ -34,7 +34,7 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:textColorLink="@android:color/holo_green_dark"
+        android:textColorLink="@color/colorEditTextDarkGreen"
         android:textSize="17sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.461"
@@ -62,7 +62,7 @@
             android:ems="10"
             android:hint="Password"
             android:tooltipText="Password must contain at least 6 letters."
-            android:textColorLink="@android:color/holo_green_dark"
+            android:textColorLink="@color/colorEditTextDarkGreen"
             android:textSize="17sp"
             android:inputType="textPassword"/>
     </android.support.design.widget.TextInputLayout>
@@ -77,7 +77,7 @@
         android:ems="10"
         android:hint="Nickname"
         android:inputType="text"
-        android:textColorLink="@android:color/holo_green_dark"
+        android:textColorLink="@color/colorEditTextDarkGreen"
         android:textSize="17sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.486"
