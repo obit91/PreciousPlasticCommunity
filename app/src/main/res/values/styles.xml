@@ -49,4 +49,14 @@
         <item name="android:textColorSecondary">@color/colorStylishBlackBox</item>
     </style>
 
+    <style name="StyledTilEditTextTheme">>
+        <item name="android:textColor">@color/colorEditTextDarkGreen</item>
+        <item name="android:textSize">17sp</item>
+        <item name="colorAccent">@color/colorDarkGrey</item>
+        <item name="colorControlNormal">@color/colorDarkGrey</item>
+        <item name="colorControlActivated">@color/colorDarkGrey</item>
+        <item name="colorControlHighlight">@color/colorDarkGrey</item>
+        <item name="android:textColorPrimary">@color/colorDarkGrey</item>
+    </style>
+
 </resources>
