@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity {
     /**
      * Listens for changes in the current user.
      */
-    public void currentUserListener(final String nickname) {
+    public static void currentUserListener(final String nickname) {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -116,7 +116,6 @@ public class MainActivity extends BaseActivity {
             public void onCancelled(DatabaseError databaseError) {
                 // Getting User failed, log a message
                 Log.i(TAG, "currentUserListener: current user disconnected.");
-                finish();
             }
         };
         PPSession.getUsersTable().child(nickname).addValueEventListener(userListener);
