@@ -26,7 +26,7 @@
 
     <EditText
         android:id="@+id/trade_et_nickname"
-        android:layout_width="wrap_content"
+        android:layout_width="182dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
@@ -36,12 +36,12 @@
         android:hint="Nickname"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/trade_tv_award_tag"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/trade_tv_title" />
 
     <EditText
         android:id="@+id/trade_et_points"
-        android:layout_width="214dp"
+        android:layout_width="181dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
@@ -51,7 +51,7 @@
         android:hint="Plastic Weight"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/trade_tv_weight_tag"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/trade_et_nickname" />
 
     <Spinner
@@ -59,10 +59,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="36dp"
         android:layout_marginTop="47dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/trade_tv_type_tag"
         app:layout_constraintTop_toBottomOf="@+id/trade_et_points" />
 
     <Button
@@ -87,32 +85,38 @@
 
     <TextView
         android:id="@+id/trade_tv_award_tag"
-        android:layout_width="wrap_content"
+        android:layout_width="144dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:text="Award points to"
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/trade_et_nickname"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/trade_tv_weight_tag"
-        android:layout_width="140dp"
+        android:layout_width="146dp"
         android:layout_height="35dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:text="Weight in Kgs"
+        android:text="Weight (grams)"
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/trade_et_points"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/trade_tv_type_tag"
         android:layout_width="123dp"
         android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="51dp"
         android:text="Type of plastic"
         android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trade_tv_weight_tag" />
 
@@ -126,5 +130,12 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/trade_tv_score"
         app:layout_constraintTop_toBottomOf="@+id/trade_tv_type_tag" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="169dp" />
 
 </android.support.constraint.ConstraintLayout>
