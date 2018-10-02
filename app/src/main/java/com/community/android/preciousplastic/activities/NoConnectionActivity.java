@@ -2,7 +2,6 @@ package com.community.android.preciousplastic.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,7 +52,7 @@ public class NoConnectionActivity extends BaseActivity {
      * Starts the application from the start.
      */
     private void startOver() {
-        Intent mainIntent = new Intent(this, WelcomeActivity.class);
+        Intent mainIntent = new Intent(this, MainActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mainIntent);
     }

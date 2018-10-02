@@ -32,10 +32,6 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initiates the connectivity monitor service
-        Intent monitorConnectivityIntent = new Intent(this, ConnectivityMonitorService.class);
-        startService(monitorConnectivityIntent);
-
         setContentView(R.layout.lo_welcome);
 
         // setting listeners
