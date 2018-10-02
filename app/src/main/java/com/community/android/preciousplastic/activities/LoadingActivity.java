@@ -268,6 +268,7 @@ public class LoadingActivity extends BaseActivity {
                 if (error == null) {
                     Log.i(TAG, "insertUser: created " + nickname);
                     PPSession.setCurrentUser(user);
+                    MainActivity.currentUserListener(nickname);
                     loggedIn(nickname);
                 } else {
                     Log.e(TAG, "insertUser: " + error.getMessage());

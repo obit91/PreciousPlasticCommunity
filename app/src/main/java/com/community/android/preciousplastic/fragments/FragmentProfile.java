@@ -110,6 +110,7 @@ public class FragmentProfile extends BaseFragment implements View.OnClickListene
         mNickname = view.findViewById(R.id.profile_tv_nickname);
     }
 
+    @Override
     public void updateGUI(View view) {
         User currentUser = PPSession.getCurrentUser();
         UserPoints points = currentUser.getPoints();
