@@ -77,22 +77,31 @@
 
     <!--Buttons container-->
 
-    <EditText
-        android:id="@+id/welcome_text_email"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/welcome_wrapper_email"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="5dp"
-        android:backgroundTint="@color/colorDarkGrey"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:textColorLink="@color/colorEditTextDarkGreen"
-        android:textSize="17sp"
+        android:textColorHint="@color/colorCheckBoxesDarkBlue"
+        app:hintTextAppearance="@style/StyledHintText"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/tv_precious_plastic_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_precious_plastic_title"
+        app:passwordToggleEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/welcome_text_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorDarkGrey"
+            android:ems="10"
+            android:hint="Email"
+            android:textColorLink="@color/colorEditTextDarkGreen"
+            android:textSize="17sp"
+            android:inputType="textEmailAddress" />
+    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/welcome_wrapper_password"
@@ -100,23 +109,24 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="28dp"
+        android:textColorHint="@color/colorCheckBoxesDarkBlue"
+        app:hintTextAppearance="@style/StyledHintText"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_email"
-        app:passwordToggleEnabled="true"
-        android:textColorHint="@color/colorEditTextDarkGreen"
-        app:hintTextAppearance="@style/StyledTilEditTextTheme"
-        android:backgroundTint="@color/colorDarkGrey"
-        android:inputType="textPassword">
+        app:layout_constraintTop_toBottomOf="@+id/welcome_wrapper_email"
+        app:passwordToggleEnabled="true">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/welcome_text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorDarkGrey"
             android:ems="10"
             android:hint="Password"
-            />
+            android:textColorLink="@color/colorEditTextDarkGreen"
+            android:textSize="17sp"
+            android:inputType="textPassword"/>
     </android.support.design.widget.TextInputLayout>
 
     <TextView

@@ -59,4 +59,9 @@
         <item name="android:textColorPrimary">@color/colorDarkGrey</item>
     </style>
 
+    <style name="StyledHintText">
+        <item name="android:textColor">@color/colorEditTextDarkGreen</item>
+        <item name="android:textSize">10dp</item>
+    </style>
+
 </resources>

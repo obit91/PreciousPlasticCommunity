@@ -22,67 +22,87 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/register_text_nickname" />
+        app:layout_constraintTop_toBottomOf="@+id/register_widget_nickname" />
 
-    <EditText
-        android:id="@+id/register_text_email"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/register_widget_email"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="64dp"
-        android:backgroundTint="@color/colorDarkGrey"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:textColorLink="@color/colorEditTextDarkGreen"
-        android:textSize="17sp"
+        android:textColorHint="@color/colorCheckBoxesDarkBlue"
+        app:hintTextAppearance="@style/StyledHintText"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:passwordToggleEnabled="true">
 
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/register_text_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorDarkGrey"
+            android:ems="10"
+            android:hint="Email"
+            android:textColorLink="@color/colorEditTextDarkGreen"
+            android:textSize="17sp"
+            android:inputType="textEmailAddress"/>
+    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/register_wrapper_password"
+        android:id="@+id/register_widget_password"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="28dp"
+        android:textColorHint="@color/colorCheckBoxesDarkBlue"
+        app:hintTextAppearance="@style/StyledHintText"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/register_text_email"
-        app:passwordToggleEnabled="true"
-        android:textColorHint="@color/colorEditTextDarkGreen"
-        app:hintTextAppearance="@style/StyledTilEditTextTheme"
-        android:backgroundTint="@color/colorDarkGrey">
+        app:layout_constraintTop_toBottomOf="@+id/register_widget_email"
+        app:passwordToggleEnabled="true">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/register_text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorDarkGrey"
             android:ems="10"
             android:hint="Password"
             android:tooltipText="Password must contain at least 6 letters."
+            android:textColorLink="@color/colorEditTextDarkGreen"
+            android:textSize="17sp"
             android:inputType="textPassword"/>
     </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/register_text_nickname"
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/register_widget_nickname"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="28dp"
-        android:backgroundTint="@color/colorDarkGrey"
-        android:ems="10"
-        android:hint="Nickname"
-        android:inputType="text"
-        android:textColorLink="@color/colorEditTextDarkGreen"
-        android:textSize="17sp"
+        android:textColorHint="@color/colorCheckBoxesDarkBlue"
+        app:hintTextAppearance="@style/StyledHintText"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/register_wrapper_password" />
+        app:layout_constraintTop_toBottomOf="@+id/register_widget_password"
+        app:passwordToggleEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/register_text_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorDarkGrey"
+            android:ems="10"
+            android:hint="Nickname"
+            android:textColorLink="@color/colorEditTextDarkGreen"
+            android:textSize="17sp"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/register_switch_btn_owner"
