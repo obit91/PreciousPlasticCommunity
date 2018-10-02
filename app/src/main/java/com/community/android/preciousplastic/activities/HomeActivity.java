@@ -50,10 +50,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "HOME_ACTIVITY";
-
+    private boolean showTutorial = false;
     private static final String PRECIOUS_PLASTIC_URL = "https://preciousplastic.com/";
 
     private FirebaseAuth mAuth = PPSession.getFirebaseAuth();
+    private NavigationView navigationView = null;
 
     TransitionTypes transitionType;
 
@@ -69,6 +70,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             final Serializable potentialTransitionType = extras.getSerializable(Transitions.TRANSITION_TYPE);
             if (potentialTransitionType != null) {
                 transitionType = (TransitionTypes) extras.getSerializable(Transitions.TRANSITION_TYPE);
+                showTutorial = true;
             }
         }
 
@@ -88,13 +90,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         // Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Set owner buttons unclickable for non-owners.
-        final Menu menu = navigationView.getMenu();
-        final MenuItem recycleIcon = menu.findItem(R.id.drawer_recycle);
-        recycleIcon.setVisible(PPSession.getCurrentUser().isOwner());
+        updateOwnerButtons();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -106,6 +105,16 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         LayoutInflater inflater = (LayoutInflater) PPSession.getContainerContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         PPSession.setWorkspaceAdaptor(new WorkspaceAdaptor(inflater));
+    }
+
+    /**
+     * Turns recycle icon visible for owners.
+     */
+    public void updateOwnerButtons() {
+        // Set owner buttons unclickable for non-owners.
+        final Menu menu = navigationView.getMenu();
+        final MenuItem recycleIcon = menu.findItem(R.id.drawer_recycle);
+        recycleIcon.setVisible(PPSession.getCurrentUser().isOwner());
     }
 
 
@@ -120,6 +129,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         super.onRestoreInstanceState(savedInstanceState);
 
         final Class<? extends Fragment> currentFragmentClass = PPSession.getCurrentFragmentClass();
+        showTutorial = false;
 
         /*
          * Restoring the previous opened fragment.
@@ -132,6 +142,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showTutorial = false;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -140,7 +157,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             goToFragment(FragmentHome.class);
         }
 
-        if (transitionType != null && transitionType == TransitionTypes.REGISTER) {
+        if (transitionType != null && transitionType == TransitionTypes.REGISTER && showTutorial) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.app_name);
             builder.setMessage("Welcome to Precious Plastic Community!\nIt seems that we haven't met before,\nwould you like to go through a short tutorial?");
