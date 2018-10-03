@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.community.android.preciousplastic.activities.MapActivity;
 import com.community.android.preciousplastic.utils.EventNotifier;
 import com.community.android.preciousplastic.db.entities.Hazard;
 import com.community.android.preciousplastic.utils.PPSession;

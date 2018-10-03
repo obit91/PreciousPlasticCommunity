@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.community.android.preciousplastic.R;
+import com.community.android.preciousplastic.db.entities.Hazard;
 import com.community.android.preciousplastic.fragments.FragmentMap;
 import com.community.android.preciousplastic.utils.EventNotifier;
 import com.community.android.preciousplastic.db.repositories.HazardRepository;
@@ -307,14 +308,21 @@ public class MapActivity extends BaseActivity {
                 onError(e.toString());
                 return;
             }
+            Hazard hazard;
+            String desc;
+            String tooltip;
+            String reporter;
+            double lng;
+            double lat;
+            OverlayItem overlayItem;
             for (DataSnapshot singleHazard: dataSnapshot.getChildren()){
-                Object hazardObject = singleHazard.getValue();
-                HashMap<String, Object> hazardMap = (HashMap<String, Object>) hazardObject;
-                String desc = (String) hazardMap.get("description");
-                HashMap<String, Object> location = (HashMap<String, Object>) hazardMap.get("location");
-                double lat = (double) location.get("latitude");
-                double lng = (double) location.get("longitude");
-                OverlayItem overlayItem = new OverlayItem("Hazard Treasure", desc, new GeoPoint(lat, lng));
+                hazard = singleHazard.getValue(Hazard.class);
+                desc = hazard.getDescription();
+                reporter = hazard.getRepoter();
+                lng = hazard.getLng();
+                lat = hazard.getLat();
+                tooltip = String.format("Reporter: %s\nDescription: %s", reporter, desc);
+                overlayItem = new OverlayItem("Hazard Treasure", tooltip, new GeoPoint(lat, lng));
                 allPoints.get(MapConstants.PinFilter.HAZARDS).add(overlayItem);
             }
         }
@@ -667,7 +675,8 @@ public class MapActivity extends BaseActivity {
                     if (TextUtils.isEmpty(desc.getText())){
                         Toast.makeText(context, "Forgot some description?", Toast.LENGTH_SHORT).show();
                     } else {
-                        hazardRepository.insertHazard(PPSession.getFirebaseAuth().getCurrentUser(), p, "serious hazard");
+                        final String hazardDesc = desc.getText() != null ? desc.getText().toString() : "generic hazard";
+                        hazardRepository.insertHazard(PPSession.getFirebaseAuth().getCurrentUser(), p, hazardDesc);
                         Toast.makeText(context, "Hazard reported", Toast.LENGTH_SHORT).show();
                         hazardView.setVisibility(View.GONE);
                     }
