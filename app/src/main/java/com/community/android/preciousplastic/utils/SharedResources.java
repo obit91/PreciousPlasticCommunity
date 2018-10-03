@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class SharedResources {
 
+    public static int ALPHA_FOR_ORANGE_BG = 180;
     private static HashMap<String, Object> sharedResource = new HashMap<>();
 
     public static Object get(String key) {

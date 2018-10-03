@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.community.android.preciousplastic.R;
+import com.community.android.preciousplastic.utils.SharedResources;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -80,7 +81,7 @@ public class FragmentAboutUs extends BaseFragment
     {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_about_us, container, false);
-        v.getBackground().setAlpha(180);
+        v.getBackground().setAlpha(SharedResources.ALPHA_FOR_ORANGE_BG);
         ImageView ohadIV = v.findViewById(R.id.aboutUs_iv_ohad);
         ImageView yoniIV = v.findViewById(R.id.aboutUs_iv_yoni);
         ImageView kerenIV = v.findViewById(R.id.aboutUs_iv_keren);

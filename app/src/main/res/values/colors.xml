@@ -18,5 +18,6 @@
     <color name="workspaceLightBlack">#131313</color>
     <color name="colorPrimaryClickedLink">#8a014d</color>
     <color name="colorPrimaryUnclickedLink">#172991</color>
+    <color name="colorListOfActions">#101010</color>
 
 </resources>

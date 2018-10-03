@@ -16,12 +16,11 @@ import android.widget.TextView;
 
 import com.community.android.preciousplastic.R;
 import com.community.android.preciousplastic.utils.PPSession;
+import com.community.android.preciousplastic.utils.SharedResources;
 import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.community.android.preciousplastic.utils.ImageUtils.decodeSampledBitmapFromResource;
 
 public class FragmentTutorial extends BaseFragment implements View.OnClickListener {
 
@@ -37,13 +36,14 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private Button profileBtn = null;
-    private Button tradeBtn = null;
-    private Button rankBtn = null;
-    private Button trackHistBtn = null;
-    private Button bazaarBtn = null;
-    private Button workspacesBtn = null;
-    private Button mapBtn = null;
+    private TextView profileBtn = null;
+    private TextView tradeBtn = null;
+    private TextView rankBtn = null;
+    private TextView trackHistBtn = null;
+    private TextView bazaarBtn = null;
+    private TextView workspacesBtn = null;
+    private TextView mapBtn = null;
+
     private Button mNextBtn = null;
     private Button mBackToTutBtn = null;
     private ImageView mTutImage = null;
@@ -201,6 +201,8 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tutorial, container, false);
+        view.getBackground().setAlpha(SharedResources.ALPHA_FOR_ORANGE_BG);
+
         mIntroText = view.findViewById(R.id.faq_tv_intro);
         mInspirationText = view.findViewById(R.id.faq_tv_inspiration);
         mLoadingSlide = view.findViewById(R.id.faq_loading_slide);
@@ -230,13 +232,13 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     }
 
     private void attachButtons(View view) {
-        profileBtn = view.findViewById(R.id.faq_btn_recycle_plastic_for_points);
-        tradeBtn = view.findViewById(R.id.faq_btn_trade_for_items);
-        rankBtn = view.findViewById(R.id.faq_btn_rank_progression);
-        trackHistBtn = view.findViewById(R.id.faq_btn_track_recycling);
-        bazaarBtn =  view.findViewById(R.id.faq_btn_bazaar_search);
-        workspacesBtn = view.findViewById(R.id.faq_btn_explore_workspaces);
-        mapBtn = view.findViewById(R.id.faq_btn_map_long_click);
+        profileBtn = view.findViewById(R.id.faq_tv_recycle_plastic_for_points);
+        tradeBtn = view.findViewById(R.id.faq_tv_trade_for_items);
+        rankBtn = view.findViewById(R.id.faq_tv_rank_progression);
+        trackHistBtn = view.findViewById(R.id.faq_tv_track_recycling);
+        bazaarBtn =  view.findViewById(R.id.faq_tv_bazaar_search);
+        workspacesBtn = view.findViewById(R.id.faq_tv_explore_workspaces);
+        mapBtn = view.findViewById(R.id.faq_tv_map_long_click);
         mBackToTutBtn = view.findViewById(R.id.faq_btn_to_faq);
         mNextBtn = view.findViewById(R.id.faq_btn_next);
     }
@@ -342,20 +344,20 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.faq_btn_recycle_plastic_for_points:
+            case R.id.faq_tv_recycle_plastic_for_points:
                 startSlides();
                 break;
-            case R.id.faq_btn_trade_for_items:
+            case R.id.faq_tv_trade_for_items:
                 break;
-            case R.id.faq_btn_rank_progression:
+            case R.id.faq_tv_rank_progression:
                 break;
-            case R.id.faq_btn_bazaar_search:
+            case R.id.faq_tv_bazaar_search:
                 break;
-            case R.id.faq_btn_track_recycling:
+            case R.id.faq_tv_track_recycling:
                 break;
-            case R.id.faq_btn_explore_workspaces:
+            case R.id.faq_tv_explore_workspaces:
                 break;
-            case R.id.faq_btn_map_long_click:
+            case R.id.faq_tv_map_long_click:
                 break;
             case R.id.faq_btn_next:
                 startSlides();
@@ -419,7 +421,7 @@ public class FragmentTutorial extends BaseFragment implements View.OnClickListen
                 .load(slide.getSlideDrawableId())
 //                .resize(100, 200)
                 .fit()
-                .centerCrop()
+                .centerInside()
                 .into(mTutImage);
     }
 

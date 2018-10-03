@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.community.android.preciousplastic.R;
 import com.community.android.preciousplastic.utils.PPSession;
+import com.community.android.preciousplastic.utils.SharedResources;
+import com.google.android.gms.common.util.SharedPreferencesUtils;
 
 public class FragmentCompleteRecycle extends BaseFragment implements View.OnClickListener {
 
@@ -100,7 +102,7 @@ public class FragmentCompleteRecycle extends BaseFragment implements View.OnClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_complete_trade, container, false);
-        view.getBackground().setAlpha(180);
+        view.getBackground().setAlpha(SharedResources.ALPHA_FOR_ORANGE_BG);
 
         mCompleteTitle = view.findViewById(R.id.trade_complete_tv_title);
         mDescription = view.findViewById(R.id.trade_complete_tv_description);
